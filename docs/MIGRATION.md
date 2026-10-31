@@ -1,4 +1,4 @@
-# Phase1 source-only extraction
+# Phase 1 source-only extraction
 
 Source: `mikkel/meta-glimmer-particle-slider`, commit
 `3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577`, product root
@@ -24,7 +24,7 @@ remain at their immutable source paths. They are explicitly indexed under
 `deferred_historical` in the provenance JSON. This includes the PG82
 `upstream.py` loader, historical `training.py`, host adapters, original storage,
 native loader, sampler and studio modules. None is imported by the modern
-distribution, so none is required for this installed phase1 product.
+distribution, so none is required for this installed phase 1 product.
 
 Later migration must preserve those source pins, checkpoint formats, published
 RAW1024/PEFT identities and original objectives. Original embedded/historical
@@ -34,7 +34,7 @@ copied into this repository. Existing release and training trees remain untouche
 
 ## Qualification and review gates
 
-The only admitted route is the existing width12 FP32 CPU fixture. Native/wide
+The only admitted route is the existing width 12 FP32 CPU fixture. Native/wide
 training remains unqualified and refused. Core commit
 `a794e3b4a8813b012f2c4faa3da82b78d4a90214` is the software-qualified target; this migration
 does not qualify native models or change shared APIs. Current runtime deltas

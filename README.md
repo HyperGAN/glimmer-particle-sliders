@@ -12,7 +12,7 @@ or modified. See [source provenance](docs/extraction-provenance.json) and
 The complete factory delegates updates, optimizers, penalties, sampling, EMA,
 checkpoint validation and native-only export to the shared particle-sliders
 response lifecycle. HyperGAN's verified builder executes both HNDL routed
-projections and the HNDL readout critic. One real 128x4 bank participates in all
+projections and the HNDL readout critic. One real 128 × 4 bank participates in all
 text attention branches. Q/O and grouped K/V retain their different dimensions;
 the response is the genuine final text hidden state, without projection,
 pooling, truncation, token reinterpretation or spatial reshaping.
@@ -34,21 +34,21 @@ frozen base mapping. The policy and run seed are bound in configuration,
 backend metadata, graph identities and native-only inference specifications.
 
 Earlier v1/v2 packets require their original source revision and initialization
-behavior. They are refused by v2; no checkpoint relabeling or migration occurs.
+behavior. They are refused by v3; no checkpoint relabeling or migration occurs.
 The shared loss, bank architecture and frozen positive/neutral hidden-response
 semantics are unchanged.
 
 ## Current admission
 
-Only `mode="cpu-fixture"`, width12, FP32 CPU is admitted. The bundled causal
+Only `mode="cpu-fixture"`, width 12, FP32 CPU is admitted. The bundled causal
 model is a synthetic protocol fixture, not pretrained Glimmer. Native model
-loading/training, width>=170, media/token generation and model quality are
+loading/training, width >= 170, media/token generation and model quality are
 unqualified and refused before preparation. No native admission option or
 continuous-domain override exists. Passing CPU tests cannot open these gates.
 
 The centrally software-qualified shared-core source is `a794e3b4a8813b012f2c4faa3da82b78d4a90214`
 (exact Git pin), official PG0.9.4, HyperGAN develop
-`5f368a3770cf5bdae0448995c9f76e29af8049f7`, HNDL0.10.0.
+`5f368a3770cf5bdae0448995c9f76e29af8049f7`, HNDL 0.10.0.
 `source-lock.json` verifies installed shared sources; the common builder checks
 the complete HNDL closure, HyperGAN closure and clean build provenance before
 any native attachment. The recursive lock covers all source/data files in both core namespaces, plus
@@ -66,7 +66,7 @@ shared lifecycle. Universal pre-hook refusal is not claimed.
 
 ## CPU use
 
-Create a fresh Python3.11–3.14 environment and install CPU PyTorch from the
+Create a fresh Python 3.11–3.14 environment and install CPU PyTorch from the
 public CPU index, then install this directory. It does not depend on the
 historical `meta-glimmer-particle-slider` distribution.
 
@@ -112,7 +112,7 @@ it is not an unnamed training component. Provenance hash tests check recorded
 lineage and self-consistency. External source equality was verified at initial
 extraction; those tests do not continuously re-fetch or verify the remote source.
 
-For an existing environment, pip can retain an older wheel with the same0.12.0
+For an existing environment, pip can retain an older wheel with the same 0.12.0
 version. Replace that core explicitly, then let the product resolve its extras:
 
 ```sh
@@ -122,4 +122,4 @@ python -m pip check
 ```
 
 The product verifies the installed Git origin as well as recursive source/data
-bytes. Core0.12.0's version number alone is insufficient for this cohort.
+bytes. Core 0.12.0's version number alone is insufficient for this cohort.

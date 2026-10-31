@@ -1,11 +1,11 @@
-# Historical phase1 receipt
+# Historical phase 1 receipt
 
 The receipt below applies to extracted head `c5200a565064d30a15691173c9f432c50fc7fa26`
-and its original4abc core. It is preserved without relabeling old packet identities.
+and its original 4abc core. It is preserved without relabeling old packet identities.
 Current a794/v3 CPU validation is recorded in `docs/core-validation.json`. Old
 4abc/v2 previews require their original source; the v3 product refuses them.
 
-# Standalone phase1 validation
+# Standalone phase 1 validation
 
 This extraction preserves the exact runtime bytes of source commit
 `3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577` in
@@ -22,8 +22,8 @@ isolated imports, a fresh CPU-only virtual environment and public dependency
 resolution. Test modules are in this new repository; no umbrella source is on
 the import path. Each artifact passes 73 tests with no skips. `pip check` passes.
 
-Runtime: Python3.14.4, Torch2.15.0+cpu, NumPy2.5.4, ParticleGAN0.9.4,
-HNDL0.10.0 and exact HyperGAN develop
+Runtime: Python 3.14.4, Torch 2.15.0+cpu, NumPy 2.5.4, ParticleGAN 0.9.4,
+HNDL 0.10.0 and exact HyperGAN develop
 `5f368a3770cf5bdae0448995c9f76e29af8049f7`. The shared-core dependency remains
 `4abc0eb03a4e3a84fc3e6d02734c13dc7e8ea231`, provisional and unrepinned.
 

@@ -9,7 +9,7 @@
     "CPU RNG restoration, constructor failures and seed controls",
     "recursive data/extra-file tamper, old Git origin, old cohort refusal"
   ],
-  "historical_evidence": "Phase1 provenance and interop receipts remain original4abc/v2 history, not current compatibility claims",
+  "historical_evidence": "Phase 1 provenance and interop receipts remain original 4abc/v2 history, not current compatibility claims",
   "qualification": "CPU fixture only; no product GPU/native model/domain/quality admission",
   "recursive_source_data_files": 51,
   "schema": "glimmer-a794-cpu-validation-v1",
