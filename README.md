@@ -123,3 +123,9 @@ python -m pip check
 
 The product verifies the installed Git origin as well as recursive source/data
 bytes. Core 0.12.0's version number alone is insufficient for this cohort.
+
+This cohort deliberately requires pip's direct VCS provenance for the exact
+repository URL and commit. A core installed from a locally built wheel or an
+offline wheelhouse is refused even when its source bytes match, because that
+installation does not retain the required direct VCS record. There is no local
+wheel or offline provenance exception; use the pinned Git installation above.
