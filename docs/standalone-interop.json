@@ -1,0 +1,13 @@
+{
+  "cuda_initialized": false,
+  "exact_source_checkpoint_resume": true,
+  "final_checkpoint_sha256": "1ad209b5085738eb50a16ffad07a6a66dbbdeaeb9b7ed1ec81c99d2cb2e21e24",
+  "initial_checkpoint_sha256": "45fb3bb129423811a234fda2d665c9f6ca535e59e4f88b09fad3c9384806494f",
+  "initial_state_identical": true,
+  "native_only_v2_off_raw_ema_identical": true,
+  "off_raw_ema_v1_identical": true,
+  "paired_data_absent_for_native_inference": true,
+  "runtime_bytes_identical": true,
+  "source": "3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577",
+  "umbrella_file_access_forbidden": true
+}

@@ -1,0 +1,4 @@
+include docs/extraction-provenance.json
+include docs/MIGRATION.md
+include docs/standalone-interop.json
+include VALIDATION.md

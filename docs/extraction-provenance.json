@@ -1,0 +1,307 @@
+{
+  "deferred_historical": [
+    {
+      "source_blob_sha1": "82145705c624daa32ce9db8dcd25b9e0b8d8423c",
+      "source_path": "src/glimmer_slider/__init__.py",
+      "source_sha256": "ae3953bcba468346f74eadd623e9fcccbb0e3c3f35158cb74e43dc4d3809a1a1",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "cba5366c264b32fce41e97fa00f9d8657f8081e4",
+      "source_path": "src/glimmer_slider/__main__.py",
+      "source_sha256": "48d591cce9b271c9ef741d3a5408c1a385c01b6311f339839381cb971509d138",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "8029ed8e5b5ff3eec78fa122f1c43f92a7a48269",
+      "source_path": "src/glimmer_slider/admission.py",
+      "source_sha256": "3c7fd28dbe8e5cb5e039b1d1fef43aaad4343da4d4bc77e9e8e02dafbe4361fa",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "7a2dda4dc623da5cefd79d86a7f56ad227637e1c",
+      "source_path": "src/glimmer_slider/channel_recovery.py",
+      "source_sha256": "1c016aa8c24df249fe22f1587d26c16474a9c7154ae22bcc3aa82593c478a482",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "b1a6f766e777a4dbb8c9e17ed9c15cfd02d4b47c",
+      "source_path": "src/glimmer_slider/demo_native.py",
+      "source_sha256": "f9e4e341e8fe445cb511e3774cfbe5d8297bc46a92bfa4ba6a0e3b88fc85938c",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "17ad81733ad8e85619fe174694b6d2b73c93ec31",
+      "source_path": "src/glimmer_slider/generation_scope.py",
+      "source_sha256": "bf7bf638fc9205411826d2f37852ea848c788eee96c710da5084d5a455cc2588",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "7363c401d9a49d4c7932fc24415125ebfe3ef8e2",
+      "source_path": "src/glimmer_slider/host.py",
+      "source_sha256": "b624e5581cb621294e9ee8230d530d0c8068cb11638f46f50ea001d6241a6bb2",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "7d82702093e593da69d65954fa13f9f6856ab5cf",
+      "source_path": "src/glimmer_slider/native.py",
+      "source_sha256": "9df6ca010cc28460a42aa7ff6e0dd11955a3206c5a98c3991f71ffb96d12934c",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "57a2d0db5e24f204564e23cb952b31b572d42576",
+      "source_path": "src/glimmer_slider/owned_memory_guard.py",
+      "source_sha256": "46133eab4b4a35429ddb660f732c48780bff2e05a7026cdce52b809d0736851c",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "dc93cd4f9f48bac1e36a453e4bf0cdc38d4cfdfa",
+      "source_path": "src/glimmer_slider/particle_catalog_runtime.py",
+      "source_sha256": "dc1c70ec5308f60d499d68af6c82a19825f887e222bb7d469515941864819d9b",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "7b1bb793ee03cfd5d27c7f8cb7897a7208bd0b4a",
+      "source_path": "src/glimmer_slider/particle_inference.py",
+      "source_sha256": "322c0d23147e591510d5a904affaa4a565ab83991ed4c1aad8e4a0a86cdfa9f2",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "353793443c8b8951706e1f9859883e6592657bdc",
+      "source_path": "src/glimmer_slider/restored_sampler.py",
+      "source_sha256": "dad8cc7895055afd04db2327d28bfa9499e74c6dd2396145a13559e41391a823",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "3d25457f5b01abe52e4390ef2cfb9530b9d9a688",
+      "source_path": "src/glimmer_slider/sampler.py",
+      "source_sha256": "7d8ed7ebe096229ecba47ef009ea218bd8f41886e37aa04f87e60b11f284d5b5",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "4edbb40c7d04a4e23c8b99fb0b73574ad0dc37fb",
+      "source_path": "src/glimmer_slider/sampler_server.py",
+      "source_sha256": "6296b75806ef5f329214fdb23807147b5d74608bf8cc598534ee91b2ad69fa71",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "4130f9b6b7c83ac97e7a4534f5fdee39b177b98a",
+      "source_path": "src/glimmer_slider/sampler_stream.py",
+      "source_sha256": "de3190686b207b31c95391e5fec5420e4f196f7a443f7eadd38090ac0a37d60f",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "dad536b05d96270f031e685433f24139958b55c7",
+      "source_path": "src/glimmer_slider/storage.py",
+      "source_sha256": "76aeb940336f69ea53f0d809c0d3dc47ab2c1086b20bd6ab6c11d899a0290df2",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "0b425a103512b4f31bed93aed2bbec6b7e9c03e4",
+      "source_path": "src/glimmer_slider/studio.html",
+      "source_sha256": "d83c9d9142d967f6aa530f3b22313e1ed0668e1fe3e9bd15f25a10f73ebd2a9d",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "4d1ef74fdd1ff4a9f9186d33df2a266eb6ad60b6",
+      "source_path": "src/glimmer_slider/studio.py",
+      "source_sha256": "4dada79538c996a17ba2c5389aa336d01563e60473d0acb45814f3fc39eb1d25",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "ad9af160f53474b4e6e31006e9887c6d6dbede33",
+      "source_path": "src/glimmer_slider/studio_config.py",
+      "source_sha256": "59039ee2a24811faee57f81e0331618040aad60dd08d302e16c2e308237e925b",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "f8e177b7a3ea02bbe1a82e520357103bafffe711",
+      "source_path": "src/glimmer_slider/studio_files.py",
+      "source_sha256": "c5e70c7edaa496b2911341e08500d5d354dbc8a82a17984924feef63e1f94f2b",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "cafce5ed326cbc84948cc3402e6947cd1b7e4632",
+      "source_path": "src/glimmer_slider/studio_guard.py",
+      "source_sha256": "64eb93c084496828a4e652de1beec81f7dceb534cb002a6cf7244faeae8e1dfa",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "48f2dc7fa3dd12d5f9715ad37df497fee76b149b",
+      "source_path": "src/glimmer_slider/training.py",
+      "source_sha256": "cc5aeecb7ddc6ede4abd707c8c17279a7f6d0bcdbc54ff4578f09f8d5c23bad0",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "416f5fc1e0bf547314209aeb94adb21418c700cd",
+      "source_path": "src/glimmer_slider/upstream.py",
+      "source_sha256": "2d53cd8f314f796da8bbe0ffa4d50a6f4fb09dd3018d0fe01d6b18c781f1aee4",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "19c83946fb50945c58e4f82201b033ba0240a90a",
+      "source_path": "src/glimmer_slider/weights.py",
+      "source_sha256": "1d757285b78ecf1e011501d966777e421c17ab30c1bed08b4e633d1eea5ec162",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "78a1460b23406888c7135d9887371a686f94f7e8",
+      "source_path": "src/glimmer_slider/worker_telemetry.py",
+      "source_sha256": "2aa7164143395d2b471596c7179cd239a7f82e4f887e24c8e614941afb96f34f",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    },
+    {
+      "source_blob_sha1": "fd52986bf72603d2b70c023ffd17957143a50479",
+      "source_path": "pyproject.toml",
+      "source_sha256": "34e4b27439890f29a90a120c7811c8dfc1134ef178e22666be3f475a400b5bf3",
+      "status": "deferred; authoritative original retained; not required or imported by phase1 installed product"
+    }
+  ],
+  "destination_repository": "HyperGAN/glimmer-particle-sliders",
+  "excluded": [
+    "source Git history",
+    "historical runtime modules",
+    "original unrelated evidence",
+    "private logs",
+    "secrets",
+    "recordings",
+    "weights",
+    "run outputs",
+    "environment paths"
+  ],
+  "extracted_files": [
+    {
+      "destination_blob_sha1": "b2a2dca14d1a01ad6ad590db2486e0c3af5a32e5",
+      "destination_path": "LICENSE",
+      "destination_sha256": "2b61d4a8dd7a958b99133a92e92eede6f5e8b0f7b44d234665f822051e530685",
+      "source_blob_sha1": "b2a2dca14d1a01ad6ad590db2486e0c3af5a32e5",
+      "source_path": "packages/glimmer-modern-response/LICENSE",
+      "source_sha256": "2b61d4a8dd7a958b99133a92e92eede6f5e8b0f7b44d234665f822051e530685",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/LICENSE",
+      "transformation": "byte-identical"
+    },
+    {
+      "destination_blob_sha1": "0811a569f3f3b2179b434d68c48eaee90e5c70a8",
+      "destination_path": "README.md",
+      "destination_sha256": "6c114605bc9395a5653653d18e7c5caf3413a406c87477043656ff8a3a1c606e",
+      "source_blob_sha1": "5254c0305ca4e6736bc5f77ee0dafee3f7896e7f",
+      "source_path": "packages/glimmer-modern-response/README.md",
+      "source_sha256": "dcf3411956492eb17c734209878aeb7e3e206569fa5a7945540f0708448c735e",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/README.md",
+      "transformation": "repository-facing documentation/test relocation only"
+    },
+    {
+      "destination_blob_sha1": "1b5b5da19752e0929f50273564869e0893754fac",
+      "destination_path": "pyproject.toml",
+      "destination_sha256": "3956a4b90d5ce2608531a8a48edf4c41beb0fd94204cf6e6e469b0f7f5e25d50",
+      "source_blob_sha1": "1b5b5da19752e0929f50273564869e0893754fac",
+      "source_path": "packages/glimmer-modern-response/pyproject.toml",
+      "source_sha256": "3956a4b90d5ce2608531a8a48edf4c41beb0fd94204cf6e6e469b0f7f5e25d50",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/pyproject.toml",
+      "transformation": "byte-identical"
+    },
+    {
+      "destination_blob_sha1": "80474be88371c87b8c2af009511931e94de61f25",
+      "destination_path": "src/glimmer_modern/__init__.py",
+      "destination_sha256": "8cda3698b9eb767ce1192c6715ca5725463e71037e8b9489f76b75d1c535140a",
+      "source_blob_sha1": "80474be88371c87b8c2af009511931e94de61f25",
+      "source_path": "packages/glimmer-modern-response/src/glimmer_modern/__init__.py",
+      "source_sha256": "8cda3698b9eb767ce1192c6715ca5725463e71037e8b9489f76b75d1c535140a",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/src/glimmer_modern/__init__.py",
+      "transformation": "byte-identical"
+    },
+    {
+      "destination_blob_sha1": "d9875891af6b43004860da9adead52fb5e689408",
+      "destination_path": "src/glimmer_modern/fixture.py",
+      "destination_sha256": "dd9636d3c8163044d4f375d1ee30bdd7bdd9f3cb1e81e720a73eb620dac1636f",
+      "source_blob_sha1": "d9875891af6b43004860da9adead52fb5e689408",
+      "source_path": "packages/glimmer-modern-response/src/glimmer_modern/fixture.py",
+      "source_sha256": "dd9636d3c8163044d4f375d1ee30bdd7bdd9f3cb1e81e720a73eb620dac1636f",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/src/glimmer_modern/fixture.py",
+      "transformation": "byte-identical"
+    },
+    {
+      "destination_blob_sha1": "02c81f472e62134312ad83227160a35dfb8cf42e",
+      "destination_path": "src/glimmer_modern/initialization.py",
+      "destination_sha256": "463327ce771f37e63bea2da0840fd8b81a45027566c12532edeb87a4c6c53f9b",
+      "source_blob_sha1": "02c81f472e62134312ad83227160a35dfb8cf42e",
+      "source_path": "packages/glimmer-modern-response/src/glimmer_modern/initialization.py",
+      "source_sha256": "463327ce771f37e63bea2da0840fd8b81a45027566c12532edeb87a4c6c53f9b",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/src/glimmer_modern/initialization.py",
+      "transformation": "byte-identical"
+    },
+    {
+      "destination_blob_sha1": "de086e8bc845101c34664692ea0b14710a335869",
+      "destination_path": "src/glimmer_modern/lifecycle.py",
+      "destination_sha256": "8a345ca43823d19bdc8787b058a7aff0e4c64f8639dd90006a79f7a2e254a6fd",
+      "source_blob_sha1": "de086e8bc845101c34664692ea0b14710a335869",
+      "source_path": "packages/glimmer-modern-response/src/glimmer_modern/lifecycle.py",
+      "source_sha256": "8a345ca43823d19bdc8787b058a7aff0e4c64f8639dd90006a79f7a2e254a6fd",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/src/glimmer_modern/lifecycle.py",
+      "transformation": "byte-identical"
+    },
+    {
+      "destination_blob_sha1": "af0060e504210283b9615d1d3e570f0dd5b971b9",
+      "destination_path": "src/glimmer_modern/native.py",
+      "destination_sha256": "82551e3c396b5aa41f1f7f7ef39de6c4830ed7c059fd5a53377d3f5e1f73ed58",
+      "source_blob_sha1": "af0060e504210283b9615d1d3e570f0dd5b971b9",
+      "source_path": "packages/glimmer-modern-response/src/glimmer_modern/native.py",
+      "source_sha256": "82551e3c396b5aa41f1f7f7ef39de6c4830ed7c059fd5a53377d3f5e1f73ed58",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/src/glimmer_modern/native.py",
+      "transformation": "byte-identical"
+    },
+    {
+      "destination_blob_sha1": "f0fa1521a0e006494db969b6d786972307e67ece",
+      "destination_path": "src/glimmer_modern/provenance.py",
+      "destination_sha256": "108c5ab6e2576c826dd7eb2c77e4a91fd32855469f4a4091096819c2920e999f",
+      "source_blob_sha1": "f0fa1521a0e006494db969b6d786972307e67ece",
+      "source_path": "packages/glimmer-modern-response/src/glimmer_modern/provenance.py",
+      "source_sha256": "108c5ab6e2576c826dd7eb2c77e4a91fd32855469f4a4091096819c2920e999f",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/src/glimmer_modern/provenance.py",
+      "transformation": "byte-identical"
+    },
+    {
+      "destination_blob_sha1": "3b738ad1b0d23671a635fd5ea5cff75dbeff52e3",
+      "destination_path": "src/glimmer_modern/readout.hndl",
+      "destination_sha256": "b9fe063e244b23f8432872f7f0a8128993432694a753d38d5919f4c63d2d9209",
+      "source_blob_sha1": "3b738ad1b0d23671a635fd5ea5cff75dbeff52e3",
+      "source_path": "packages/glimmer-modern-response/src/glimmer_modern/readout.hndl",
+      "source_sha256": "b9fe063e244b23f8432872f7f0a8128993432694a753d38d5919f4c63d2d9209",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/src/glimmer_modern/readout.hndl",
+      "transformation": "byte-identical"
+    },
+    {
+      "destination_blob_sha1": "574f3eb575df9ccc2cac86255d8c2a29227d2529",
+      "destination_path": "src/glimmer_modern/source-lock.json",
+      "destination_sha256": "7d80ab7ef978e971b6c9fff47451e3e3efa42f0af5529aafb1f88d06f52994a1",
+      "source_blob_sha1": "574f3eb575df9ccc2cac86255d8c2a29227d2529",
+      "source_path": "packages/glimmer-modern-response/src/glimmer_modern/source-lock.json",
+      "source_sha256": "7d80ab7ef978e971b6c9fff47451e3e3efa42f0af5529aafb1f88d06f52994a1",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/src/glimmer_modern/source-lock.json",
+      "transformation": "byte-identical"
+    },
+    {
+      "destination_blob_sha1": "788daa017731a54269f69e2fe6e9ca04a67397ee",
+      "destination_path": "tests/test_modern.py",
+      "destination_sha256": "4615d5ab8016f74c24d8959df22486628771a935e68d4004e79d1d7fd74b09ca",
+      "source_blob_sha1": "bcadba5753f7c683147eb4b77ab78af7e1db8fb1",
+      "source_path": "packages/glimmer-modern-response/tests/test_modern.py",
+      "source_sha256": "3e24333c08cdb810f097aaa1713d5b12e6756c55f71360e26b070f150fe28ed9",
+      "source_url": "https://raw.githubusercontent.com/mikkel/meta-glimmer-particle-slider/3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577/packages/glimmer-modern-response/tests/test_modern.py",
+      "transformation": "repository-facing documentation/test relocation only"
+    }
+  ],
+  "new_review_files": [
+    ".gitignore",
+    "MANIFEST.in",
+    "docs/MIGRATION.md",
+    "docs/extraction-provenance.json",
+    "tests/test_extraction.py",
+    "VALIDATION.md",
+    "docs/standalone-interop.json"
+  ],
+  "schema": "glimmer-phase1-extraction-provenance-v1",
+  "source_commit": "3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577",
+  "source_product_root": "packages/glimmer-modern-response/",
+  "source_repository": "mikkel/meta-glimmer-particle-slider"
+}
