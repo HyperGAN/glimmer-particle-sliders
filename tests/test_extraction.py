@@ -14,15 +14,16 @@ def provenance():
 
 def test_installed_runtime_files_retain_exact_reviewed_source_bytes():
     root=Path(glimmer_modern.__file__).resolve().parent
+    migration=json.loads((Path(__file__).resolve().parents[1]/'docs/core-migration.json').read_text())
     records=[item for item in provenance()['extracted_files']
              if item['destination_path'].startswith('src/glimmer_modern/')]
     assert len(records)==8
     assert 'site-packages' in str(root)
     for record in records:
         value=(root/Path(record['destination_path']).name).read_bytes()
-        assert hashlib.sha256(value).hexdigest()==record['source_sha256']==record['destination_sha256']
-        blob=hashlib.sha1(b'blob '+str(len(value)).encode()+b'\0'+value).hexdigest()
-        assert blob==record['source_blob_sha1']==record['destination_blob_sha1']
+        assert hashlib.sha256(value).hexdigest()==migration['product_sources'][record['destination_path']]
+        if record['destination_path'] not in migration['changed_runtime_files']:
+            assert hashlib.sha256(value).hexdigest()==record['source_sha256']==record['destination_sha256']
 
 
 def test_independent_namespace_and_exact_entrypoint_registration():
@@ -34,12 +35,12 @@ def test_independent_namespace_and_exact_entrypoint_registration():
         assert entries[0].value.startswith('glimmer_modern.lifecycle:')
 
 
-def test_source_lock_relocation_and_original_provisional_core_pin():
+def test_source_lock_relocation_and_cleared_core_pin():
     from glimmer_modern.provenance import verify_sources
     from glimmer_modern import PROTOCOL, INITIALIZATION_POLICY
     _,identity=verify_sources()
-    assert identity['core_commit']=='4abc0eb03a4e3a84fc3e6d02734c13dc7e8ea231'
-    assert PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-v2-cpu'
+    assert identity['core_commit']=='a794e3b4a8813b012f2c4faa3da82b78d4a90214'
+    assert PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-v3-cpu'
     assert INITIALIZATION_POLICY=='cpu-sha256-component-streams-v1'
 
 

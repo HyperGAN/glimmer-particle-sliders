@@ -1,0 +1,25 @@
+{
+  "artifact_impact": "Old preview packets retain original metadata and require old source/core; fail closed, no migration or relabeling",
+  "changed_runtime_files": [
+    "src/glimmer_modern/__init__.py",
+    "src/glimmer_modern/provenance.py",
+    "src/glimmer_modern/source-lock.json"
+  ],
+  "cohort": "glimmer-modern-final-hidden-hg-hndl-v3-cpu",
+  "core_commit": "a794e3b4a8813b012f2c4faa3da82b78d4a90214",
+  "core_version": "0.12.0",
+  "original_extraction": "c5200a565064d30a15691173c9f432c50fc7fa26",
+  "previous_cohort": "glimmer-modern-final-hidden-hg-hndl-v2-cpu",
+  "product_sources": {
+    "src/glimmer_modern/__init__.py": "c5358ce3d1ea450e1174695049fae2693418c10735de2b3a414665fdf17f10b3",
+    "src/glimmer_modern/fixture.py": "dd9636d3c8163044d4f375d1ee30bdd7bdd9f3cb1e81e720a73eb620dac1636f",
+    "src/glimmer_modern/initialization.py": "463327ce771f37e63bea2da0840fd8b81a45027566c12532edeb87a4c6c53f9b",
+    "src/glimmer_modern/lifecycle.py": "8a345ca43823d19bdc8787b058a7aff0e4c64f8639dd90006a79f7a2e254a6fd",
+    "src/glimmer_modern/native.py": "82551e3c396b5aa41f1f7f7ef39de6c4830ed7c059fd5a53377d3f5e1f73ed58",
+    "src/glimmer_modern/provenance.py": "b5803feac446b53acde958ed51f0a914760f7bda0d60da460367cf2ee089e469",
+    "src/glimmer_modern/readout.hndl": "b9fe063e244b23f8432872f7f0a8128993432694a753d38d5919f4c63d2d9209",
+    "src/glimmer_modern/source-lock.json": "3e5f7597620b8dd62ccc3a5c02c8597f82ab598411b597a146dcd203c2d6dc7d"
+  },
+  "qualification": "Software fixture qualification only; native gates, objectives, bank architecture and model licenses unchanged",
+  "schema": "glimmer-core-migration-v1"
+}

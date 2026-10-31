@@ -23,7 +23,7 @@ historical winning formulation. Network graph parity is tested separately.
 The historical loader, trainer, RAW1024 artifacts and distilled PEFT students
 are unchanged and require their original source pins and loaders.
 
-The current cohort is `glimmer-modern-final-hidden-hg-hndl-v2-cpu`, with explicit
+The current cohort is `glimmer-modern-final-hidden-hg-hndl-v3-cpu`, with explicit
 initialization policy `cpu-sha256-component-streams-v1`. The declared run `seed`
 initializes the bank, every named adapter projection, and the critic using
 separate SHA256-derived CPU streams before their random constructors. The
@@ -33,7 +33,7 @@ GPU initialization is requested. `model_seed` separately retains the original
 frozen base mapping. The policy and run seed are bound in configuration,
 backend metadata, graph identities and native-only inference specifications.
 
-Earlier v1 packets require their original source revision and initialization
+Earlier v1/v2 packets require their original source revision and initialization
 behavior. They are refused by v2; no checkpoint relabeling or migration occurs.
 The shared loss, bank architecture and frozen positive/neutral hidden-response
 semantics are unchanged.
@@ -46,20 +46,22 @@ loading/training, width>=170, media/token generation and model quality are
 unqualified and refused before preparation. No native admission option or
 continuous-domain override exists. Passing CPU tests cannot open these gates.
 
-The provisional shared-core source is `4abc0eb03a4e3a84fc3e6d02734c13dc7e8ea231`
-(draft PR148), official PG0.9.4, HyperGAN develop
+The centrally software-qualified shared-core source is `a794e3b4a8813b012f2c4faa3da82b78d4a90214`
+(exact Git pin), official PG0.9.4, HyperGAN develop
 `5f368a3770cf5bdae0448995c9f76e29af8049f7`, HNDL0.10.0.
 `source-lock.json` verifies installed shared sources; the common builder checks
 the complete HNDL closure, HyperGAN closure and clean build provenance before
-any native attachment. Final central core admission remains a review blocker;
-updated lifecycle corrections require a new audited lock and CPU receipt.
+any native attachment. The recursive lock covers all source/data files in both core namespaces, plus
+exact installed version and Git origin. Product RETURN review remains pending.
+Central synthetic CPU/CUDA qualification does not admit native Glimmer, width
+or quality. This product migration runs CPU tests only.
 
 Borrowed CPU models with existing local module/parameter hooks, instance call
 or serialization overrides, compiled calls or active checkpoint wrappers are
 refused before model hashing or attachment. Cleanup restores original instance
 attribute presence, including inherited forwards and checkpoint attributes.
 These product checks do not provide packet-aware admission: deep packet/source
-and tensor checks may still occur after factory preparation in the provisional
+and tensor checks may still occur after factory preparation in the
 shared lifecycle. Universal pre-hook refusal is not claimed.
 
 ## CPU use
@@ -104,3 +106,20 @@ requires no paired data, teacher cache, critic, optimizer or training factory.
 Training and inference use the shared versioned schemas and reject historical
 packets, wrong cohorts, sources and tensor contracts. A response is a numerical
 hidden-state probe, not a native text quality or rendering result.
+
+`initialization_rng(component=None)` preserves the base `model_seed` mapping;
+it is not an unnamed training component. Provenance hash tests check recorded
+lineage and self-consistency. External source equality was verified at initial
+extraction; those tests do not continuously re-fetch or verify the remote source.
+
+For an existing environment, pip can retain an older wheel with the same0.12.0
+version. Replace that core explicitly, then let the product resolve its extras:
+
+```sh
+python -m pip install --force-reinstall --no-deps 'particle-sliders-core @ git+https://github.com/HyperGAN/particle-sliders.git@a794e3b4a8813b012f2c4faa3da82b78d4a90214#subdirectory=packages/particle-sliders-core'
+python -m pip install '.[test]'
+python -m pip check
+```
+
+The product verifies the installed Git origin as well as recursive source/data
+bytes. Core0.12.0's version number alone is insufficient for this cohort.

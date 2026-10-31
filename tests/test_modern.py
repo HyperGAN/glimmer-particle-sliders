@@ -50,7 +50,7 @@ def test_installed_identity_and_dependency_split():
     assert 'glimmer_slider.training' not in sys.modules
     from glimmer_modern.provenance import verify_sources
     _, identity = verify_sources()
-    assert identity['core_commit'] == '4abc0eb03a4e3a84fc3e6d02734c13dc7e8ea231'
+    assert identity['core_commit'] == 'a794e3b4a8813b012f2c4faa3da82b78d4a90214'
     assert identity['hypergan_commit'] == '5f368a3770cf5bdae0448995c9f76e29af8049f7'
 
 
@@ -313,14 +313,19 @@ def test_cleanup_attempts_slider_when_checkpoint_cleanup_fails(config,monkeypatc
     flags=[p.requires_grad for p in model.parameters()]
     forwards=[m.forward for m in targets(model).values()]
     run=BACKEND.open(config,model=model)
+    close_checkpointing=run.game.backend.backend.close_checkpointing
     def fail():
         raise RuntimeError('checkpoint cleanup fixture failure')
     monkeypatch.setattr(run.game.backend.backend,'close_checkpointing',fail)
     with pytest.raises(RuntimeError,match='checkpoint cleanup fixture'):
         run.close()
+    assert not run.closed
     assert [m.training for m in model.modules()]==modes
     assert [p.requires_grad for p in model.parameters()]==flags
     assert [m.forward for m in targets(model).values()]==forwards
+    monkeypatch.setattr(run.game.backend.backend,'close_checkpointing',close_checkpointing)
+    run.close()
+    assert run.closed
 
 
 def test_every_projection_cleanup_attempted_after_ownership_conflict(config):
@@ -552,7 +557,7 @@ def test_initial_game_bytes_independent_of_caller_rng_and_seed_positive_control(
             selected=cpu_config(config.options['data_file'],seed=run_seed,model_seed=41)
             with open_response(selected) as run:
                 native=run.game.backend
-                assert run.config.cohort==PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-v2-cpu'
+                assert run.config.cohort==PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-v3-cpu'
                 assert native.metadata()['initialization']==dict(policy=INITIALIZATION_POLICY,seed=run_seed)
                 inference_config=run.binding.inference.configuration
                 assert inference_config['initialization_policy']==INITIALIZATION_POLICY
@@ -643,3 +648,56 @@ def test_old_initialization_cohort_rejected_without_relabeling(config,tmp_path,m
         product.BACKEND.open(old)
     with pytest.raises(ValueError,match='construction contract'):
         product.validate_inference({},SimpleNamespace(configuration=dict(mode='cpu-fixture',width=12,model_seed=41)))
+
+
+@pytest.mark.parametrize('tamper',['data','recursive-extra'])
+def test_recursive_core_data_closure_refuses_tamper(tamper):
+    import particle_sliders
+    from glimmer_modern.provenance import verify_sources
+    root=Path(particle_sliders.__file__).resolve().parent
+    target=root/'LICENSE' if tamper=='data' else root/'glimmer-closure-probe'/'unexpected.json'
+    old=target.read_bytes() if target.exists() else None
+    target.parent.mkdir(exist_ok=True)
+    try:
+        target.write_bytes(b'changed closure bytes')
+        with pytest.raises(ValueError,match='shared-core source'):
+            verify_sources()
+    finally:
+        if old is None:
+            target.unlink()
+            target.parent.rmdir()
+        else:
+            target.write_bytes(old)
+    verify_sources()
+
+
+def test_previous_v2_preview_cohort_refused_before_prepare(config,tmp_path,monkeypatch):
+    import glimmer_modern.lifecycle as product
+    from particle_sliders.lifecycle import atomic_save
+    with open_response(config) as run:
+        packet=run.checkpoint()
+    packet['manifest']['config']['cohort']='glimmer-modern-final-hidden-hg-hndl-v2-cpu'
+    packet['sha256']=_hash({k:v for k,v in packet.items() if k!='sha256'})
+    atomic_save(tmp_path/'previous-v2.pt',packet)
+    def forbidden(*a,**kw):
+        pytest.fail('old core/cohort reached prepare')
+    monkeypatch.setattr(product,'BACKEND',replace(BACKEND,prepare=forbidden))
+    with pytest.raises(CheckpointError,match='kind/config/cohort'):
+        open_response(config,resume=tmp_path/'previous-v2.pt')
+
+
+def test_old_git_origin_refused_even_with_same_distribution_version(monkeypatch):
+    import glimmer_modern.provenance as provenance
+    real=provenance.importlib.metadata.distribution
+    dependency=real('particle-sliders-core')
+    class OldOrigin:
+        version=dependency.version
+        def read_text(self,name):
+            if name=='direct_url.json':
+                value=json.loads(dependency.read_text(name))
+                value['vcs_info']['commit_id']='4abc0eb03a4e3a84fc3e6d02734c13dc7e8ea231'
+                return json.dumps(value)
+            return dependency.read_text(name)
+    monkeypatch.setattr(provenance.importlib.metadata,'distribution',lambda name: OldOrigin() if name=='particle-sliders-core' else real(name))
+    with pytest.raises(ValueError,match='version/Git origin'):
+        provenance.verify_sources()
