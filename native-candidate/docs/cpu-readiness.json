@@ -1,0 +1,82 @@
+{
+  "architecture": "MuseGlimmerForConditionalGeneration",
+  "asset_verification": "Pinned manifest has all11 original asset hashes, including both full shards; CPU inspector revalidated metadata and tensor headers, full weight-body hashing remains mandatory before native model allocation",
+  "budget": {
+    "admission_free_gib": 35,
+    "global_free_floor_gib": 5,
+    "host_admission_free_gib": 23,
+    "host_runtime_free_gib": 16,
+    "measured_peak": null,
+    "not_established": "One-card training fit or throughput; additional metadata/adapters/optimizer/activations/workspaces/context/loading costs remain unmeasured",
+    "optimistic_nf4_base_storage_gib": 17.628978729248047,
+    "original_weights_bytes": 59553435272,
+    "parameters": 29776626688,
+    "process_cap_gib": 30
+  },
+  "core_commit": "5d68473a098801ee1ab3ebbb12463daef51c6346",
+  "historical_receipts": "All previous root docs/compatibility files remain unchanged; new evidence belongs only to the independent native-candidate subproject",
+  "installed_source_audit": {
+    "core_files": 575,
+    "cpu_actual_config_and_native_class_import": true,
+    "cuda_initialized": false,
+    "foldlitedb": "0.1.4",
+    "legacy_and_fixture_namespaces_absent": true,
+    "pip_check": "No broken requirements found.",
+    "product_files_with_lock": 14,
+    "runtime_source_files": 3578,
+    "torch_runtime": "2.9.1+cu128"
+  },
+  "model_revision": "a4e59da52a7bc87ae7251dd5545c0dd437c44b68",
+  "native_response": [
+    1,
+    6656
+  ],
+  "next_gate": "A separately admitted bounded native load/OFF/teacher/readout/2-update/fresh-resume/raw-inference/language proof. No learning-rate recommendation before those measurements.",
+  "packaging": {
+    "core_files": 575,
+    "native_gpu_qualified": false,
+    "native_model_loaded": false,
+    "runtime_data_files": 14,
+    "sdist_sha256": "f036df81a4c92b16fa7596449493b10e0a97d0139e5a1e2584ce460936052efa",
+    "source_wheel_sdist_exact": true,
+    "wheel_sha256": "c31b0e5e5c5e140410f95cd76e7f8382866272bb6a423f2fee18fd14ad9f83c5"
+  },
+  "penalty_input_domain": "continuous",
+  "pg_commit": "801ae1ead8f88b88eca8f5398137e3e1bc01ad36",
+  "pg_source_profile": "source-801ae1e-continuous-v1",
+  "predecessor_commit": "9adafe30e25d7ac1cb334cfcf787ab076988a7b5",
+  "preserved_root_pyproject_sha256": "68089679e2c3ac19d56e671a84d697b222ab8e46fcd351cf9d4246f941eccd34",
+  "preserved_root_runtime": {
+    "src/glimmer_modern/__init__.py": "c5c21f085de6518ad57c598559e16eed58611f46a8c596b659448527da9ad7e9",
+    "src/glimmer_modern/fixture.py": "dd9636d3c8163044d4f375d1ee30bdd7bdd9f3cb1e81e720a73eb620dac1636f",
+    "src/glimmer_modern/initialization.py": "463327ce771f37e63bea2da0840fd8b81a45027566c12532edeb87a4c6c53f9b",
+    "src/glimmer_modern/learning_rates.py": "7f6ad71e970fc4e9cf9bdce078be3268c6af4ff8e818073e21b8279489c2b307",
+    "src/glimmer_modern/lifecycle.py": "f9bc70357086e537a6dea887d4a87450fef289d36e06f29ab672cb883355dbe8",
+    "src/glimmer_modern/native.py": "82551e3c396b5aa41f1f7f7ef39de6c4830ed7c059fd5a53377d3f5e1f73ed58",
+    "src/glimmer_modern/provenance.py": "b5803feac446b53acde958ed51f0a914760f7bda0d60da460367cf2ee089e469",
+    "src/glimmer_modern/readout.hndl": "b9fe063e244b23f8432872f7f0a8128993432694a753d38d5919f4c63d2d9209",
+    "src/glimmer_modern/source-lock.json": "596eddfd792b2174e3f405a1a5f4cff0dfcaf9e8a67fe7c502f3564c62a76cdf"
+  },
+  "projection_count": 208,
+  "runtime_source_commit": "9a7d9a86a662614d5ef36a2409b92ac0d957e16f",
+  "schema": "glimmer-native-cpu-readiness-v1",
+  "scope": "Separate native source/structural preparation only; no Glimmer model constructed or loaded, no CUDA initialized, no native updates/resume/inference/language-quality qualification",
+  "tests": {
+    "installed_candidate": {
+      "command": "CUDA_VISIBLE_DEVICES='' python -I -m pytest /path/to/native-candidate/tests --import-mode=importlib -q",
+      "meaningful_checks": [
+        "Real4096\u21926656 HNDL projection and learned-bank gradient on CPU",
+        "Real6656-wide HNDL readout critic and differentiable VJP on CPU",
+        "Exact source/core closure",
+        "Resource refusal before CUDA/model construction",
+        "Packed byte hashing without dequantization",
+        "NF4 settings/state/shape and token/overlap/LR contracts"
+      ],
+      "passed": 42
+    },
+    "preserved_v4_fixture": {
+      "original_runtime_unchanged": true,
+      "passed": 103
+    }
+  }
+}
