@@ -1,0 +1,19 @@
+{
+  "schema": "particle-slider-profile-v1",
+  "name": "glimmer-particle-sliders-unavailable",
+  "product": "glimmer-particle-sliders",
+  "config_kind": "native",
+  "status": "blocked",
+  "reason": "The checked-out default source is a review scaffold. The modern Glimmer extraction is on a separate review branch; native Glimmer training is not enabled here.",
+  "runtime": {
+    "python": "python3"
+  },
+  "capabilities": {
+    "resume": false,
+    "periodic_checkpoint": false,
+    "check": false
+  },
+  "target_steps_path": "steps",
+  "evidence": "README.md",
+  "source_revision": "54fd584e3587afd0e7d2ed6f9db29ebdbe0942a7"
+}
