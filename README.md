@@ -1,5 +1,11 @@
 # Glimmer particle sliders
 
+The separate [native6656 NF4 candidate](native-candidate/README.md) now provides
+an explicit CPU source/structural preparation route for the pinned full model.
+It has a different distribution, backend and core/source profile. Native model
+loading, training/resume/inference, language quality and learning rates remain
+unqualified; the root CPU fixture and historical cohorts below are preserved.
+
 This separate distribution uses `glimmer_modern` and the separate registry name
 `glimmer-modern`. Install it in a fresh environment, never in the historical
 PG82 environment. This independent `HyperGAN/glimmer-particle-sliders` repository
