@@ -11,3 +11,5 @@ include LEARNING-RATES.md
 recursive-include compatibility *.txt *.json
 recursive-include cohorts/pre-lr-hndl *.py *.json
 include docs/lr-migration.json
+
+include docs/lr-validation.json
