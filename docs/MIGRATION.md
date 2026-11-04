@@ -36,9 +36,18 @@ copied into this repository. Existing release and training trees remain untouche
 
 The only admitted route is the existing width 12 FP32 CPU fixture. Native/wide
 training remains unqualified and refused. Core commit
-`a794e3b4a8813b012f2c4faa3da82b78d4a90214` is the software-qualified target; this migration
+`8ffca928550f97fdb9713151ca3023fc71e77e2c` is the current packaging/dependency target; this migration
 does not qualify native models or change shared APIs. Current runtime deltas
 from the immutable extraction are recorded in `core-migration.json`; the original
 extraction provenance and old preview metadata remain historical evidence. Mandatory Claude RETURN
 review and central qualification are required before any landing. No workflow,
 access, deployment, package/model release or native GPU job is added.
+
+The 2026-11-04 update retains the reviewed modern implementation from PR #1
+and adopts the shared core's current dependency and installed-namespace layout.
+The complete recursive source lock now covers that layout, including packaged
+historical helpers. The Glimmer graphs, initialization policy, PG0.9.4 objective,
+registry name and native gates are unchanged. Packets from the a794 core remain
+bound to their original source identity; no metadata rewrite is provided.
+See `pg094-validation.json` for the current installed-package results. The
+existing `core-validation.json` describes the earlier a794 validation only.

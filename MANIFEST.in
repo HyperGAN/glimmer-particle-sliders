@@ -4,3 +4,4 @@ include docs/standalone-interop.json
 include VALIDATION.md
 include docs/core-migration.json
 include docs/core-validation.json
+include docs/pg094-validation.json

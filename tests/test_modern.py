@@ -50,7 +50,7 @@ def test_installed_identity_and_dependency_split():
     assert 'glimmer_slider.training' not in sys.modules
     from glimmer_modern.provenance import verify_sources
     _, identity = verify_sources()
-    assert identity['core_commit'] == 'a794e3b4a8813b012f2c4faa3da82b78d4a90214'
+    assert identity['core_commit'] == '8ffca928550f97fdb9713151ca3023fc71e77e2c'
     assert identity['hypergan_commit'] == '5f368a3770cf5bdae0448995c9f76e29af8049f7'
 
 
@@ -686,7 +686,11 @@ def test_previous_v2_preview_cohort_refused_before_prepare(config,tmp_path,monke
         open_response(config,resume=tmp_path/'previous-v2.pt')
 
 
-def test_old_git_origin_refused_even_with_same_distribution_version(monkeypatch):
+@pytest.mark.parametrize('old_commit', [
+    '4abc0eb03a4e3a84fc3e6d02734c13dc7e8ea231',
+    'a794e3b4a8813b012f2c4faa3da82b78d4a90214',
+])
+def test_old_git_origin_refused_even_with_same_distribution_version(monkeypatch, old_commit):
     import glimmer_modern.provenance as provenance
     real=provenance.importlib.metadata.distribution
     dependency=real('particle-sliders-core')
@@ -695,7 +699,7 @@ def test_old_git_origin_refused_even_with_same_distribution_version(monkeypatch)
         def read_text(self,name):
             if name=='direct_url.json':
                 value=json.loads(dependency.read_text(name))
-                value['vcs_info']['commit_id']='4abc0eb03a4e3a84fc3e6d02734c13dc7e8ea231'
+                value['vcs_info']['commit_id']=old_commit
                 return json.dumps(value)
             return dependency.read_text(name)
     monkeypatch.setattr(provenance.importlib.metadata,'distribution',lambda name: OldOrigin() if name=='particle-sliders-core' else real(name))

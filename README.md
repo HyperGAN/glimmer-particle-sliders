@@ -1,4 +1,4 @@
-# Opt-in modern Glimmer response cohort
+# Glimmer particle sliders
 
 This separate distribution uses `glimmer_modern` and the separate registry name
 `glimmer-modern`. Install it in a fresh environment, never in the historical
@@ -8,6 +8,14 @@ at `3f0cdc4d17ebc6fa2df36d65b001ecfaf436c577`, under
 `packages/glimmer-modern-response/`. The original repository is not transferred
 or modified. See [source provenance](docs/extraction-provenance.json) and
 [deferred historical migration](docs/MIGRATION.md).
+
+This is the current standalone source for new Glimmer response-cohort work.
+The original PG82 package remains a historical reproduction path. The modern
+cohort already used ParticleGAN 0.9.4 before this update; the update adopts the
+current shared-core packaging and dependency corrections. It does not retrain
+or relabel published weights. The executable product and this upgrade are
+proposed for the default branch through review; the default-branch scaffold
+alone contains no implementation.
 
 The complete factory delegates updates, optimizers, penalties, sampling, EMA,
 checkpoint validation and native-only export to the shared particle-sliders
@@ -46,7 +54,7 @@ loading/training, width >= 170, media/token generation and model quality are
 unqualified and refused before preparation. No native admission option or
 continuous-domain override exists. Passing CPU tests cannot open these gates.
 
-The centrally software-qualified shared-core source is `a794e3b4a8813b012f2c4faa3da82b78d4a90214`
+The current pinned shared-core source is `8ffca928550f97fdb9713151ca3023fc71e77e2c`
 (exact Git pin), official PG0.9.4, HyperGAN develop
 `5f368a3770cf5bdae0448995c9f76e29af8049f7`, HNDL 0.10.0.
 `source-lock.json` verifies installed shared sources; the common builder checks
@@ -55,6 +63,8 @@ any native attachment. The recursive lock covers all source/data files in both c
 exact installed version and Git origin. Product RETURN review remains pending.
 Central synthetic CPU/CUDA qualification does not admit native Glimmer, width
 or quality. This product migration runs CPU tests only.
+The current package-validation receipt is [PG0.9.4 upgrade validation](docs/pg094-validation.json).
+The earlier [a794 receipt](docs/core-validation.json) remains historical evidence.
 
 Borrowed CPU models with existing local module/parameter hooks, instance call
 or serialization overrides, compiled calls or active checkpoint wrappers are
@@ -75,6 +85,24 @@ python -m pip install --index-url https://download.pytorch.org/whl/cpu 'torch>=2
 python -m pip install '.[test]'
 python -I -m pytest tests --import-mode=importlib -q
 ```
+
+The installed shared CLI uses the same registered response backend. After
+writing the paired rows described below, create its configuration and run:
+
+```sh
+python - <<'PY'
+import json
+from glimmer_modern.lifecycle import cpu_config
+with open('glimmer.json', 'w') as stream:
+    json.dump(cpu_config('pairs.json').as_dict(), stream, indent=2)
+PY
+particle-slider capabilities --interface response --config glimmer.json
+particle-slider train --interface response --config glimmer.json --out run --export-format both
+```
+
+`run` must be a new empty directory. These commands train only the admitted
+synthetic CPU fixture; they cannot load pretrained Glimmer or produce text.
+The concurrent unified-training-command proposal is separate from this upgrade.
 
 Store a bounded local JSON file with `train` and `evaluation` arrays, each with
 2..32 pairs such as `{"neutral":[1,3],"positive":[2,4],"history":[6,7]}`.
@@ -116,7 +144,7 @@ For an existing environment, pip can retain an older wheel with the same 0.12.0
 version. Replace that core explicitly, then let the product resolve its extras:
 
 ```sh
-python -m pip install --force-reinstall --no-deps 'particle-sliders-core @ git+https://github.com/HyperGAN/particle-sliders.git@a794e3b4a8813b012f2c4faa3da82b78d4a90214#subdirectory=packages/particle-sliders-core'
+python -m pip install --force-reinstall --no-deps 'particle-sliders-core @ git+https://github.com/HyperGAN/particle-sliders.git@8ffca928550f97fdb9713151ca3023fc71e77e2c#subdirectory=packages/particle-sliders-core'
 python -m pip install '.[test]'
 python -m pip check
 ```
