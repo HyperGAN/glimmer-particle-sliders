@@ -589,7 +589,7 @@
     "__main__.py": "96210a279b6cd892aa7be77353202c8168cde62843c2a3d5c4d4bc7d06090b02",
     "assets.json": "d2ddaa22ab14613a47347a9b4424bed8cc680f89edaf21c1bddf4976765d89ca",
     "assets.py": "2e28fbe0c7fa2699f2182adc319963730a9df9bdb8bb23694d55c9cc9aba0b18",
-    "contract.py": "048ea61787c760e7100bef2e9344d2c83608e9d461deb022e54bd6089869ffb1",
+    "contract.py": "d7028b9d12e3a8ed3b2b6f920f990f7d35702366ec52537bc34605a14211b0cc",
     "learning_rates.py": "7f6ad71e970fc4e9cf9bdce078be3268c6af4ff8e818073e21b8279489c2b307",
     "lifecycle.py": "5c3b4323aaae57d4effebff2f98e2d0edd1f1bf9854be04f8f4c38eeecc68938",
     "loader.py": "c58889d5660c2c77ea982c07cca292cfae91de6d5ae1e8ead522566fb955a37f",
@@ -600,7 +600,7 @@
     "runtime-lock.json": "8c08eb34546b5942e379eca19b41cd14e74059a29d235b7dc5c1c8c0232a4acd",
     "tensor-headers.json": "8615fea5a2a8d6269d0bbbc13806f1826b24b781349f9c134a4e08c8dc7980a0"
   },
-  "product_sources_index_sha256": "7803833f41efef2cd82cf98daea63ee28b6e6b538b3d0b6d5ddc24c7593c4d23",
+  "product_sources_index_sha256": "ef875b76357e7702a556bf36c181d52567cbde5926190d04c26680800b2735fb",
   "profile": "source-801ae1e-continuous-v1",
   "schema": "glimmer-native-source-lock-v1"
 }

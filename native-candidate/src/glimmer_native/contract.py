@@ -4,8 +4,8 @@ import importlib.metadata as metadata
 import json
 import os
 from pathlib import Path
-import re
 import sys
+import uuid
 
 from . import EXECUTION, LAYERS, VOCAB, WIDTH
 from .assets import TARGET, digest
@@ -56,18 +56,28 @@ def runtime_sources():
     return result
 
 
+def canonical_gpu_uuid(value):
+    if not isinstance(value, str):
+        raise ValueError("an explicit GPU UUID string is required")
+    try:
+        return "GPU-" + str(uuid.UUID(value.removeprefix("GPU-")))
+    except (ValueError, AttributeError) as error:
+        raise ValueError("invalid GPU UUID") from error
+
+
 def require_admission(expected_gpu_uuid):
     """Only the separately admitted parent may enter the model loader."""
-    if (not isinstance(expected_gpu_uuid, str) or not re.fullmatch(r"GPU-[0-9a-f-]{36}", expected_gpu_uuid)
-            or os.environ.get("CUDA_VISIBLE_DEVICES") != expected_gpu_uuid
-            or os.environ.get("GLIMMER_NATIVE_GUARDIAN") != str(os.getppid())):
+    expected_gpu_uuid = canonical_gpu_uuid(expected_gpu_uuid)
+    if os.environ.get("GLIMMER_NATIVE_GUARDIAN") != str(os.getppid()):
         raise ValueError("native NF4 requires its admitted guardian and one exact visible GPU UUID")
+    if canonical_gpu_uuid(os.environ.get("CUDA_VISIBLE_DEVICES")) != expected_gpu_uuid:
+        raise ValueError("declared visible GPU UUID differs")
     if os.environ.get("GLIMMER_NATIVE_PROCESS_CAP_GIB") != "30":
         raise ValueError("native NF4 requires the explicit30GiB process guard")
     import torch
     if torch.cuda.device_count() != 1:
         raise ValueError("one visible CUDA device required")
-    actual = str(torch.cuda.get_device_properties(0).uuid)
+    actual = canonical_gpu_uuid(str(torch.cuda.get_device_properties(0).uuid))
     if actual != expected_gpu_uuid:
         raise ValueError("visible CUDA UUID differs")
     free, _ = torch.cuda.mem_get_info(0)
