@@ -17,7 +17,7 @@ Use Python 3.12 and Torch 2.9.1+cu128 in a new environment. Install this subproj
 from an immutable product commit:
 
 ```sh
-python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.git@d1c77d1af91db6dfc0e378fc5361c42c641c6329#subdirectory=native-candidate'
+python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.git@74cf323c8111833142a9cd48aaf75778cdcdce9e#subdirectory=native-candidate'
 ```
 
 This installs the distinct `glimmer-native` response/inference backend. Its
