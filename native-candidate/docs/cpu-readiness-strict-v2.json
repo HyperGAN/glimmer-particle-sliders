@@ -1,0 +1,74 @@
+{
+  "asset_model_core_source": {
+    "architecture": "MuseGlimmerForConditionalGeneration",
+    "core_commit": "5d68473a098801ee1ab3ebbb12463daef51c6346",
+    "model_revision": "a4e59da52a7bc87ae7251dd5545c0dd437c44b68",
+    "native_response": [
+      1,
+      6656
+    ],
+    "penalty_input_domain": "continuous",
+    "pg_commit": "801ae1ead8f88b88eca8f5398137e3e1bc01ad36",
+    "pg_source_profile": "source-801ae1e-continuous-v1",
+    "projection_count": 208
+  },
+  "changes": [
+    "Resolved SessionConfig EMA defaults to None; explicit diagnostic EMA remains available",
+    "Caller-owned strict eager/BF16 numerical policy bound to identity and validated before load/update/native forward/observation; no math flag mutation",
+    "Scoped loader seed41 saves/restores CPU and only owned cuda:0 generator on constructor success/failure; CUDA-wide seeding forbidden",
+    "Actual PG801 continuous6656 domain/source check before loader assets or model/CUDA allocation",
+    "Old source/numerical inference identity refused before reconstructing base"
+  ],
+  "independent_cpu_software_seam": {
+    "CUDA_initialized": false,
+    "actual_native_hidden_and_scaled_softcap_logits_exact": true,
+    "actual_torch": "2.9.1+cu128",
+    "implementation_sha256": "d245c98704193e066e02cd2b69096a45b0e7c41d3aa0f47586bb9ba390c08a48",
+    "lazy_pread_PySafeSlice_loader_complete_keys_and_tensors_exact": true,
+    "parameters": 31232,
+    "raw_lm_head_is_not_native_logits": true,
+    "scope": "Random tiny actual upstream class on CPU only; no pretrained Glimmer load, NF4 kernel, native resume or language quality claim",
+    "seconds": 0.08656959500149242,
+    "state_tensors": 40
+  },
+  "native_exact_resume_qualified": false,
+  "native_language_quality_qualified": false,
+  "native_learning_rates_recommended": false,
+  "native_raw_inference_qualified": false,
+  "native_updates": 0,
+  "old_receipt_preserved": true,
+  "package_parity": {
+    "core_files": 575,
+    "native_gpu_qualified": false,
+    "native_pretrained_loaded": false,
+    "runtime_data_files": 15,
+    "sdist_sha256": "4e51c069dd11d7d1e4381b0a9be73c21498761741df2a7174983df359626cdd3",
+    "source_wheel_sdist_exact": true,
+    "wheel_sha256": "deefd205d6affeaa1e027ed3935f82752e63341d53e990ac0d947d4b329397e1"
+  },
+  "runtime_source_commit": "d1c77d1af91db6dfc0e378fc5361c42c641c6329",
+  "schema": "glimmer-native-strict-cpu-readiness-v2",
+  "scope": "CPU source, strict numerical identity/RNG/refusal/structural tests only; no pretrained Glimmer/NF4 or CUDA execution",
+  "supersedes_unmerged_candidate_source": "9a7d9a86a662614d5ef36a2409b92ac0d957e16f",
+  "test_results": {
+    "actual_glimmer_model_instantiated_by_these_tests": false,
+    "command": "CUDA_VISIBLE_DEVICES='' python -I -m pytest /path/to/native-candidate/tests --import-mode=importlib -q",
+    "cuda_initialized": false,
+    "installed_candidate_tests": 66,
+    "old_v4_runtime_and_archival_bytes_unchanged": true,
+    "preserved_v4_fixture_tests": 103,
+    "source_candidate_tests": 66
+  },
+  "unmeasured_budget": {
+    "admission_free_gib": 35,
+    "global_free_floor_gib": 5,
+    "host_admission_free_gib": 23,
+    "host_runtime_free_gib": 16,
+    "measured_peak": null,
+    "not_established": "One-card training fit or throughput; additional metadata/adapters/optimizer/activations/workspaces/context/loading costs remain unmeasured",
+    "optimistic_nf4_base_storage_gib": 17.628978729248047,
+    "original_weights_bytes": 59553435272,
+    "parameters": 29776626688,
+    "process_cap_gib": 30
+  }
+}

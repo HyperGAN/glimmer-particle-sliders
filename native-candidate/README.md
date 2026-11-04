@@ -17,7 +17,7 @@ Use Python 3.12 and Torch 2.9.1+cu128 in a new environment. Install this subproj
 from an immutable product commit:
 
 ```sh
-python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.git@9a7d9a86a662614d5ef36a2409b92ac0d957e16f#subdirectory=native-candidate'
+python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.git@d1c77d1af91db6dfc0e378fc5361c42c641c6329#subdirectory=native-candidate'
 ```
 
 This installs the distinct `glimmer-native` response/inference backend. Its
@@ -89,3 +89,26 @@ alone is not the native logit function. Native text/token outputs must accompany
 hidden-fit measurements. The common optional `lr`, `d_lr_mult`, and
 `prior_lr_mult` preserve baseline G=.012, D=.018, bank=.03; these are inherited
 defaults, not adjusted or recommended native rates.
+
+Host EMA defaults to disabled (`ema_decay=None` in the resolved SessionConfig).
+An explicitly requested diagnostic EMA remains separate from raw native results.
+The `glimmer-native-eager-bf16-strict-v1` policy inspects caller-owned settings
+without changing them: deterministic algorithms with warn-only disabled, highest
+FP32 matmul precision, TF32 disabled, FP16/BF16 reduced-precision reductions
+disabled, deterministic cuDNN without benchmarking, only math SDPA enabled with
+low-precision math reduction disabled, and `CUBLAS_WORKSPACE_CONFIG=:4096:8`.
+TF32 environment overrides are refused. Actual native text/vision attention
+must remain eager. The policy is bound into native identity and checked before
+load, each update, native forward, and observation; changed source or numerical
+inference identities are refused before reconstructing the model.
+
+The actual `from_pretrained` constructor runs in a scoped RNG context with
+declared loader seed 41, preserving the external CPU and only owned visible
+CUDA generator states on success or failure. It never seeds other GPUs.
+Actual PG801/domain/width admission precedes model or CUDA allocation.
+
+A separate [small CPU software check](docs/small-native-loader-readout-v1.json)
+used the actual upstream class with 31,232 random parameters: all 40 tensors
+loaded exactly through lazy positioned reads, and native logits matched the
+hidden→LM-head→multiplier→softcap path bitwise. This establishes that software
+seam only; pretrained NF4 forward, training, resume and language remain unqualified.
