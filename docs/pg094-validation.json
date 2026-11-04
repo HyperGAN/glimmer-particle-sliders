@@ -1,0 +1,70 @@
+{
+  "artifact_policy": "Earlier source locks/cohorts remain bound to their original source; no migration or relabeling",
+  "checkout_access": "Copied test/document harness outside checkout with audit hook forbidding reads of the product checkout; installed imports checked by suite",
+  "cohort": "glimmer-modern-final-hidden-hg-hndl-v3-cpu",
+  "core_commit": "8ffca928550f97fdb9713151ca3023fc71e77e2c",
+  "core_repository": "https://github.com/HyperGAN/particle-sliders.git",
+  "core_version": "0.12.0",
+  "coverage": [
+    "Shared core source bytes, version and exact Git origin",
+    "Historical PG82 namespace absent and lineage unchanged",
+    "Refuse prior a794 and 4abc installed core origins",
+    "Routed output/VJP and critic second-derivative parity",
+    "Exact resume, EMA/raw and native-only hidden-response export/reload",
+    "Initialization RNG isolation and transactional failures",
+    "Native/wide/model-hook gates and cleanup"
+  ],
+  "cuda_initialized": false,
+  "date": "2026-11-04",
+  "hndl_version": "0.10.0",
+  "hypergan_commit": "5f368a3770cf5bdae0448995c9f76e29af8049f7",
+  "immutable_source_equality": "All 568 installed locked source/data files independently matched the exact Git core source tree",
+  "installation": "Clean venv without system site packages; CPU Torch from public CPU index; direct VCS core dependency; wheel then isolated-build sdist installation",
+  "installed_cli": {
+    "capabilities": true,
+    "cuda_initialized": false,
+    "data_independent_ema_inference": true,
+    "entrypoint": "particle-slider / python -I -m particle_sliders.session_cli",
+    "exact_cli_api_response_match": true,
+    "heldout_evaluation": true,
+    "response_shape": [
+      1,
+      12
+    ],
+    "training_steps": 4,
+    "v1_and_v2_export": true
+  },
+  "particlegan_source": "330eb94ee748cdcad131b0275d8de75fd5a7f96f",
+  "particlegan_version": "0.9.4",
+  "pip_check": "No broken requirements found",
+  "previous_core_commit": "a794e3b4a8813b012f2c4faa3da82b78d4a90214",
+  "previous_product_source": "9a3545e5f1c943eed060d5c748a31dd2e1bdcfd3",
+  "qualification": "Only width-12 FP32 synthetic CPU protocol fixture. No pretrained/native Glimmer, wide response, text/media generation, GPU or model-quality qualification.",
+  "recursive_source_data_files": 568,
+  "review_gate": "Existing mandatory Claude RETURN review and central qualification remain required before landing.",
+  "runtime": {
+    "numpy": "2.4.6",
+    "pytest": "9.2.0",
+    "python": "3.11.17",
+    "torch": "2.15.0+cpu"
+  },
+  "schema": "glimmer-pg094-package-validation-v1",
+  "sdist_tests": {
+    "failed": 0,
+    "passed": 78,
+    "seconds": 14.92,
+    "skipped": 0
+  },
+  "threads": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "MKL_NUM_THREADS": "1",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "wheel_tests": {
+    "failed": 0,
+    "passed": 78,
+    "seconds": 14.94,
+    "skipped": 0
+  }
+}
