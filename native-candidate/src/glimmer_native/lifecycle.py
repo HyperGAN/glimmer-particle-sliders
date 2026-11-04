@@ -39,8 +39,8 @@ def configuration(options):
         value = options.get(key, default)
         if type(value) is not int or not 1 <= value <= upper:
             raise ValueError("bounded positive integer required: " + key)
-    ema = options.get("ema_decay", .9)
-    if type(ema) not in (float, int) or not math.isfinite(ema) or not 0 <= ema < 1:
+    ema = options.get("ema_decay")
+    if ema is not None and (type(ema) not in (float, int) or not math.isfinite(ema) or not 0 <= ema < 1):
         raise ValueError("finite EMA decay within[0,1) required")
     rates(options)
 
@@ -88,6 +88,7 @@ def prepare(options):
         evaluation_identity = dict(protocol="glimmer-native-held-out-token-pairs-v1", data_sha256=data_sha,
             evaluation_sha256=hashlib.sha256(json.dumps(rows["evaluation"], sort_keys=True).encode()).hexdigest())
         return Binding(game, native.close, inference=spec, observation=native.observation,
+            before_update=lambda _state: native.validate_numerics(),
             evaluation_rows={"evaluation": EvaluationRows(prepared["evaluation"], evaluation_identity)})
     except BaseException:
         native.close()
@@ -100,8 +101,15 @@ def validate_inference(options, spec):
     if set(spec.configuration) != {"execution_profile", "pg_source_profile", "penalty_input_domain", "base_precision", "seed"}:
         raise ValueError("native inference profile fields differ")
     configuration(spec.configuration)
+    from particle_sliders.pg09_audio import require_audio_width
+    from .numerics import require_policy_identity
+    require_audio_width(WIDTH, pg_source_profile=PROFILE, penalty_input_domain=DOMAIN)
+    _, source = verify_sources()
+    model = spec.identity.get("model", {})
+    if model.get("product_source") != source:
+        raise ValueError("inference native product source differs before model allocation")
+    require_policy_identity(model.get("numerical"))
     inspect_snapshot(options["snapshot"], full_hashes=False)
-    verify_sources()
 
 
 def inference_preflight(options, request, spec):
@@ -126,7 +134,7 @@ INFERENCE = InferenceBackend(BACKEND_NAME, CAPS, prepare_inference, validate_inf
 
 
 def config(snapshot, data_file, expected_gpu_uuid, *, steps=64, batch=2, seed=7,
-           ema_decay=.9, lr=None, d_lr_mult=None, prior_lr_mult=None):
+           ema_decay=None, lr=None, d_lr_mult=None, prior_lr_mult=None):
     from .learning_rates import recipe_overrides
     overrides = recipe_overrides(lr=lr, d_lr_mult=d_lr_mult, prior_lr_mult=prior_lr_mult)
     return SessionConfig(BACKEND_NAME, PROTOCOL, execution_profile=EXECUTION,

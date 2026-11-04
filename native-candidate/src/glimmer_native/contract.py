@@ -166,15 +166,11 @@ def audit_loaded_model(model, assets, runtime):
         raise ValueError("offloaded native buffers are unsupported")
     # state_dict includes packed quantization state plus all unquantized host bytes.
     state = {n: tensor_identity(t) for n, t in model.state_dict().items()}
+    from .numerics import numerical_policy
     return dict(execution_profile=EXECUTION, assets=assets, runtime=runtime,
                 projections=projections, quantization=dict(QUANTIZATION),
                 quantized_modules=quantized, buffers=buffers,
                 packed_host_state_sha256=hashlib.sha256(json.dumps(state, sort_keys=True).encode()).hexdigest(),
                 actual_host_state=state,
-                numerical=dict(dtype="bfloat16", attention="eager", tf32=False,
-                    deterministic=torch.are_deterministic_algorithms_enabled(), cuda="12.8",
-                    device_name=torch.cuda.get_device_name(0), capability=list(torch.cuda.get_device_capability(0)),
-                    bf16_reduced_precision_reduction=torch.backends.cuda.matmul.allow_bf16_reduced_precision_reduction,
-                    cudnn_deterministic=torch.backends.cudnn.deterministic,
-                    cudnn_benchmark=torch.backends.cudnn.benchmark,
-                    cublas_workspace=os.environ.get("CUBLAS_WORKSPACE_CONFIG")))
+                numerical=numerical_policy(model),
+                device=dict(name=torch.cuda.get_device_name(0), capability=list(torch.cuda.get_device_capability(0))))

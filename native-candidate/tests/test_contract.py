@@ -43,10 +43,13 @@ def test_no_guardian_refuses_before_cuda(monkeypatch):
 def test_loader_never_reaches_model_construction_without_guardian(monkeypatch):
     import glimmer_native.loader as loader
     import glimmer_native.provenance as provenance
+    import glimmer_native.numerics as numerics
     monkeypatch.delenv("GLIMMER_NATIVE_GUARDIAN", raising=False)
     monkeypatch.setattr(provenance, "verify_sources", lambda: (None, {}))
     monkeypatch.setattr(loader, "inspect_snapshot", lambda *a, **kw: {"full_weight_hashes_verified": True})
     monkeypatch.setattr(loader, "runtime_sources", lambda: {})
+    monkeypatch.setattr(numerics, "numerical_policy", lambda *a: {})
+    monkeypatch.setattr(numerics, "require_policy_identity", lambda *a: {})
     monkeypatch.setattr(torch.cuda, "device_count", lambda: pytest.fail("CUDA queried without resource admission"))
     with pytest.raises(ValueError, match="guardian"):
         loader.load_local("/does-not-exist", expected_gpu_uuid="GPU-72c1b506-891d-b8bc-b353-e020585e1c47")

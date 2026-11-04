@@ -16,6 +16,7 @@ from . import DOMAIN, LAYERS, PROFILE, PROTOCOL, WIDTH
 from .assets import TARGET
 from .contract import validate_ids
 from .provenance import verify_sources
+from .numerics import forward_guards, require_policy_identity
 
 
 @contextmanager
@@ -65,6 +66,8 @@ class Slider(nn.Module):
         builder, source = verify_sources()
         self.source = source
         self._targets = selected
+        object.__setattr__(self, "_model", model)
+        self._numerical_policy = identity["numerical"]
         self._attached = []
         self._close_requested = False
         self._restore = preserve_native_state(model)
@@ -92,6 +95,7 @@ class Slider(nn.Module):
 
     @contextmanager
     def scaled(self, strength):
+        require_policy_identity(self._numerical_policy, self._model)
         if self._close_requested or not math.isfinite(strength) or not 0 <= strength <= 1:
             raise ValueError("live native slider and strength within[0,1] required")
         previous = [b.multiplier for b in self.branches.values()]
@@ -141,6 +145,7 @@ class GlimmerResponse(ARLastHiddenResponseAdapter):
     family = "glimmer_native6656_last_hidden_nf4_v1"
 
     def _hidden(self, ids):
+        require_policy_identity(self.model_identity["numerical"], self.model.model)
         tokens = torch.tensor([list(ids)], dtype=torch.long, device="cuda:0")
         return self.model.model.model(input_ids=tokens, attention_mask=torch.ones_like(tokens),
                                       use_cache=False, return_dict=True).last_hidden_state[:, -1]
@@ -150,14 +155,24 @@ class Native:
     def __init__(self, model, identity, *, seed):
         self.model, self.identity = model, identity
         self.slider = Slider(model, identity, seed=seed)
+        self._forward_guards = []
+        self.backend = None
         try:
             blocks = tuple(model.model.language_model.layers)
             self.backend = GlimmerResponse(_Host(model), self.slider, model_identity=identity,
                 checkpoint_modules=blocks, pg_source_profile=PROFILE, penalty_input_domain=DOMAIN)
             self.network = self.backend.network
+            self._forward_guards = forward_guards(model, identity["numerical"])
         except BaseException:
-            self.slider.close()
+            try:
+                if self.backend is not None:
+                    self.backend.close_checkpointing()
+            finally:
+                self.slider.close()
             raise
+
+    def validate_numerics(self):
+        return require_policy_identity(self.identity["numerical"], self.model)
 
     @property
     def particles(self):
@@ -177,6 +192,7 @@ class Native:
 
     @contextmanager
     def observation(self):
+        self.validate_numerics()
         modes = [(m, m.training) for m in self.model.modules()]
         buffers = [(b, b.detach().clone()) for b in self.model.buffers()]
         parameters = list(self.model.parameters()) + list(self.network.parameters())
@@ -195,10 +211,16 @@ class Native:
                         grad.copy_(value)
             for module, mode in modes:
                 module.training = mode
+            self.validate_numerics()
 
     def close(self):
         try:
-            self.backend.close_checkpointing()
+            try:
+                self.backend.close_checkpointing()
+            finally:
+                for handle in reversed(self._forward_guards):
+                    handle.remove()
+                self._forward_guards.clear()
         finally:
             self.slider.close()
 
