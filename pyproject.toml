@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "meta-glimmer-modern-response"
-version = "0.1.0"
+version = "0.1.1"
 description = "Standalone Glimmer ParticleGAN 0.9.4 response lifecycle CPU conformance cohort"
 readme = "README.md"
 license = {file = "LICENSE"}

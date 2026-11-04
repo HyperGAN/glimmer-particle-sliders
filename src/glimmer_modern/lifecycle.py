@@ -74,9 +74,11 @@ def read_rows(path):
 def validate(options):
     allowed = {"mode", "dummy", "width", "base_precision", "model_seed", "data_file", "steps", "batch",
                "seed", "ema_decay", "pg_version", "pg_source_profile", "penalty_input_domain",
-               "initialization_policy"}
+               "initialization_policy", "lr", "d_lr_mult", "prior_lr_mult"}
     if set(options) - allowed:
         raise ValueError("unknown modern options")
+    from .learning_rates import recipe_overrides
+    recipe_overrides(**{key: options.get(key) for key in ("lr", "d_lr_mult", "prior_lr_mult")})
     _configuration(options)
     read_rows(options["data_file"])
     verify_sources()
@@ -103,6 +105,8 @@ def preflight(options, request, staged):
 
 
 def prepare(options, *, model=None):
+    from .learning_rates import recipe_overrides
+    rates = recipe_overrides(**{key: options.get(key) for key in ("lr", "d_lr_mult", "prior_lr_mult")})
     rows = read_rows(options["data_file"])
     seed = options.get("seed", 7)
     native = Native(_model(options, model), seed=seed)
@@ -113,7 +117,7 @@ def prepare(options, *, model=None):
         game = ConditionalPG09(native, prepared["train"], critic, conditions=conditions,
             particles=native.slider.particles, response_domain="continuous_vector",
             total_steps=options.get("steps", 4), batch_size=options.get("batch", 2),
-            seed=options.get("seed", 7), pg_source_profile=PG_SOURCE_PROFILE)
+            seed=options.get("seed", 7), pg_source_profile=PG_SOURCE_PROFILE, recipe_overrides=rates)
         configuration = dict(mode="cpu-fixture", width=12, model_seed=options.get("model_seed", 41),
                              seed=seed, initialization_policy=INITIALIZATION_POLICY)
         spec = INFERENCE.specification(native, model_identity=native.identity,
@@ -160,7 +164,9 @@ INFERENCE = InferenceBackend(BACKEND_NAME, CAPS, prepare_inference, validate_inf
                              preflight=inference_preflight)
 
 
-def cpu_config(data_file, *, steps=4, seed=7, model_seed=41):
+def cpu_config(data_file, *, steps=4, seed=7, model_seed=41, lr=None, d_lr_mult=None, prior_lr_mult=None):
+    from .learning_rates import recipe_overrides
+    rates = recipe_overrides(lr=lr, d_lr_mult=d_lr_mult, prior_lr_mult=prior_lr_mult)
     return SessionConfig(BACKEND_NAME, PROTOCOL, mode="cpu-fixture", dummy=True, width=12,
         data_file=str(Path(data_file).resolve()), steps=steps, batch=2, seed=seed,
-        model_seed=model_seed, ema_decay=.8, initialization_policy=INITIALIZATION_POLICY)
+        model_seed=model_seed, ema_decay=.8, initialization_policy=INITIALIZATION_POLICY, **rates)

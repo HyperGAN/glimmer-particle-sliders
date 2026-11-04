@@ -558,7 +558,7 @@ def test_initial_game_bytes_independent_of_caller_rng_and_seed_positive_control(
             selected=cpu_config(config.options['data_file'],seed=run_seed,model_seed=41)
             with open_response(selected) as run:
                 native=run.game.backend
-                assert run.config.cohort==PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-v3-cpu'
+                assert run.config.cohort==PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-v4-lr-cpu'
                 assert native.metadata()['initialization']==dict(policy=INITIALIZATION_POLICY,seed=run_seed)
                 inference_config=run.binding.inference.configuration
                 assert inference_config['initialization_policy']==INITIALIZATION_POLICY
