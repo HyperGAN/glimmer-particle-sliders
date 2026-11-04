@@ -170,3 +170,5 @@ repository URL and commit. A core installed from a locally built wheel or an
 offline wheelhouse is refused even when its source bytes match, because that
 installation does not retain the required direct VCS record. There is no local
 wheel or offline provenance exception; use the pinned Git installation above.
+
+Learning-rate controls and preserved defaults: [LEARNING-RATES.md](LEARNING-RATES.md).

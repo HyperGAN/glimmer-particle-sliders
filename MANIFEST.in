@@ -6,3 +6,8 @@ include docs/core-migration.json
 include docs/core-validation.json
 include docs/pg094-validation.json
 include docs/merged-base-validation.json
+
+include LEARNING-RATES.md
+recursive-include compatibility *.txt *.json
+recursive-include cohorts/pre-lr-hndl *.py *.json
+include docs/lr-migration.json
