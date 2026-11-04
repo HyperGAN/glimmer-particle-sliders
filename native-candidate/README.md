@@ -1,4 +1,4 @@
-# Native6656 NF4 candidate
+# Native Glimmer NF4 candidate
 
 This independent subproject prepares the actual pinned Muse-Glimmer-30B text
 tower for the shared response lifecycle. It is currently a CPU source and
@@ -17,7 +17,7 @@ Use Python 3.12 and Torch 2.9.1+cu128 in a new environment. Install this subproj
 from an immutable product commit:
 
 ```sh
-python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.git@<immutable-product-commit>#subdirectory=native-candidate'
+python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.git@9a7d9a86a662614d5ef36a2409b92ac0d957e16f#subdirectory=native-candidate'
 ```
 
 This installs the distinct `glimmer-native` response/inference backend. Its
