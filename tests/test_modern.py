@@ -50,7 +50,7 @@ def test_installed_identity_and_dependency_split():
     assert 'glimmer_slider.training' not in sys.modules
     from glimmer_modern.provenance import verify_sources
     _, identity = verify_sources()
-    assert identity['core_commit'] == '8ffca928550f97fdb9713151ca3023fc71e77e2c'
+    assert identity['core_commit'] == 'ddb41423bcefc1fe76cd94d0f9b367353b3ea137'
     assert identity['hypergan_commit'] == '5f368a3770cf5bdae0448995c9f76e29af8049f7'
 
 
@@ -211,7 +211,8 @@ def test_borrowed_model_cleanup_and_zero(config):
 
 
 @pytest.mark.parametrize('options', [dict(mode='native'),dict(width=1024),
-    dict(penalty_input_domain='continuous'),dict(pg_source_profile='develop'),dict(base_precision='bfloat16')])
+    dict(penalty_input_domain='continuous'),dict(pg_source_profile='develop'),dict(base_precision='bfloat16'),
+    dict(dummy=False)])
 def test_native_and_mismatch_gate_before_prepare(config,monkeypatch,options):
     values=dict(config.options,**options)
     changed=SessionConfig(config.backend,config.cohort,**values)
@@ -689,6 +690,7 @@ def test_previous_v2_preview_cohort_refused_before_prepare(config,tmp_path,monke
 @pytest.mark.parametrize('old_commit', [
     '4abc0eb03a4e3a84fc3e6d02734c13dc7e8ea231',
     'a794e3b4a8813b012f2c4faa3da82b78d4a90214',
+    '8ffca928550f97fdb9713151ca3023fc71e77e2c',
 ])
 def test_old_git_origin_refused_even_with_same_distribution_version(monkeypatch, old_commit):
     import glimmer_modern.provenance as provenance

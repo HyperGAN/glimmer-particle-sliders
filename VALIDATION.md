@@ -3,7 +3,8 @@
 The receipt below applies to extracted head `c5200a565064d30a15691173c9f432c50fc7fa26`
 and its original 4abc core. It is preserved without relabeling old packet identities.
 Earlier a794/v3 CPU validation is recorded in `docs/core-validation.json`;
-current 8ffca/v3 installed-package validation is in `docs/pg094-validation.json`. Old
+earlier 8ffca/v3 installed-package validation is in `docs/pg094-validation.json`;
+current merged-base validation is in `docs/merged-base-validation.json`. Old
 4abc/v2 previews require their original source; the v3 product refuses them.
 
 # Standalone phase 1 validation

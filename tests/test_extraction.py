@@ -39,7 +39,7 @@ def test_source_lock_relocation_and_cleared_core_pin():
     from glimmer_modern.provenance import verify_sources
     from glimmer_modern import PROTOCOL, INITIALIZATION_POLICY
     _,identity=verify_sources()
-    assert identity['core_commit']=='8ffca928550f97fdb9713151ca3023fc71e77e2c'
+    assert identity['core_commit']=='ddb41423bcefc1fe76cd94d0f9b367353b3ea137'
     assert PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-v3-cpu'
     assert INITIALIZATION_POLICY=='cpu-sha256-component-streams-v1'
 

@@ -2,25 +2,26 @@
   "artifact_impact": "Earlier packets retain their original source-lock identity and require their original source/core; no checkpoint migration or relabeling",
   "changed_runtime_files": [
     "src/glimmer_modern/__init__.py",
+    "src/glimmer_modern/lifecycle.py",
     "src/glimmer_modern/provenance.py",
     "src/glimmer_modern/source-lock.json"
   ],
   "cohort": "glimmer-modern-final-hidden-hg-hndl-v3-cpu",
-  "core_commit": "8ffca928550f97fdb9713151ca3023fc71e77e2c",
+  "core_commit": "ddb41423bcefc1fe76cd94d0f9b367353b3ea137",
   "core_version": "0.12.0",
-  "current_upgrade": "Adopt shared-core packaging and dependency corrections without changing Glimmer runtime graphs, seed policy, cohort, native gates or ParticleGAN objective",
+  "current_upgrade": "Adopt merged unified training/execution base plus dependency corrections; accept explicit true CPU fixture marker required by executor, without changing Glimmer graphs, seed policy, cohort, native gates or ParticleGAN objective",
   "original_extraction": "c5200a565064d30a15691173c9f432c50fc7fa26",
   "previous_cohort": "glimmer-modern-final-hidden-hg-hndl-v2-cpu",
-  "previous_core_commit": "a794e3b4a8813b012f2c4faa3da82b78d4a90214",
+  "previous_core_commit": "8ffca928550f97fdb9713151ca3023fc71e77e2c",
   "product_sources": {
     "src/glimmer_modern/__init__.py": "c5358ce3d1ea450e1174695049fae2693418c10735de2b3a414665fdf17f10b3",
     "src/glimmer_modern/fixture.py": "dd9636d3c8163044d4f375d1ee30bdd7bdd9f3cb1e81e720a73eb620dac1636f",
     "src/glimmer_modern/initialization.py": "463327ce771f37e63bea2da0840fd8b81a45027566c12532edeb87a4c6c53f9b",
-    "src/glimmer_modern/lifecycle.py": "8a345ca43823d19bdc8787b058a7aff0e4c64f8639dd90006a79f7a2e254a6fd",
+    "src/glimmer_modern/lifecycle.py": "e8666c66436271629bdb00223d694b2ef7bd99e72b41886370e403553fdab9ac",
     "src/glimmer_modern/native.py": "82551e3c396b5aa41f1f7f7ef39de6c4830ed7c059fd5a53377d3f5e1f73ed58",
     "src/glimmer_modern/provenance.py": "b5803feac446b53acde958ed51f0a914760f7bda0d60da460367cf2ee089e469",
     "src/glimmer_modern/readout.hndl": "b9fe063e244b23f8432872f7f0a8128993432694a753d38d5919f4c63d2d9209",
-    "src/glimmer_modern/source-lock.json": "2794b006adfa0fe7ea2f69355306ff47eea878187cc9a9a4b35d1baa485e19b0"
+    "src/glimmer_modern/source-lock.json": "596eddfd792b2174e3f405a1a5f4cff0dfcaf9e8a67fe7c502f3564c62a76cdf"
   },
   "qualification": "Software fixture qualification only; native gates, objectives, bank architecture and model licenses unchanged",
   "schema": "glimmer-core-migration-v1"

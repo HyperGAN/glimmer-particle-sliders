@@ -54,7 +54,7 @@ loading/training, width >= 170, media/token generation and model quality are
 unqualified and refused before preparation. No native admission option or
 continuous-domain override exists. Passing CPU tests cannot open these gates.
 
-The current pinned shared-core source is `8ffca928550f97fdb9713151ca3023fc71e77e2c`
+The current pinned shared-core source is `ddb41423bcefc1fe76cd94d0f9b367353b3ea137`
 (exact Git pin), official PG0.9.4, HyperGAN develop
 `5f368a3770cf5bdae0448995c9f76e29af8049f7`, HNDL 0.10.0.
 `source-lock.json` verifies installed shared sources; the common builder checks
@@ -63,8 +63,9 @@ any native attachment. The recursive lock covers all source/data files in both c
 exact installed version and Git origin. Product RETURN review remains pending.
 Central synthetic CPU/CUDA qualification does not admit native Glimmer, width
 or quality. This product migration runs CPU tests only.
-The current package-validation receipt is [PG0.9.4 upgrade validation](docs/pg094-validation.json).
-The earlier [a794 receipt](docs/core-validation.json) remains historical evidence.
+The current package-validation receipt is [merged-base validation](docs/merged-base-validation.json).
+The earlier [8ffca receipt](docs/pg094-validation.json) and
+[a794 receipt](docs/core-validation.json) remain historical evidence.
 
 Borrowed CPU models with existing local module/parameter hooks, instance call
 or serialization overrides, compiled calls or active checkpoint wrappers are
@@ -95,14 +96,26 @@ import json
 from glimmer_modern.lifecycle import cpu_config
 with open('glimmer.json', 'w') as stream:
     json.dump(cpu_config('pairs.json').as_dict(), stream, indent=2)
+profile = dict(schema='particle-slider-profile-v1', name='glimmer-cpu-fixture',
+    product='glimmer-particle-sliders', config_kind='session', status='fixture',
+    interface='response', backend='glimmer-modern', runtime={},
+    capabilities=dict(resume=True, periodic_checkpoint=True, check=True),
+    default_checkpoint_every=2)
+with open('glimmer-profile.json', 'w') as stream:
+    json.dump(profile, stream, indent=2)
 PY
 particle-slider capabilities --interface response --config glimmer.json
-particle-slider train --interface response --config glimmer.json --out run --export-format both
+particle-slider plan --config glimmer.json --profile glimmer-profile.json --out run --no-reporting
+particle-slider train --config glimmer.json --profile glimmer-profile.json --out run --no-reporting --export-format both
 ```
 
 `run` must be a new empty directory. These commands train only the admitted
 synthetic CPU fixture; they cannot load pretrained Glimmer or produce text.
-The concurrent unified-training-command proposal is separate from this upgrade.
+The merged unified runner requires the explicit response fixture profile above.
+`cpu_config` supplies its required `dummy=true` marker; false markers are refused.
+Adding `--device` would insert an unsupported option into this CPU-only cohort;
+its backend already enforces FP32 CPU. The compatibility response commands
+(`capabilities`, `evaluate` and `infer`) remain available.
 
 Store a bounded local JSON file with `train` and `evaluation` arrays, each with
 2..32 pairs such as `{"neutral":[1,3],"positive":[2,4],"history":[6,7]}`.
@@ -144,7 +157,7 @@ For an existing environment, pip can retain an older wheel with the same 0.12.0
 version. Replace that core explicitly, then let the product resolve its extras:
 
 ```sh
-python -m pip install --force-reinstall --no-deps 'particle-sliders-core @ git+https://github.com/HyperGAN/particle-sliders.git@8ffca928550f97fdb9713151ca3023fc71e77e2c#subdirectory=packages/particle-sliders-core'
+python -m pip install --force-reinstall --no-deps 'particle-sliders-core @ git+https://github.com/HyperGAN/particle-sliders.git@ddb41423bcefc1fe76cd94d0f9b367353b3ea137#subdirectory=packages/particle-sliders-core'
 python -m pip install '.[test]'
 python -m pip check
 ```

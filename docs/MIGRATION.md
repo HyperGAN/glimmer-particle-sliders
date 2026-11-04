@@ -36,7 +36,7 @@ copied into this repository. Existing release and training trees remain untouche
 
 The only admitted route is the existing width 12 FP32 CPU fixture. Native/wide
 training remains unqualified and refused. Core commit
-`8ffca928550f97fdb9713151ca3023fc71e77e2c` is the current packaging/dependency target; this migration
+`ddb41423bcefc1fe76cd94d0f9b367353b3ea137` is the current packaging/dependency target; this migration
 does not qualify native models or change shared APIs. Current runtime deltas
 from the immutable extraction are recorded in `core-migration.json`; the original
 extraction provenance and old preview metadata remain historical evidence. Mandatory Claude RETURN
@@ -49,5 +49,12 @@ The complete recursive source lock now covers that layout, including packaged
 historical helpers. The Glimmer graphs, initialization policy, PG0.9.4 objective,
 registry name and native gates are unchanged. Packets from the a794 core remain
 bound to their original source identity; no metadata rewrite is provided.
-See `pg094-validation.json` for the current installed-package results. The
-existing `core-validation.json` describes the earlier a794 validation only.
+After the shared unified training/execution API landed, the dependency and lock
+were advanced to `ddb41423bcefc1fe76cd94d0f9b367353b3ea137`. The source lock covers
+all 574 installed files, including the six new execution modules. The config
+factory now includes the explicit `dummy=true` marker required by the merged
+fixture runner; the validator accepts that marker and refuses false values.
+No Glimmer runtime graph or native admission gate changed. See `merged-base-validation.json` for
+the current installed-package and unified-runner results. The existing
+`pg094-validation.json` and `core-validation.json` retain the earlier 8ffca and
+a794 validation respectively.

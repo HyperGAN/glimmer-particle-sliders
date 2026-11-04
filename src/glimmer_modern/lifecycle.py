@@ -21,6 +21,8 @@ CAPS = ResponseCapabilities("routed_particle_gan", "glimmer_causal_text_hidden",
 
 
 def _configuration(options):
+    if options.get("dummy", True) is not True:
+        raise ValueError("CPU fixture marker must be true")
     if options.get("initialization_policy") != INITIALIZATION_POLICY:
         raise ValueError("initialization policy differs; retain the original v1 source for old artifacts")
     if options.get("mode") != "cpu-fixture":
@@ -70,7 +72,7 @@ def read_rows(path):
 
 
 def validate(options):
-    allowed = {"mode", "width", "base_precision", "model_seed", "data_file", "steps", "batch",
+    allowed = {"mode", "dummy", "width", "base_precision", "model_seed", "data_file", "steps", "batch",
                "seed", "ema_decay", "pg_version", "pg_source_profile", "penalty_input_domain",
                "initialization_policy"}
     if set(options) - allowed:
@@ -159,6 +161,6 @@ INFERENCE = InferenceBackend(BACKEND_NAME, CAPS, prepare_inference, validate_inf
 
 
 def cpu_config(data_file, *, steps=4, seed=7, model_seed=41):
-    return SessionConfig(BACKEND_NAME, PROTOCOL, mode="cpu-fixture", width=12,
+    return SessionConfig(BACKEND_NAME, PROTOCOL, mode="cpu-fixture", dummy=True, width=12,
         data_file=str(Path(data_file).resolve()), steps=steps, batch=2, seed=seed,
         model_seed=model_seed, ema_decay=.8, initialization_policy=INITIALIZATION_POLICY)
