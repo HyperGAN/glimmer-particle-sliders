@@ -44,13 +44,13 @@ def test_installed_identity_and_dependency_split():
     import particle_sliders.pg09 as game
     assert 'site-packages' in str(Path(glimmer_modern.__file__))
     assert 'site-packages' in inspect.getsourcefile(game.ConditionalPG09)
-    assert importlib.metadata.version('particlegan') == '0.9.4'
+    assert importlib.metadata.version('particlegan') == '0.9.5'
     assert importlib.metadata.version('hndl') == '0.10.0'
     assert 'glimmer_slider.upstream' not in sys.modules
     assert 'glimmer_slider.training' not in sys.modules
     from glimmer_modern.provenance import verify_sources
     _, identity = verify_sources()
-    assert identity['core_commit'] == 'ddb41423bcefc1fe76cd94d0f9b367353b3ea137'
+    assert identity['core_commit'] == '3dd672a7f9b8c169daef90fd63e4bb42b9ddc423'
     assert identity['hypergan_commit'] == '5f368a3770cf5bdae0448995c9f76e29af8049f7'
 
 
@@ -558,7 +558,7 @@ def test_initial_game_bytes_independent_of_caller_rng_and_seed_positive_control(
             selected=cpu_config(config.options['data_file'],seed=run_seed,model_seed=41)
             with open_response(selected) as run:
                 native=run.game.backend
-                assert run.config.cohort==PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-v4-lr-cpu'
+                assert run.config.cohort==PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-pg095-v5-cpu'
                 assert native.metadata()['initialization']==dict(policy=INITIALIZATION_POLICY,seed=run_seed)
                 inference_config=run.binding.inference.configuration
                 assert inference_config['initialization_policy']==INITIALIZATION_POLICY

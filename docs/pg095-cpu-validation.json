@@ -1,0 +1,15 @@
+{
+  "schema": "glimmer-pg095-cpu-validation-v1",
+  "core_commit": "3dd672a7f9b8c169daef90fd63e4bb42b9ddc423",
+  "core_version": "0.13.0",
+  "particlegan": "0.9.5",
+  "core_files_exact": 577,
+  "modern_installed_CPU_checks": 103,
+  "native_installed_CPU_checks": 75,
+  "native_initial_missing_bitsandbytes_check": "installed pinned0.50.2 then single affected test passed",
+  "wheel_sdist_installed_source_parity": true,
+  "historical_receipts_and_archives_exact": true,
+  "CUDA_VISIBLE_DEVICES": "",
+  "pretrained_weights_loaded": false,
+  "PG095_native_training_or_LR_qualification": false
+}

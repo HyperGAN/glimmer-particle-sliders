@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=84.2.1"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "glimmer-native-response-candidate"
+version = "0.1.0"
+description = "Explicit native6656 single-device NF4 Glimmer source cohort; numerical qualification pending"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "torch==2.9.1",
+  "transformers==5.22.1",
+  "bitsandbytes==0.50.2",
+  "accelerate==1.15.0",
+  "safetensors==0.8.0",
+  "tokenizers==0.23.3",
+  "huggingface-hub==2.4.0",
+  "numpy==2.5.4",
+  "particle-sliders-core[hypergan-hndl] @ git+https://github.com/HyperGAN/particle-sliders.git@5d68473a098801ee1ab3ebbb12463daef51c6346#subdirectory=packages/particle-sliders-core",
+  "particlegan @ git+https://github.com/255BITS/ParticleGAN.git@801ae1ead8f88b88eca8f5398137e3e1bc01ad36",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10", "build>=1"]
+
+[project.entry-points."particle_sliders.response_backends"]
+glimmer-native = "glimmer_native.lifecycle:BACKEND"
+
+[project.entry-points."particle_sliders.inference_backends"]
+glimmer-native = "glimmer_native.lifecycle:INFERENCE"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+glimmer_native = ["*.json", "*.hndl"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
