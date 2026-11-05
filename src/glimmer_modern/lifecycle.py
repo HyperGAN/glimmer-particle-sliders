@@ -169,4 +169,4 @@ def cpu_config(data_file, *, steps=4, seed=7, model_seed=41, lr=None, d_lr_mult=
     rates = recipe_overrides(lr=lr, d_lr_mult=d_lr_mult, prior_lr_mult=prior_lr_mult)
     return SessionConfig(BACKEND_NAME, PROTOCOL, mode="cpu-fixture", dummy=True, width=12,
         data_file=str(Path(data_file).resolve()), steps=steps, batch=2, seed=seed,
-        model_seed=model_seed, ema_decay=.8, initialization_policy=INITIALIZATION_POLICY, **rates)
+        model_seed=model_seed, ema_decay=None, initialization_policy=INITIALIZATION_POLICY, **rates)

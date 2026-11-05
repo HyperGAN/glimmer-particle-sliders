@@ -21,10 +21,15 @@ actual immutable VCS origin. Its new CPU protocol is
 `glimmer-modern-final-hidden-hg-hndl-pg095-v5-cpu`. Native installation uses the
 separate subdirectory and its own response/inference backend.
 
-The shared lifecycle owns updates, losses, penalties, optimizers, EMA, full-state
+The shared lifecycle owns updates, losses, penalties, optimizers, full-state
 continuation and inference export. HyperGAN's verified builder executes HNDL
 routed projections and the critic. The real 128 × 4 bank, rank8/alpha8 branches,
 frozen base, seed policy and raw hidden-response geometry are unchanged.
+
+Disable model-weight EMA explicitly (`ema_decay=None`) and use raw current
+weights for training, selection, confirmation, export and inference. Do not add
+EMA or checkpoint averaging. Historical EMA compatibility evidence stays scoped
+to its original source and does not guide current runs.
 
 The default root package admits only its synthetic CPU fixture; it does not
 load pretrained Glimmer. The native package requires its exact model assets,
