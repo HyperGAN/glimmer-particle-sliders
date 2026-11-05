@@ -93,7 +93,9 @@ hidden-fit measurements. The common optional `lr`, `d_lr_mult`, and
 defaults, not adjusted or recommended native rates.
 
 Host EMA defaults to disabled (`ema_decay=None` in the resolved SessionConfig).
-An explicitly requested diagnostic EMA remains separate from raw native results.
+Keep it disabled for training, evaluation, selection, confirmation, exports and
+inference. Use raw current weights and do not add EMA or checkpoint averaging;
+historical compatibility tests retain their original scope.
 The `glimmer-native-eager-bf16-strict-v1` policy inspects caller-owned settings
 without changing them: deterministic algorithms with warn-only disabled, highest
 FP32 matmul precision, TF32 disabled, FP16/BF16 reduced-precision reductions

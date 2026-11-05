@@ -120,7 +120,26 @@ def test_critic_outputs_vjp_and_second_derivatives():
             torch.testing.assert_close(a,b)
 
 
+def test_cpu_config_defaults_to_raw_without_ema(config,tmp_path):
+    assert config.options['ema_decay'] is None
+    artifact = tmp_path/'raw.pt'
+    ids = [1,10,12]
+    with open_response(config) as run:
+        assert run.ema.decay is None and run.ema.values is None
+        run.step()
+        assert run.ema.decay is None and run.ema.values is None
+        assert run.checkpoint()['payload']['ema'] == dict(decay=None, values=None)
+        expected = run.game.backend.response(ids=ids,strength=.5)
+        run.export_inference(artifact)
+        with pytest.raises(ValueError,match='configured EMA'):
+            run.export_inference(selection='ema')
+    with open_inference(artifact,operation='response',native_request={'ids':ids}) as inference:
+        assert torch.equal(inference.response(ids=ids,strength=.5),expected)
+
+
 def test_shared_updates_exact_resume_ema_raw_and_native_only(config,tmp_path):
+    # Historical opt-in compatibility coverage; cpu_config defaults to RAW only.
+    config = SessionConfig(config.backend,config.cohort,**dict(config.options,ema_decay=.8))
     before_rng = torch.get_rng_state().clone()
     with open_response(config) as full:
         native = full.game.backend
@@ -256,6 +275,9 @@ def test_invalid_restore_is_transactional_and_artifact_split(config):
 
 @pytest.mark.parametrize('corruption',['late-sampler','ema-shape','bank-alias'])
 def test_rehashed_invalid_state_cannot_partially_mutate_adapter(config,corruption):
+    if corruption == 'ema-shape':
+        # Explicit historical compatibility input, not a current helper default.
+        config = SessionConfig(config.backend,config.cohort,**dict(config.options,ema_decay=.8))
     with open_response(config) as run:
         run.step()
         packet=run.checkpoint()
