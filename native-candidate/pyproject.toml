@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "glimmer-native-response-candidate"
-version = "0.1.0"
+version = "0.2.0"
 description = "Explicit native6656 single-device NF4 Glimmer source cohort; numerical qualification pending"
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -18,8 +18,8 @@ dependencies = [
   "tokenizers==0.23.3",
   "huggingface-hub==2.4.0",
   "numpy==2.5.4",
-  "particle-sliders-core[hypergan-hndl] @ git+https://github.com/HyperGAN/particle-sliders.git@5d68473a098801ee1ab3ebbb12463daef51c6346#subdirectory=packages/particle-sliders-core",
-  "particlegan @ git+https://github.com/255BITS/ParticleGAN.git@801ae1ead8f88b88eca8f5398137e3e1bc01ad36",
+  "particle-sliders-core[hypergan-hndl] @ git+https://github.com/HyperGAN/particle-sliders.git@3dd672a7f9b8c169daef90fd63e4bb42b9ddc423#subdirectory=packages/particle-sliders-core",
+  "particlegan==0.9.5",
 ]
 
 [project.optional-dependencies]

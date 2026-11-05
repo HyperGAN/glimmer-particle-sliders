@@ -6,10 +6,12 @@ structural candidate. No model load, native training, exact native resume,
 portable native inference, generated language quality or learning rate has been
 qualified for this cohort.
 
-The existing root `glimmer_modern` v4 CPU fixture remains on its original core
-ddb source. The historical Meta FP32/NF4 products retain their original
-installers and evidence. Install each cohort in a separate environment; their
-core/source pins are intentionally different. Old packets are never relabeled.
+The root `glimmer_modern` PG0.9.5 v5 CPU fixture uses the same new shared base.
+Prior root v4 and native v1 PG0.9.4/PG801 packets require their original product
+commits and environments; [archived locks](../compatibility/pre-pg095/README.md)
+retain those identities. The current package is0.2.0 with a fresh
+`glimmer-native6656-nf4-hg-hndl-pg095-continuous-v2` protocol. Existing native
+mechanical receipts do not qualify this new source version.
 
 ## Exact candidate route
 
@@ -17,21 +19,21 @@ Use Python 3.12 and Torch 2.9.1+cu128 in a new environment. Install this subproj
 from an immutable product commit:
 
 ```sh
-python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.git@74cf323c8111833142a9cd48aaf75778cdcdce9e#subdirectory=native-candidate'
+python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.git@main#subdirectory=native-candidate'
 ```
 
 This installs the distinct `glimmer-native` response/inference backend. Its
-core is 5d68473a098801ee1ab3ebbb12463daef51c6346 and its ParticleGAN source is
-801ae1ead8f88b88eca8f5398137e3e1bc01ad36. The explicit
-`source-801ae1e-continuous-v1` / `continuous` pair is mandatory. That exact
-ParticleGAN source reports 0.9.4 but has different bytes from official 0.9.4;
-the official release/default profile continues to refuse this 6656-wide domain.
+core is `3dd672a7f9b8c169daef90fd63e4bb42b9ddc423` (core0.13.0), with the
+published `particlegan==0.9.5` dependency. The explicit
+`release-0.9.5` / `continuous` pair is mandatory for the6656-wide native response.
+The automatic domain setting retains its width gates. The old PG801 source
+profile is not accepted as an alias, and old checkpoints cannot resume here.
 
 Pinned loader dependencies are Transformers 5.22.1, bitsandbytes 0.50.2,
 Accelerate 1.15.0, safetensors 0.8.0, tokenizers 0.23.3,
 huggingface-hub 2.4.0 and NumPy 2.5.4. Runtime source locks cover their Python
 sources and the executed quantization/tokenizer/serialization binaries, plus
-selected Torch CUDA binaries. The exact installed core Git origin and all 575
+selected Torch CUDA binaries. The exact installed core Git origin and all 577
 core source/data files are checked independently. Product source/data files
 have their own closure. Imports shadowing those distributions are refused.
 

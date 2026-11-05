@@ -1,0 +1,32 @@
+{
+  "CPU_protocol": "glimmer-modern-final-hidden-hg-hndl-pg095-v5-cpu",
+  "changed_runtime_files": [
+    "src/glimmer_modern/__init__.py",
+    "src/glimmer_modern/lifecycle.py",
+    "src/glimmer_modern/source-lock.json"
+  ],
+  "core_commit": "3dd672a7f9b8c169daef90fd63e4bb42b9ddc423",
+  "core_version": "0.13.0",
+  "defaults_architecture_numerics_unchanged": true,
+  "historical_locks": "compatibility/pre-pg095",
+  "native_or_rate_qualification": false,
+  "native_protocol": "glimmer-native6656-nf4-hg-hndl-pg095-continuous-v2",
+  "old_checkpoints_require_original_environment": true,
+  "old_receipts_unchanged": true,
+  "particlegan": "0.9.5",
+  "particlegan_release_commit": "1b8355b184b21bb7d81104ee590813c262f6df0a",
+  "previous_product_commit": "e7633301ebf58c0a6c69c87b468af4ab63a81f12",
+  "product_sources": {
+    "src/glimmer_modern/__init__.py": "2f46014333e8e7b2c09db3db09f34439efbc14bd51f6e0fdb3929341d537fa91",
+    "src/glimmer_modern/fixture.py": "dd9636d3c8163044d4f375d1ee30bdd7bdd9f3cb1e81e720a73eb620dac1636f",
+    "src/glimmer_modern/initialization.py": "463327ce771f37e63bea2da0840fd8b81a45027566c12532edeb87a4c6c53f9b",
+    "src/glimmer_modern/learning_rates.py": "7f6ad71e970fc4e9cf9bdce078be3268c6af4ff8e818073e21b8279489c2b307",
+    "src/glimmer_modern/lifecycle.py": "1e1dfe8dc48b0b006cfaa899e3cf60809b7d07871540ce661388ef0b652b6c53",
+    "src/glimmer_modern/native.py": "82551e3c396b5aa41f1f7f7ef39de6c4830ed7c059fd5a53377d3f5e1f73ed58",
+    "src/glimmer_modern/provenance.py": "b5803feac446b53acde958ed51f0a914760f7bda0d60da460367cf2ee089e469",
+    "src/glimmer_modern/readout.hndl": "b9fe063e244b23f8432872f7f0a8128993432694a753d38d5919f4c63d2d9209",
+    "src/glimmer_modern/source-lock.json": "f01f873fa352537b2c57098f0a182f32fb1468c799d37728fc771cd52e187df2"
+  },
+  "product_version": "0.2.0",
+  "schema": "glimmer-pg095-migration-v1"
+}

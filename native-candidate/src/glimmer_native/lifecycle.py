@@ -6,7 +6,7 @@ from pathlib import Path
 
 from particle_sliders.inference import InferenceBackend, InferenceBinding, native_identity
 from particle_sliders.lifecycle import Binding, EvaluationRows, SessionConfig
-from particle_sliders.pg09 import ConditionalPG09, PG_VERSION
+from particle_sliders.pg095 import ConditionalPG095 as ConditionalPG09, PG_VERSION
 from particle_sliders.pg09_audio import AudioRow, audio_conditions
 from particle_sliders.response import ResponseBackend, ResponseCapabilities
 
