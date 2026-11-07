@@ -95,7 +95,7 @@ def test_native_asset_budget_is_a_bound_with_missing_costs():
     assert budget["optimistic_base_storage_bytes"] / 1024**3 == pytest.approx(17.628978729248047)
     assert budget["measured_peak"] is None and budget["estimate_only"]
     assert len(budget["missing"]) == 7
-    assert budget["minimum_admission_free_gib"] == 35
+    assert budget["minimum_admission_free_gib"] == 25
 
 
 @pytest.mark.parametrize("bad", [[], [True], [-1], [202048], [1] * 129, "tokens"])

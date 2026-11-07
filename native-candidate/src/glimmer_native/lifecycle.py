@@ -40,8 +40,8 @@ def configuration(options):
         if type(value) is not int or not 1 <= value <= upper:
             raise ValueError("bounded positive integer required: " + key)
     ema = options.get("ema_decay")
-    if ema is not None and (type(ema) not in (float, int) or not math.isfinite(ema) or not 0 <= ema < 1):
-        raise ValueError("finite EMA decay within[0,1) required")
+    if ema is not None:
+        raise ValueError("dual20 candidate forbids weight EMA; use None and RAW")
     rates(options)
 
 
@@ -135,6 +135,8 @@ INFERENCE = InferenceBackend(BACKEND_NAME, CAPS, prepare_inference, validate_inf
 
 def config(snapshot, data_file, expected_gpu_uuid, *, steps=64, batch=2, seed=7,
            ema_decay=None, lr=None, d_lr_mult=None, prior_lr_mult=None):
+    if ema_decay is not None:
+        raise ValueError("dual20 candidate forbids weight EMA; use None and RAW")
     from .learning_rates import recipe_overrides
     overrides = recipe_overrides(lr=lr, d_lr_mult=d_lr_mult, prior_lr_mult=prior_lr_mult)
     return SessionConfig(BACKEND_NAME, PROTOCOL, execution_profile=EXECUTION,

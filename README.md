@@ -8,8 +8,11 @@ checkpoints retain their original environments and are not converted.
 The root `glimmer_modern` package provides the width-12 FP32 CPU response
 fixture. The separate [native NF4 package](native-candidate/README.md) keeps the
 full pinned 30B model's 6656-wide response and explicit continuous domain.
-The new source version has no pretrained LR calibration or native training
-qualification yet. Older native proof receipts remain historical evidence.
+The native PG0.9.5 cohort now has a measured 128-update learning-rate
+recommendation: **G0.001 / D0.018000000000000002 / bank0.029999999999999995**.
+Its unused four-example RAW error is **0.5341646099807267** versus OFF1.0,
+with an exact independent saved-field audit. See the
+[preset and scope](LEARNING-RATES.md#measured-native-pg095-preset).
 
 ```sh
 python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.git@main'
@@ -37,8 +40,8 @@ BF16/NF4 numerical policy, source locks and explicit device/resource admission.
 For its continuous native response use `release-0.9.5` with `continuous`;
 no response projection, truncation or categorical reinterpretation is used.
 
-[Learning-rate controls](LEARNING-RATES.md) retain the inherited numerical
-defaults. New-source trials select and independently confirm rates using only
+[Learning-rate controls](LEARNING-RATES.md) include an explicit measured native
+preset; omitted controls retain the inherited defaults. Trials select and independently confirm rates using only
 held-out RAW FP64 equal-example pooled relative SSE. Preservation, language,
 rendering and listening observations are optional diagnostics.
 

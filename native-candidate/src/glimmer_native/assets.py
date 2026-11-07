@@ -95,8 +95,8 @@ def memory_budget(tensors):
                 estimate_only=True, measured_peak=None,
                 missing=["quantization metadata", "HNDL adapters", "gradients and optimizer",
                          "checkpointed activations", "workspaces", "CUDA context/allocator", "loading peak"],
-                initial_process_cap_gib=30, global_free_floor_gib=5,
-                minimum_admission_free_gib=35, host_admission_free_gib=23, host_runtime_free_gib=16,
+                initial_process_cap_gib=20, global_free_floor_gib=5,
+                minimum_admission_free_gib=25, host_admission_free_gib=23, host_runtime_free_gib=16,
                 qualification="No model loaded; this budget does not establish one-card training fit")
 
 

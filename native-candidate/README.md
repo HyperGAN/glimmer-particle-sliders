@@ -1,17 +1,20 @@
 # Native Glimmer NF4 candidate
 
 This independent subproject prepares the actual pinned Muse-Glimmer-30B text
-tower for the shared response lifecycle. It is currently a CPU source and
-structural candidate. No model load, native training, exact native resume,
-portable native inference, generated language quality or learning rate has been
-qualified for this cohort.
+tower for the shared response lifecycle. Its current PG0.9.5 native cohort has
+completed full-state resume, public RAW/OFF validation and a measured128-update
+rate search with independent unused-example confirmation. The
+[preset](presets/pg095-native-nf4-128.json) uses G0.001, D0.018000000000000002
+and bank0.029999999999999995; unused-final error is0.5341646099807267 versus
+OFF1.0. [Measurement scope and evidence](docs/pg095-native-nf4-128-measurement.json).
 
 The root `glimmer_modern` PG0.9.5 v5 CPU fixture uses the same new shared base.
 Prior root v4 and native v1 PG0.9.4/PG801 packets require their original product
 commits and environments; [archived locks](../compatibility/pre-pg095/README.md)
 retain those identities. The current package is0.2.0 with a fresh
 `glimmer-native6656-nf4-hg-hndl-pg095-continuous-v2` protocol. Existing native
-mechanical receipts do not qualify this new source version.
+mechanical receipts retain their original source scope; current PG0.9.5 evidence
+is recorded in the measurement linked above.
 
 ## Exact candidate route
 
@@ -58,13 +61,14 @@ field reshape or categorical penalty substitute is allowed.
 An optimistic NF4 base-storage bound is 17.629GiB, retaining BF16 embedding,
 head and other non-linear parameters. Quantization metadata, HNDL adapters,
 gradients/optimizer, checkpointed activations, workspaces, allocator/context
-and loading peak are additional and unmeasured. The initial candidate resource
-contract requires a live external guardian, one exact GPU UUID, a 30 GiB process
-cap, 5 GiB global free reserve, 35 GiB free at admission, and 23/16 GiB host RAM at
-admission/runtime. This is a budget for a future bounded measurement, not a
-statement that one-card training fits. No GPU launch is part of CPU readiness.
+and loading peak are additional costs. The measured native source requires a
+live external guardian, one exact GPU UUID, a20GiB process cap,5GiB global free
+reserve,25GiB free at admission, and23/16GiB host RAM at admission/runtime.
+The actual final teacher/RAW phases peaked at19048MiB GPU memory. This measured
+cohort does not guarantee that every data or resource configuration fits.
+CPU readiness performs no GPU launch.
 
-## Native contract and next proof
+## Native contract and measured cohort
 
 The local-only loader disables remote code, uses the original guarded demo's
 lazy positioned-read algorithm, BF16 NF4 storage/compute and double
@@ -83,17 +87,18 @@ Native-only inference reconstructs the same verified base without training
 rows, a critic or a game. The loader/identity contract is implemented, but that
 native path has not been executed by the CPU tests.
 
-The next admitted native attempt must prove frozen host and unhooked OFF
-parity, full native hidden/logit readout, two real updates, fresh-process exact
-resume and raw portable inference before any rate search. Logit comparisons
+The qualified native path passed frozen host and unhooked OFF parity, full
+native response, real updates, fresh-process exact resume and public RAW
+inference before rate selection. Logit comparisons
 must include this model's output multiplier and tanh softcap; its raw LM head
-alone is not the native logit function. Native text/token outputs must accompany
-hidden-fit measurements. The common optional `lr`, `d_lr_mult`, and
+alone is not the native logit function. Text/token outputs are optional
+diagnostics and do not select, reject or delay a response-error recommendation.
+The common optional `lr`, `d_lr_mult`, and
 `prior_lr_mult` preserve baseline G=.012, D=.018, bank=.03; these are inherited
 defaults, not adjusted or recommended native rates.
 
-Host EMA defaults to disabled (`ema_decay=None` in the resolved SessionConfig).
-Keep it disabled for training, evaluation, selection, confirmation, exports and
+The native factory and validator require disabled model-weight EMA
+(`ema_decay=None` in the resolved SessionConfig). Keep it disabled for training, evaluation, selection, confirmation, exports and
 inference. Use raw current weights and do not add EMA or checkpoint averaging;
 historical compatibility tests retain their original scope.
 The `glimmer-native-eager-bf16-strict-v1` policy inspects caller-owned settings
@@ -109,10 +114,11 @@ inference identities are refused before reconstructing the model.
 The actual `from_pretrained` constructor runs in a scoped RNG context with
 declared loader seed 41, preserving the external CPU and only owned visible
 CUDA generator states on success or failure. It never seeds other GPUs.
-Actual PG801/domain/width admission precedes model or CUDA allocation.
+Actual PG0.9.5/domain/width admission precedes model or CUDA allocation.
 
 A separate [small CPU software check](docs/small-native-loader-readout-v1.json)
 used the actual upstream class with 31,232 random parameters: all 40 tensors
 loaded exactly through lazy positioned reads, and native logits matched the
 hidden→LM-head→multiplier→softcap path bitwise. This establishes that software
-seam only; pretrained NF4 forward, training, resume and language remain unqualified.
+seam only. The current pretrained response evidence is recorded separately
+above; generated language quality has not been measured.
