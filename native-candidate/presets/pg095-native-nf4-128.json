@@ -1,0 +1,40 @@
+{
+  "schema": "particle-sliders-measured-native-lr-preset-v1",
+  "name": "pg095-native-nf4-128",
+  "backend": "glimmer-native",
+  "status": "measured-scoped-recommendation",
+  "session_options": {
+    "lr": 0.001,
+    "d_lr_mult": 18.0,
+    "prior_lr_mult": 29.999999999999996,
+    "ema_decay": null,
+    "steps": 128,
+    "batch": 2,
+    "seed": 7,
+    "pg_source_profile": "release-0.9.5",
+    "penalty_input_domain": "continuous"
+  },
+  "actual_optimizer_rates": {
+    "G": 0.001,
+    "D": 0.018000000000000002,
+    "bank": 0.029999999999999995
+  },
+  "scope": {
+    "model": "meta-models/Muse-Glimmer-30B",
+    "snapshot": "a4e59da52a7bc87ae7251dd5545c0dd437c44b68",
+    "response_shape": [
+      1,
+      6656
+    ],
+    "response_dtype": "float32",
+    "base_precision": "bfloat16",
+    "quantization": "NF4 double quantization",
+    "completed_updates": 128,
+    "selection": "raw",
+    "model_weight_EMA": null,
+    "selection_metric": "RAW strength1 FP64 operand-first equal-example pooled relative squared error",
+    "G_screen_with_fixed_D_and_bank": true,
+    "global_or_joint_optimum": false
+  },
+  "measurement": "../docs/pg095-native-nf4-128-measurement.json"
+}

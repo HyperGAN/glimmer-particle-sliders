@@ -72,8 +72,8 @@ def require_admission(expected_gpu_uuid):
         raise ValueError("native NF4 requires its admitted guardian and one exact visible GPU UUID")
     if canonical_gpu_uuid(os.environ.get("CUDA_VISIBLE_DEVICES")) != expected_gpu_uuid:
         raise ValueError("declared visible GPU UUID differs")
-    if os.environ.get("GLIMMER_NATIVE_PROCESS_CAP_GIB") != "30":
-        raise ValueError("native NF4 requires the explicit30GiB process guard")
+    if os.environ.get("GLIMMER_NATIVE_PROCESS_CAP_GIB") != "20":
+        raise ValueError("native NF4 requires the explicit20GiB candidate process guard")
     import torch
     if torch.cuda.device_count() != 1:
         raise ValueError("one visible CUDA device required")
@@ -81,8 +81,8 @@ def require_admission(expected_gpu_uuid):
     if actual != expected_gpu_uuid:
         raise ValueError("visible CUDA UUID differs")
     free, _ = torch.cuda.mem_get_info(0)
-    if free < 35 * 1024**3:
-        raise MemoryError("native admission requires30GiB cap plus5GiB free reserve")
+    if free < 25 * 1024**3:
+        raise MemoryError("native admission requires20GiB candidate cap plus5GiB free reserve")
     available = next((int(line.split()[1]) * 1024 for line in Path("/proc/meminfo").read_text().splitlines()
                       if line.startswith("MemAvailable:")), 0)
     if available < 23 * 1024**3:

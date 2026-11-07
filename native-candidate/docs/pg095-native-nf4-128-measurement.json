@@ -1,0 +1,84 @@
+{
+  "schema": "glimmer-pg095-native-measured-lr-summary-v1",
+  "measured_UTC": "2026-11-07T06:22:46.555359+00:00",
+  "cohort": "glimmer-a4e59d-NF4-eager-core3dd-PG095-fresh-h128-v1",
+  "PG": "0.9.5",
+  "shared_core": "3dd672a7f9b8c169daef90fd63e4bb42b9ddc423",
+  "product_base": "bcd39e7467d1b2e02f38f67d9935ab342aaadbda",
+  "native_package_source_sha256": {
+    "lifecycle.py": "00cf81a593300c5f04d013041040c883ebe91dad105952842d2cc6d02b372d52",
+    "native.py": "b27191d71a8252c4c7a9aef6773d2bab5dc59b2ed9f16f81e9366f37a8ff19a4",
+    "numerics.py": "1c722c44fbdeb5380e26e779d2bf9436ba0fd30d1f4d76884691ca1fceb8239b",
+    "__init__.py": "8507fb20b191259faf03f4b8a6a73590f83f8771d4d770803c749da6e96f9de4",
+    "loader.py": "c58889d5660c2c77ea982c07cca292cfae91de6d5ae1e8ead522566fb955a37f",
+    "assets.py": "93f48bc084422d80a9d5bf16efd6ccff587b04b4aac8d6d971098c8a17daf37d",
+    "contract.py": "71aeb919495758e328d5f54567f5db9ea2499f6ee20ead43f6e3029164df6626",
+    "provenance.py": "74ff76fca58479d497cf19484da698bd3415bb9f05ab920b99e0aff7fbb8fd78",
+    "learning_rates.py": "7f6ad71e970fc4e9cf9bdce078be3268c6af4ff8e818073e21b8279489c2b307",
+    "readout.hndl": "b9fe063e244b23f8432872f7f0a8128993432694a753d38d5919f4c63d2d9209",
+    "source-lock.json": "b9e22b3948e03291974d647c30f9debbcc70e5aa72d1961cf8b2fc8962ab06dd",
+    "runtime-lock.json": "8c08eb34546b5942e379eca19b41cd14e74059a29d235b7dc5c1c8c0232a4acd"
+  },
+  "guard_profile": {
+    "process_cap_GiB": 20,
+    "global_free_floor_GiB": 5,
+    "cold_free_GiB": 25,
+    "model_weight_EMA": null
+  },
+  "selection": {
+    "G_candidates": [
+      0.0001,
+      0.001,
+      0.012,
+      0.036
+    ],
+    "all_candidates_complete_at": 32,
+    "finalists_complete_at": 64,
+    "selected_winner_complete_at": 128,
+    "selected_G": 0.001,
+    "development_RAW_error": 0.7172243530127634
+  },
+  "unused_final": {
+    "metric": "RAW strength1 FP64 operand-first per-example pooled relative SSE, equal-example mean",
+    "examples": 4,
+    "excluded": 0,
+    "OFF": 1.0,
+    "primary": 0.5341646099807267,
+    "per_example": [
+      0.37776475633759865,
+      0.554144296381365,
+      0.48132533129656413,
+      0.7234240559073791
+    ],
+    "native_training_updates": 0,
+    "teacher_only_membership_fixed_before_trained_RAW": true,
+    "teacher_control": 0.0,
+    "reverse_control": 4.0,
+    "independent_saved_field_reduction_exact": true
+  },
+  "verification": {
+    "strict_checkpoint_resume": true,
+    "public_RAW_network_exact_checkpoint": true,
+    "public_OFF_exact_pristine_neutral": true,
+    "pristine_positive_exact_teacher": true,
+    "loaded_base_and_RAW_read_only": true,
+    "RNG_read_only": true,
+    "all_native_and_CPU_workers_exited0_reaped_unloaded": true,
+    "materialized_EMA_weights": false
+  },
+  "evidence_sha256": {
+    "selected128": "ba07cf6b190227df76bfe800de41c90612ce5a1d7b7b45dca2225f05ac08059a",
+    "teacher_ROOT": "511b63bab57334fef46b5cb8d71b1a3514b3faf9e9a0f073e5d4d91eee865d47",
+    "native_RAW_ROOT": "3b059f65547421b995c830495a256138a88c7f6bde363a1ab2765026b22d06bc",
+    "native_result": "cf76caeeee212c44b7b8646cf7c3c2bfced02769d50b67e225c601eeddbdb461",
+    "independent_field_audit": "8dddbe163503b8b95d86b27c8cda94e29a22acf48b26bc3a433c49af820cf71a",
+    "independent_CPU_ROOT": "54421d9ea7058c3bc0c6826ceb418b523959de89db455a518ecd730a733d17da"
+  },
+  "limits": [
+    "Pinned source/model/data/numerical native response cohort only.",
+    "Best tested G with fixed D/bank; not a global or joint optimum.",
+    "No text-generation or language-quality result is implied.",
+    "Fresh runs use the preset; exact resume requires the original complete SessionConfig and source identity.",
+    "Sanitized summary only; no model weights, original example text/tokens or private host paths are included."
+  ]
+}

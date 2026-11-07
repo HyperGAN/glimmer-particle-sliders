@@ -136,13 +136,15 @@ def test_loader_rng_restores_cpu_and_only_owned_device_on_success_or_failure(mon
     assert not torch.cuda.is_initialized()
 
 
-def test_native_default_config_disables_ema_explicit_diagnostic_ema_remains():
+def test_native_config_requires_raw_weights_without_ema():
     default = config("/tmp/model", "/tmp/data", "GPU-72c1b506-891d-b8bc-b353-e020585e1c47")
     assert default.options["ema_decay"] is None
     configuration(default.options)
-    diagnostic = config("/tmp/model", "/tmp/data", "GPU-72c1b506-891d-b8bc-b353-e020585e1c47", ema_decay=.9)
-    assert diagnostic.options["ema_decay"] == .9
-    configuration(diagnostic.options)
+    with pytest.raises(ValueError, match="forbids weight EMA"):
+        config("/tmp/model", "/tmp/data", "GPU-72c1b506-891d-b8bc-b353-e020585e1c47", ema_decay=.9)
+    with pytest.raises(ValueError, match="forbids weight EMA"):
+        configuration(dict(default.options, ema_decay=.9))
+    assert not torch.cuda.is_initialized()
 
 
 def test_observation_and_update_guard_reject_drift_before_body(strict_numerics):
@@ -196,10 +198,10 @@ def test_admission_accepts_actual_torch_bare_or_nvidia_prefixed_uuid(strict_nume
     declared = "GPU-72c1b506-891d-b8bc-b353-e020585e1c47"
     monkeypatch.setenv("CUDA_VISIBLE_DEVICES", declared)
     monkeypatch.setenv("GLIMMER_NATIVE_GUARDIAN", str(os.getppid()))
-    monkeypatch.setenv("GLIMMER_NATIVE_PROCESS_CAP_GIB", "30")
+    monkeypatch.setenv("GLIMMER_NATIVE_PROCESS_CAP_GIB", "20")
     monkeypatch.setattr(torch.cuda, "device_count", lambda: 1)
     monkeypatch.setattr(torch.cuda, "get_device_properties", lambda _index: SimpleNamespace(uuid=reported))
-    monkeypatch.setattr(torch.cuda, "mem_get_info", lambda _index: (36 * 1024**3, 48 * 1024**3))
+    monkeypatch.setattr(torch.cuda, "mem_get_info", lambda _index: (26 * 1024**3, 48 * 1024**3))
     original = Path.read_text
     monkeypatch.setattr(Path, "read_text", lambda p, *a, **kw: "MemAvailable: 26214400 kB\n" if str(p) == "/proc/meminfo" else original(p, *a, **kw))
     require_admission(declared)
@@ -212,7 +214,7 @@ def test_admission_refuses_realistic_uuid_mismatch_before_memory_query(strict_nu
     declared = "GPU-72c1b506-891d-b8bc-b353-e020585e1c47"
     monkeypatch.setenv("CUDA_VISIBLE_DEVICES", declared)
     monkeypatch.setenv("GLIMMER_NATIVE_GUARDIAN", str(os.getppid()))
-    monkeypatch.setenv("GLIMMER_NATIVE_PROCESS_CAP_GIB", "30")
+    monkeypatch.setenv("GLIMMER_NATIVE_PROCESS_CAP_GIB", "20")
     monkeypatch.setattr(torch.cuda, "device_count", lambda: 1)
     monkeypatch.setattr(torch.cuda, "get_device_properties", lambda _index: SimpleNamespace(uuid="00000000-0000-0000-0000-000000000000"))
     monkeypatch.setattr(torch.cuda, "mem_get_info", lambda _index: pytest.fail("memory queried after UUID mismatch"))
