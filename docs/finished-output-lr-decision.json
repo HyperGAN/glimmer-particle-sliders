@@ -1,0 +1,106 @@
+{
+  "schema": "documented-finished-output-LR-decision-v1",
+  "product_id": "glimmer-particle-sliders",
+  "as_of": "2026-11-09",
+  "selection_metric": "Equal-case mean intended-effect intensity ON minus matched OFF in finished outputs",
+  "teacher_SSE_used_for_selection": false,
+  "preservation_beauty_confidence_or_completion_tiebreak": false,
+  "prospective_ema_decay": null,
+  "source_rate_pack_SHA256": "d06a3585ef9b3aaccfffe6352beb419b289c860c49c96a8df30c9459dda4a573",
+  "status": "finished_output_compared_two_best_rates_tied_no_unique_LR_selected",
+  "rate_overrides": null,
+  "tied_rate_overrides": [
+    {
+      "lr": 0.0001,
+      "d_lr_mult": 180.0,
+      "prior_lr_mult": 299.99999999999994,
+      "ema_decay": null
+    },
+    {
+      "lr": 0.001,
+      "d_lr_mult": 18.0,
+      "prior_lr_mult": 29.999999999999996,
+      "ema_decay": null
+    }
+  ],
+  "tied_best_controls": [
+    "cell0",
+    "cell1"
+  ],
+  "tied_best_G": [
+    0.0001,
+    0.001
+  ],
+  "actual_rates": null,
+  "comparison_updates": 32,
+  "comparison_cases": 2,
+  "mean_effect_gain": 1.0,
+  "all_candidate_means": [
+    {
+      "control_id": "cell0",
+      "G": 0.0001,
+      "D": 0.018000000000000002,
+      "bank": 0.029999999999999995,
+      "mean_effect_gain": 1.0,
+      "per_case_gains": {
+        "garden-seed42": 1,
+        "coast-seed43": 1
+      }
+    },
+    {
+      "control_id": "cell1",
+      "G": 0.001,
+      "D": 0.018000000000000002,
+      "bank": 0.029999999999999995,
+      "mean_effect_gain": 1.0,
+      "per_case_gains": {
+        "garden-seed42": 1,
+        "coast-seed43": 1
+      }
+    },
+    {
+      "control_id": "cell2",
+      "G": 0.012,
+      "D": 0.018000000000000002,
+      "bank": 0.029999999999999995,
+      "mean_effect_gain": 0.0,
+      "per_case_gains": {
+        "garden-seed42": 0,
+        "coast-seed43": 0
+      }
+    },
+    {
+      "control_id": "cell3",
+      "G": 0.036,
+      "D": 0.018000000000000002,
+      "bank": 0.029999999999999995,
+      "mean_effect_gain": 0.0,
+      "per_case_gains": {
+        "garden-seed42": 0,
+        "coast-seed43": 0
+      }
+    }
+  ],
+  "scope": "Original four saved RAW32 rates at fixedD/bank; two neutral DEV cases, original plain-text nativeBOS/greedy512/noKV. Exploratory model intensity measurement, no fresh confirmation or default change.",
+  "completed_search_reused": true,
+  "next_step": "Keep the existing G0.0001/G0.001 best-score tie. No secondary tiebreak, repeat search or extra confirmation is required.",
+  "evidence": {
+    "result": {
+      "artifact_id": "result.json",
+      "bytes": 7991,
+      "sha256": "f6cc5a35fe0efdb924ed38e7d4543075ba80c3bdc221ea970da8a8290592b627"
+    },
+    "decision": {
+      "artifact_id": "root-existing-four-arm-RAW32-effect-decision-v1.json",
+      "bytes": 929,
+      "sha256": "aa56354bf20bcbe1c3f03a36ef6a41d801dad0fab607d82f880898d14d58724e"
+    }
+  },
+  "usage": "Documentation metadata and exact option literals only; not a complete training configuration, artifact loader, changed package default, or instruction to replay completed training.",
+  "horizon": 128,
+  "batch": 2,
+  "shared_base": "meta-models/Muse-Glimmer-30B",
+  "native_hidden_width": 6656,
+  "interfaces_must_not_pool_scores": true,
+  "interface_scope": "plain-text native BOS / greedy512 / noKV"
+}

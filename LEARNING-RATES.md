@@ -1,19 +1,85 @@
 # Learning rates
 
-The current training configuration accepts optional `lr` (base/generator), `d_lr_mult` (critic), and `prior_lr_mult` (actual routed particle bank). Values must be finite positive numbers; booleans are rejected before model allocation. The existing shared ParticleGAN recipe creates all optimizers: D = `lr * d_lr_mult`, bank = `lr * prior_lr_mult`. No product GAN or optimizer math is duplicated.
+## Current finished-output decision
 
-Omitted controls retain the default `bispf_optimized` recipe: G **0.012**, D multiplier **1.5**, bank multiplier **2.5**. These are inherited defaults, not native calibration results. This factory uses its fixed optimized preset. Use the keys in the shared session configuration; the registered common training dispatcher executes the same recipe. Historical/source-only CLI cohorts retain their original interfaces.
+Reuse the completed four-rate RAW32 comparison on the original native6656
+NF4/BF16 Glimmer cohort, batch2, seed7 and common128 schedule. Two fixed neutral
+cases (`garden-seed42`, `coast-seed43`) were compared with their matched OFFs.
 
-Use `"lr": 0.00002, "d_lr_mult": 1.5, "prior_lr_mult": 2.5` in common session `options`. The numbers are an input example, not a tuned recommendation. The actual resolved shared recipe and configuration bind full-state resume; a changed rate requires a fresh experiment output/cohort. Older packets and closed HNDL source cohorts keep their original source/defaults. Current CPU optimizer/resume tests do not qualify pretrained/native learning rates, audio or semantic quality.
+| G | Mean intended-effect ON−OFF gain | Decision |
+| ---: | ---: | --- |
+| 0.0001 | +1.0 | Tied best |
+| 0.001 | +1.0 | Tied best |
+| 0.012 | 0.0 | Retained result |
+| 0.036 | 0.0 | Retained result |
 
-Native/wide-response source gates remain enforced. Native calibration compares identical initialized state, data, stochastic streams, precision, declared schedule horizons and completed-update budgets on the actual pretrained model. Select and independently confirm rates using only held-out raw teacher/student relative SSE: cast student, teacher and neutral to FP64 before subtraction, pool positions within each example, divide by that example's teacher-edit energy, then average examples equally. Keep the teacher-only valid/excluded set fixed across candidates; zero-energy examples remain undefined, and student failures never remove examples. See the [common LR protocol](https://github.com/HyperGAN/particle-sliders/blob/main/packages/particle-sliders-core/LEARNING-RATE-CONTRACT.md).
+Keep **both** best-score rates. There is no unique winner, new default, extra
+confirmation, rerating or repeat LR search. Fixed actual D is
+`0.018000000000000002`; bank is `0.029999999999999995`. The complete portable
+[decision metadata](docs/finished-output-lr-decision.json) retains all candidates,
+case gains, evidence hashes and exact tied options. It contains no model weights
+or private paths and is not a complete session/checkpoint configuration.
 
-Preservation/no-edit drift, late/weak-field scores and native media outputs are optional diagnostics; they cannot select, reject or delay a rate. After the native mechanical proof, candidate endpoint net displacement is diagnostic too. Retain exact source/model/data/numerical identity, actual optimizer-rate, finite native-update, checkpoint-continuation and raw-response replay checks. Tiny CPU software checks are not native LR evidence.
+Rank only `mean_cases(effect_intensity(ON) - effect_intensity(OFF))` in finished
+outputs, with equal case weights. Keep negative gains, zeros and exact ties.
+Technical failures remain missing evidence. Teacher/student relative SSE,
+preservation drift, beauty, confidence and completion are not selectors or
+tiebreaks. Reuse existing saved RAWs/outputs/scores; do not replay completed work.
+This plain-text native BOS/greedy512/noKV scope is separate from Meta/chat;
+never pool their scores. The coherent G0.001 RAW128 garden previews and repeated
+high-G coast previews are separate scale/budget observations, not a new LR vote.
 
-## Measured native PG0.9.5 preset
+## Actual common options
+
+The native factory accepts `lr`, `d_lr_mult`, `prior_lr_mult` and
+`ema_decay=None`. Shared ParticleGAN computes D=`lr*d_lr_mult` and
+bank=`lr*prior_lr_mult`; preserve the saved literal multipliers:
+
+| Tied G | d_lr_mult | prior_lr_mult | ema_decay |
+| ---: | ---: | ---: | --- |
+| 0.0001 | 180.0 | 299.99999999999994 | null |
+| 0.001 | 18.0 | 29.999999999999996 | null |
+
+Both options are retained; the order is not a default choice. For configuration
+inspection, choose either complete tied option dictionary explicitly:
+
+```python
+from glimmer_native.lifecycle import config
+
+# candidate_options is one of the two tied_rate_overrides in the linked JSON.
+# snapshot, paired_tokens_file and admitted_gpu_uuid are caller-owned inputs.
+session_config = config(
+    snapshot, paired_tokens_file, admitted_gpu_uuid,
+    steps=128, batch=2, seed=7, **candidate_options,
+)
+```
+
+`steps=128` fixes the original schedule horizon; **RAW32** names the measured
+completed-update endpoint, not a32-step replacement schedule. This call only
+constructs a configuration; use existing saved RAW32 artifacts rather than
+retraining them. Exact continuation needs the original complete source/data/
+SessionConfig; changing a rate or this documentation does not rebind a checkpoint.
+The factory and inherited defaults remain unchanged: optimized G0.012, D
+multiplier1.5, bank multiplier2.5. Optional finite positive rates reject booleans;
+explicit `ema_decay=None` and RAW weights are required for new work. Do not add
+weight EMA, checkpoint averaging or an EMA comparison.
+
+The root width12 FP32 CPU fixture is a separate software route; native6656
+requires its original assets, numerical profile and caller-owned admission. No
+new native proof or confirmation is requested by this documentation update.
+
+<a id="measured-native-pg095-preset"></a>
+
+## Historical teacher-response SSE screen (RAW128)
+
+The following earlier measurement and preset retain their exact source and
+result identities. They describe numerical teacher matching and are **diagnostic
+history**, not the current intended-effect LR selector or a preferred rate over
+the completed RAW32 tie. The original preset/report files are unchanged.
+
 
 The [native preset](native-candidate/presets/pg095-native-nf4-128.json) supplies
-these exact shared-session options for fresh native runs:
+the exact options used in the earlier 128-update response-error screen:
 
 ```json
 {
@@ -56,7 +122,7 @@ were valid, and the independent CPU reduction exactly reproduced every saved
 SSE, teacher energy and score. Native public RAW/OFF, frozen-base, adapter,
 checkpoint and RNG checks passed; final evaluation made zero training updates.
 
-This is the best tested G in the pinned Muse-Glimmer-30B NF4/BF16,
+This was the response-SSE-selected G in the pinned Muse-Glimmer-30B NF4/BF16,
 native6656 FP32 response cohort, batch2/common128. It does not establish a joint
 G/D/bank optimum or text-generation quality. The root width12 CPU fixture has
 its own scope. The [sanitized measurement](native-candidate/docs/pg095-native-nf4-128-measurement.json)
