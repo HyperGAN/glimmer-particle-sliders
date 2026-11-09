@@ -1,12 +1,15 @@
 # Native Glimmer NF4 candidate
 
 This independent subproject prepares the actual pinned Muse-Glimmer-30B text
-tower for the shared response lifecycle. Its current PG0.9.5 native cohort has
-completed full-state resume, public RAW/OFF validation and a measured128-update
-rate search with independent unused-example confirmation. The
-[preset](presets/pg095-native-nf4-128.json) uses G0.001, D0.018000000000000002
-and bank0.029999999999999995; unused-final error is0.5341646099807267 versus
-OFF1.0. [Measurement scope and evidence](docs/pg095-native-nf4-128-measurement.json).
+tower for the shared response lifecycle. Its PG0.9.5 mechanical update/resume
+and public RAW/OFF evidence remain retained. The completed finished-text RAW32
+comparison now keeps **G0.0001 and G0.001 tied best** at mean ON−OFF gain+1.0
+across two original cases, with fixed D/bank and horizon128; G0.012/G0.036 each
+score0. No unique rate/default change or extra confirmation is required.
+[Current decision and exact options](../LEARNING-RATES.md). The older
+[preset](presets/pg095-native-nf4-128.json) and
+[RAW128 response-SSE measurement](docs/pg095-native-nf4-128-measurement.json)
+remain historical diagnostics, not the finished-output selector.
 
 The root `glimmer_modern` PG0.9.5 v5 CPU fixture uses the same new shared base.
 Prior root v4 and native v1 PG0.9.4/PG801 packets require their original product
@@ -91,8 +94,10 @@ The qualified native path passed frozen host and unhooked OFF parity, full
 native response, real updates, fresh-process exact resume and public RAW
 inference before rate selection. Logit comparisons
 must include this model's output multiplier and tanh softcap; its raw LM head
-alone is not the native logit function. Text/token outputs are optional
-diagnostics and do not select, reject or delay a response-error recommendation.
+alone is not the native logit function. Current LR selection uses only the
+equal-case intended-effect ON−OFF mean in finished text; teacher-response error
+is diagnostic. Reuse existing searches, RAW checkpoints, outputs and scores;
+do not add another confirmation or secondary tiebreak.
 The common optional `lr`, `d_lr_mult`, and
 `prior_lr_mult` preserve baseline G=.012, D=.018, bank=.03; these are inherited
 defaults, not adjusted or recommended native rates.
@@ -121,4 +126,5 @@ used the actual upstream class with 31,232 random parameters: all 40 tensors
 loaded exactly through lazy positioned reads, and native logits matched the
 hidden→LM-head→multiplier→softcap path bitwise. This establishes that software
 seam only. The current pretrained response evidence is recorded separately
-above; generated language quality has not been measured.
+above; the CPU check alone establishes no language effect. The separate
+finished-output comparison has only the two-case scope stated above.

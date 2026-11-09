@@ -8,11 +8,13 @@ checkpoints retain their original environments and are not converted.
 The root `glimmer_modern` package provides the width-12 FP32 CPU response
 fixture. The separate [native NF4 package](native-candidate/README.md) keeps the
 full pinned 30B model's 6656-wide response and explicit continuous domain.
-The native PG0.9.5 cohort now has a measured 128-update learning-rate
-recommendation: **G0.001 / D0.018000000000000002 / bank0.029999999999999995**.
-Its unused four-example RAW error is **0.5341646099807267** versus OFF1.0,
-with an exact independent saved-field audit. See the
-[preset and scope](LEARNING-RATES.md#measured-native-pg095-preset).
+The completed finished-output comparison reuses four saved RAW32 checkpoints
+under the original common128 schedule. **G0.0001 and G0.001 tie best**, each
+with mean intended-effect ON−OFF gain **+1.0** across the two matched cases;
+G0.012 and G0.036 each score0. There is **no unique rate or default change**.
+See [the decision, exact common options and scope](LEARNING-RATES.md).
+The older G0.001/RAW128 teacher-response SSE screen is retained as historical
+diagnostic evidence, not a current text-effect selector.
 
 ```sh
 python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.git@main'
@@ -40,10 +42,13 @@ BF16/NF4 numerical policy, source locks and explicit device/resource admission.
 For its continuous native response use `release-0.9.5` with `continuous`;
 no response projection, truncation or categorical reinterpretation is used.
 
-[Learning-rate controls](LEARNING-RATES.md) include an explicit measured native
-preset; omitted controls retain the inherited defaults. Trials select and independently confirm rates using only
-held-out RAW FP64 equal-example pooled relative SSE. Preservation, language,
-rendering and listening observations are optional diagnostics.
+[Learning-rate controls](LEARNING-RATES.md) expose the exact saved tied options;
+omitted controls retain inherited defaults. Use one score: the equal-case mean
+intended-effect intensity ON minus matched OFF in finished text. Teacher SSE,
+preservation, beauty and confidence are diagnostics, never selectors or
+tiebreaks. Reuse completed searches, saved RAW checkpoints and existing scores;
+no repeated search, rerating or extra confirmation is required. Plain-text and
+Meta/chat interfaces share one base but retain separate conditioning and results.
 
 The historical [PG0.9.4 locks](compatibility/pre-pg095/README.md),
 [original extraction](docs/extraction-provenance.json),
