@@ -58,3 +58,8 @@ The historical [PG0.9.4 locks](compatibility/pre-pg095/README.md),
 The [Meta repository](https://github.com/mikkel/meta-glimmer-particle-slider)
 and its 20 published PG82 controls remain a separate reproduction path with
 original loaders and recipes. New code does not retrain or relabel those weights.
+
+
+## Optional shared explicit fresh initialization
+
+See [the separate Glimmer / Meta Glimmer fresh95 API](FRESH95.md) for one owner-integrated addon with distinct interface/lane identities, authentic completed caches, strict FULL restore and RAW hidden-response inference. Four shared installed synthetic cases do not qualify native NF4 execution or change the measured LR ties.
