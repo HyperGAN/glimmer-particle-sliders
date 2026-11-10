@@ -4,7 +4,7 @@ One separate `glimmer_fresh95` addon serves the `glimmer` and `meta-glimmer` int
 
 ## Installation and boundaries
 
-Use Python 3.12 with genuine installed original owners, exact core0.13.0 Git/wheel provenance and Source closure, published PG0.9.5 and the original HNDL/runtime guards. The CPU owner is `meta-glimmer-modern-response==0.2.0`; the native owner is the separate `glimmer-native-response-candidate==0.2.0` subproject in `native-candidate/`. From the repository root, after preparing the appropriate owner environment:
+Use Python 3.12 with genuine installed original owners, exact VCS-provenance installed core0.13.0 and Source closure, published PG0.9.5 and the original HNDL/runtime guards. The CPU owner is `meta-glimmer-modern-response==0.2.0`; the native owner is the separate `glimmer-native-response-candidate==0.2.0` subproject in `native-candidate/`. From the repository root, after preparing the appropriate owner environment:
 
 ```sh
 python -m pip install --no-deps ./fresh95
