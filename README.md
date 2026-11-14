@@ -1,5 +1,7 @@
 # Glimmer particle sliders
 
+**Calculated memory:** Native NF4 text-response training: **28 GiB GPU / 14 GiB host**, batch 2/128 tokens, checkpointed. Same Muse-Glimmer backbone as the other Glimmer interface. [Full memory ledger and limits](MEMORY.md). These are planning estimates, not measured peaks.
+
 Both current standalone packages use shared core **0.13.0** at
 `3dd672a7f9b8c169daef90fd63e4bb42b9ddc423` and published **ParticleGAN 0.9.5**.
 New training uses fresh protocol identities. Earlier PG0.9.4/PG801 and PG82
