@@ -7,7 +7,7 @@ name = "glimmer-explicit-fresh95"
 version = "0.1.0"
 description = "Explicit cached fresh095 opt-in shared by two Glimmer interfaces"
 requires-python = ">=3.12,<3.13"
-dependencies = ["particlegan==0.9.5", "torch>=2.6,<3"]
+dependencies = ["particlegan==0.10.1", "torch>=2.6,<3"]
 
 [project.optional-dependencies]
 cpu = ["meta-glimmer-modern-response==0.2.0"]
