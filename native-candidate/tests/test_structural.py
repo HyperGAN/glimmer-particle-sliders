@@ -7,8 +7,8 @@ from torch import nn
 from glimmer_native import DOMAIN, PROFILE, WIDTH
 from glimmer_native.native import initialization_rng
 from glimmer_native.provenance import verify_sources
-from particle_sliders.fibo_hndl import HNDLParticleProjection
-from particle_sliders.pg09_audio import require_audio_width
+from glimmer_native.fibo_hndl import HNDLParticleProjection
+from particle_sliders.audio import require_audio_width
 
 
 def test_real_native_width_hndl_projection_and_critic_vjp_cpu():

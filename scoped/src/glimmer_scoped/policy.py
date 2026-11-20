@@ -1,4 +1,4 @@
-"""Public PG095 R2 std1 bank and QR down at the original sqrt5 host RMS."""
+"""Public ParticleGAN R2 std1 bank and QR down at the original sqrt5 host RMS."""
 from dataclasses import dataclass
 from importlib import metadata
 import hashlib,math
@@ -10,7 +10,7 @@ from .util import canonical,source_record
 
 INIT_SHA='3534ff23efa413cdf8b4125b91e0d30671d873b3e2958547d4e744b750454b9b'
 SCHEMA='Glimmer-explicit-std1-R2bank-sqrt5-downQR-zeroUP-othersKEEP-v1'
-MARKER='_glimmer_fresh95_initialization_receipt'
+MARKER='_glimmer_scoped_initialization_receipt'
 
 @dataclass(frozen=True)
 class Construction:
@@ -34,12 +34,13 @@ def seed_for(seed,name):
     return int.from_bytes(hashlib.sha256(f'{PROFILE}:{seed}:{name}'.encode()).digest()[:8],'big')%2**63
 
 def declarations(slider,critic,lane):
-    from particle_sliders.fibo_hndl import HNDLParticleProjection
     from hndl.operators.linear import Linear
     if lane=='cpu-fixture':
         from glimmer_modern.native import Slider,ReadoutCritic
+        from glimmer_modern.fibo_hndl import HNDLParticleProjection
     else:
         from glimmer_native.native import Slider,ReadoutCritic
+        from glimmer_native.fibo_hndl import HNDLParticleProjection
     if type(slider)is not Slider or type(critic)is not ReadoutCritic or not slider.branches:
         raise ValueError('exact original Glimmer HNDL slider and readout required')
     if tuple(slider.particles.shape)!=(128,4):raise ValueError('same original 128x4 bank required')
@@ -81,8 +82,8 @@ def initialize(slider,critic,construction,options,sources):
     if (not isinstance(construction,Construction)or construction.mode!='fresh'or not construction.cohort
             or construction.options_sha256!=hashlib.sha256(canonical(options).encode()).hexdigest()):
         raise ValueError('explicit fresh construction before optimizers required')
-    if metadata.version('particlegan')!='0.9.5'or source_record(pg_init.__file__)['sha256']!=INIT_SHA:
-        raise ValueError('exact public PG095 initializer required')
+    if metadata.version('particlegan')!='0.11.0'or source_record(pg_init.__file__)['sha256']!=INIT_SHA:
+        raise ValueError('exact public ParticleGAN initializer required')
     config=options['config'];rows=declarations(slider,critic,config['lane'])
     before=[tensor_sha(row['parameter'])for row in rows];ids=[id(row['parameter'])for row in rows]
     holder=DeclaredOwned(rows);seeds={'p'+str(i):seed_for(config['seed'],row['name'])for i,row in enumerate(rows)}

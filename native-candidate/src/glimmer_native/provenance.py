@@ -13,7 +13,7 @@ def index(root, prefix="", exclude=()):
 
 def verify_sources():
     import particle_sliders
-    from particle_sliders.fibo_hndl import verified_builder
+    from .fibo_hndl import verified_builder
     root = Path(__file__).parent
     lock_path = root / "source-lock.json"
     lock = json.loads(lock_path.read_text())

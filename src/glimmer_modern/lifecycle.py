@@ -5,8 +5,8 @@ from pathlib import Path
 
 from particle_sliders.inference import InferenceBackend, InferenceBinding, native_identity
 from particle_sliders.lifecycle import Binding, EvaluationRows, SessionConfig
-from particle_sliders.pg095 import ConditionalPG095 as ConditionalPG09, PG_VERSION, PG_SOURCE_PROFILE
-from particle_sliders.pg09_audio import AudioRow, audio_conditions
+from particle_sliders.engine import ConditionalParticleGAN, PG_VERSION, PG_SOURCE_PROFILE
+from particle_sliders.audio import AudioRow, audio_conditions
 from particle_sliders.response import ResponseBackend, ResponseCapabilities
 
 from . import BACKEND_NAME, PROTOCOL, INITIALIZATION_POLICY
@@ -114,7 +114,7 @@ def prepare(options, *, model=None):
         prepared = {key: [native.backend.prepare(row) for row in values] for key, values in rows.items()}
         conditions = audio_conditions(prepared["train"])
         critic = ReadoutCritic(12, conditions.shape[1], seed=seed)
-        game = ConditionalPG09(native, prepared["train"], critic, conditions=conditions,
+        game = ConditionalParticleGAN(native, prepared["train"], critic, conditions=conditions,
             particles=native.slider.particles, response_domain="continuous_vector",
             total_steps=options.get("steps", 4), batch_size=options.get("batch", 2),
             seed=options.get("seed", 7), pg_source_profile=PG_SOURCE_PROFILE, recipe_overrides=rates)

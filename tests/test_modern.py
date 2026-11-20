@@ -17,7 +17,7 @@ from glimmer_modern.lifecycle import BACKEND, INFERENCE, cpu_config
 from glimmer_modern.native import Native, ReadoutCritic, targets
 from particle_sliders.inference import open_inference
 from particle_sliders.lifecycle import CheckpointError, SessionConfig, UnsupportedOperation
-from particle_sliders.pg09 import _hash
+from particle_sliders.engine import _hash
 from particle_sliders.response import open_response
 
 
@@ -41,16 +41,16 @@ def config(tmp_path):
 
 def test_installed_identity_and_dependency_split():
     import glimmer_modern
-    import particle_sliders.pg09 as game
+    import particle_sliders.engine as game
     assert 'site-packages' in str(Path(glimmer_modern.__file__))
-    assert 'site-packages' in inspect.getsourcefile(game.ConditionalPG09)
-    assert importlib.metadata.version('particlegan') == '0.9.5'
+    assert 'site-packages' in inspect.getsourcefile(game.ConditionalParticleGAN)
+    assert importlib.metadata.version('particlegan') == '0.11.0'
     assert importlib.metadata.version('hndl') == '0.10.0'
     assert 'glimmer_slider.upstream' not in sys.modules
     assert 'glimmer_slider.training' not in sys.modules
     from glimmer_modern.provenance import verify_sources
     _, identity = verify_sources()
-    assert identity['core_commit'] == '3dd672a7f9b8c169daef90fd63e4bb42b9ddc423'
+    assert identity['core_commit'] == 'c13890f8e2a1ecf1dc8eb9f2a37f9187cb9fea78'
     assert identity['hypergan_commit'] == '5f368a3770cf5bdae0448995c9f76e29af8049f7'
 
 
@@ -58,7 +58,7 @@ def test_installed_identity_and_dependency_split():
 @pytest.mark.parametrize('shape', [(2,12), (2,3,12)])
 def test_routed_outputs_all_vjps_and_strength(output_width, shape):
     from particle_sliders.routed_projection import TinyParticleProjection
-    from particle_sliders.fibo_hndl import HNDLParticleProjection
+    from glimmer_modern.fibo_hndl import HNDLParticleProjection
     torch.manual_seed(42)
     host = nn.Linear(12, output_width, bias=False).requires_grad_(False)
     twin = deepcopy(host)
@@ -95,7 +95,7 @@ def test_routed_outputs_all_vjps_and_strength(output_width, shape):
 
 
 def test_critic_outputs_vjp_and_second_derivatives():
-    from particle_sliders.pg09_audio import AudioResponseCritic
+    from particle_sliders.audio import AudioResponseCritic
     torch.manual_seed(11)
     old, new = AudioResponseCritic(12,16), ReadoutCritic(12,16)
     with torch.no_grad():
@@ -131,15 +131,13 @@ def test_cpu_config_defaults_to_raw_without_ema(config,tmp_path):
         assert run.checkpoint()['payload']['ema'] == dict(decay=None, values=None)
         expected = run.game.backend.response(ids=ids,strength=.5)
         run.export_inference(artifact)
-        with pytest.raises(ValueError,match='configured EMA'):
+        with pytest.raises(ValueError,match='raw current weights'):
             run.export_inference(selection='ema')
     with open_inference(artifact,operation='response',native_request={'ids':ids}) as inference:
         assert torch.equal(inference.response(ids=ids,strength=.5),expected)
 
 
-def test_shared_updates_exact_resume_ema_raw_and_native_only(config,tmp_path):
-    # Historical opt-in compatibility coverage; cpu_config defaults to RAW only.
-    config = SessionConfig(config.backend,config.cohort,**dict(config.options,ema_decay=.8))
+def test_shared_updates_exact_resume_raw_and_native_only(config,tmp_path):
     before_rng = torch.get_rng_state().clone()
     with open_response(config) as full:
         native = full.game.backend
@@ -158,12 +156,6 @@ def test_shared_updates_exact_resume_ema_raw_and_native_only(config,tmp_path):
         ids = [1,10,12]
         raw = full.evaluate(index=0,split='evaluation',strength=.5)
         full.export_inference(tmp_path/'raw.pt')
-        with torch.no_grad():
-            saved=deepcopy(full.game.network.state_dict())
-            full.game.network.load_state_dict(full.ema.values)
-            ema = native.response(ids=ids,strength=.5)
-            full.game.network.load_state_dict(saved)
-        full.export_inference(tmp_path/'ema.pt',selection='ema')
         full.export(tmp_path/'v1.pt')
     with open_response(config) as split:
         split.train(stop_after=2)
@@ -174,17 +166,17 @@ def test_shared_updates_exact_resume_ema_raw_and_native_only(config,tmp_path):
     # Data-independent native factory cannot call any training constructor.
     Path(config.options['data_file']).unlink()
     import glimmer_modern.lifecycle as product
-    original = product.ConditionalPG09
-    product.ConditionalPG09 = lambda *a,**kw: pytest.fail('inference constructed a game')
+    original = product.ConditionalParticleGAN
+    product.ConditionalParticleGAN = lambda *a,**kw: pytest.fail('inference constructed a game')
     try:
-        for name,expected_value in [('raw',raw),('ema',ema)]:
+        for name,expected_value in [('raw',raw)]:
             with open_inference(tmp_path/(name+'.pt'),operation='response',native_request={'ids':ids}) as inference:
                 assert torch.equal(inference.response(ids=ids,strength=.5),expected_value)
                 assert not hasattr(inference,'game')
                 with pytest.raises(UnsupportedOperation):
                     inference.train()
     finally:
-        product.ConditionalPG09 = original
+        product.ConditionalParticleGAN = original
     assert torch.equal(before_rng,torch.get_rng_state())
 
 
@@ -275,9 +267,6 @@ def test_invalid_restore_is_transactional_and_artifact_split(config):
 
 @pytest.mark.parametrize('corruption',['late-sampler','ema-shape','bank-alias'])
 def test_rehashed_invalid_state_cannot_partially_mutate_adapter(config,corruption):
-    if corruption == 'ema-shape':
-        # Explicit historical compatibility input, not a current helper default.
-        config = SessionConfig(config.backend,config.cohort,**dict(config.options,ema_decay=.8))
     with open_response(config) as run:
         run.step()
         packet=run.checkpoint()
@@ -287,7 +276,7 @@ def test_rehashed_invalid_state_cannot_partially_mutate_adapter(config,corruptio
         if corruption=='late-sampler':
             bad['payload']['game']['row_cursors']['d']=-1
         elif corruption=='ema-shape':
-            bad['payload']['ema']['values']['weights.0']=torch.zeros(1)
+            bad['payload']['ema']['values']={'weights.0':torch.zeros(1)}
         else:
             # Break the intentionally shared storage instead of mutating both aliases.
             bad['payload']['game']['prior']['z']=bad['payload']['game']['prior']['z']+1.
@@ -424,9 +413,9 @@ def test_invalid_history_and_overlap_refused_before_mutation(config):
 
 
 def test_shared_wide_vector_guard_is_unchanged():
-    from particle_sliders.pg09 import validate_pg09_domain
+    from particle_sliders.engine import validate_engine_domain
     with pytest.raises(ValueError,match='width >=170'):
-        validate_pg09_domain((1,1024),response_domain='continuous_vector')
+        validate_engine_domain((1,1024),response_domain='continuous_vector')
 
 
 def test_low_level_native_width_gate_precedes_source_or_attachment(monkeypatch):
@@ -580,7 +569,7 @@ def test_initial_game_bytes_independent_of_caller_rng_and_seed_positive_control(
             selected=cpu_config(config.options['data_file'],seed=run_seed,model_seed=41)
             with open_response(selected) as run:
                 native=run.game.backend
-                assert run.config.cohort==PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-pg095-v5-cpu'
+                assert run.config.cohort==PROTOCOL=='glimmer-modern-final-hidden-hg-hndl-engine-v5-cpu'
                 assert native.metadata()['initialization']==dict(policy=INITIALIZATION_POLICY,seed=run_seed)
                 inference_config=run.binding.inference.configuration
                 assert inference_config['initialization_policy']==INITIALIZATION_POLICY

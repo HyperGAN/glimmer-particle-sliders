@@ -8,8 +8,8 @@ from types import SimpleNamespace
 
 import torch
 from torch import nn
-from particle_sliders.fibo_hndl import HNDLParticleProjection
-from particle_sliders.pg09_audio import ARLastHiddenResponseAdapter
+from .fibo_hndl import HNDLParticleProjection
+from particle_sliders.audio import ARLastHiddenResponseAdapter
 from particle_sliders.lifecycle import native_cleanup
 
 from . import DOMAIN, LAYERS, PROFILE, PROTOCOL, WIDTH

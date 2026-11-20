@@ -2,11 +2,11 @@
 from dataclasses import fields
 from pathlib import Path
 import torch
-from particle_sliders.pg09_audio import AudioRow,PreparedAudioResponse,audio_conditions
+from particle_sliders.audio import AudioRow,PreparedAudioResponse,audio_conditions
 from . import PROFILE,ownership
 from .util import canonical,equal,read_packet,save_packet,source_record,tree
 
-SCHEMA='Glimmer-shared-completed-native-PreparedAudioResponses-fresh95-v1'
+SCHEMA='Glimmer-shared-completed-native-PreparedAudioResponses-scoped-v1'
 
 def file_record(value):
     if (not isinstance(value,dict)or set(value)!={'path','bytes','sha256'}

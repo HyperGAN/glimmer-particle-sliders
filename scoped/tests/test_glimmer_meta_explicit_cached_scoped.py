@@ -6,13 +6,13 @@ and synthetic completed fields. No old test/cache/teacher/tokenizer is used.
 from copy import deepcopy
 import math
 import pytest,torch
-from particle_sliders.pg09_audio import AudioRow,PreparedAudioResponse,ARLastHiddenResponseAdapter
+from particle_sliders.audio import AudioRow,PreparedAudioResponse,ARLastHiddenResponseAdapter
 from glimmer_modern import lifecycle as original
 from glimmer_modern.fixture import make_model
 from glimmer_modern.native import model_identity
-from glimmer_fresh95 import open_training,open_inference,save_prepared_cache,file_pin,Checkpoint
-from glimmer_fresh95 import api,cache,policy,ownership
-from glimmer_fresh95.util import equal,read_packet,save_packet
+from glimmer_scoped import open_training,open_inference,save_prepared_cache,file_pin,Checkpoint
+from glimmer_scoped import api,cache,policy,ownership
+from glimmer_scoped.util import equal,read_packet,save_packet
 
 def component_factory(request):
     assert request['operation']in('fresh','resume','inference')
@@ -34,7 +34,7 @@ def staged(tmp_path,monkeypatch):
     for interface in('glimmer','meta-glimmer'):
         conditioning=deepcopy(api.META_CONDITIONING if interface=='meta-glimmer'else api.GLIMMER_CONDITIONING)
         config=dict(interface=interface,lane='cpu-fixture',conditioning=conditioning,model_identity=identity,width=12,
-            model_seed=41,seed=7,steps=3,batch=2,ema_decay=None,pg_version='0.9.5',pg_source_profile='release-0.9.5',
+            model_seed=41,seed=7,steps=3,batch=2,ema_decay=None,pg_version='0.11.0',pg_source_profile='release-0.11.0',
             penalty_input_domain='auto',base_precision='float32',lr=.001,d_lr_mult=18.,prior_lr_mult=30.)
         origins=[dict(scope='synthetic-software-only',complete_prepared_output=True,synthetic_row=i,
             interface=interface,lane='cpu-fixture',conditioning=conditioning,
@@ -52,7 +52,7 @@ def opened(staged,interface,name):
     return open_training(directory=root/name,mode='fresh',**options[interface])
 
 def test_new_both_interfaces_same_Parameters_R2bank_sqrt5down_zeroUP_KEEP_before_optimizers(staged,monkeypatch):
-    initialize=policy.initialize;game=api.ConditionalPG095;seen=[]
+    initialize=policy.initialize;game=api.ConditionalParticleGAN;seen=[]
     def initialize_spy(slider,critic,*args):
         ids=[id(p)for p in slider.parameters()]+[id(p)for p in critic.parameters()]
         before=deepcopy(critic.state_dict());receipt=initialize(slider,critic,*args)
@@ -67,7 +67,7 @@ def test_new_both_interfaces_same_Parameters_R2bank_sqrt5down_zeroUP_KEEP_before
         assert kwargs['particles']is backend.backend.slider.particles is backend.network.particles
         assert kwargs['response_scale']==1.0
         return game(backend,*args,**kwargs)
-    monkeypatch.setattr(policy,'initialize',initialize_spy);monkeypatch.setattr(api,'ConditionalPG095',construct)
+    monkeypatch.setattr(policy,'initialize',initialize_spy);monkeypatch.setattr(api,'ConditionalParticleGAN',construct)
     for interface in('glimmer','meta-glimmer'):
         with opened(staged,interface,'before-'+interface)as owner:
             assert owner.game.completed_steps==0 and owner.game.prior is not None
@@ -103,7 +103,7 @@ def test_new_R2_quantile_sqrt5_Gram_determinism_RNG_frozen_base_both_interfaces(
 
 def test_new_ONE_update_whole_FULL_RAW_skip_and_cross_interface_lane_refusal(staged,monkeypatch):
     options,root,base=staged
-    initializer=policy.initialize;game=api.ConditionalPG095;cache_loader=api.load_cache
+    initializer=policy.initialize;game=api.ConditionalParticleGAN;cache_loader=api.load_cache
     with opened(staged,'glimmer','one-update')as trained:
         trained.update()  # The ONE total new software update, common base only.
         full=trained.save(root/'FULL1.pt');raw=trained.export(root/'RAW1.pt')
@@ -123,7 +123,7 @@ def test_new_ONE_update_whole_FULL_RAW_skip_and_cross_interface_lane_refusal(sta
     monkeypatch.setattr(policy,'initialize',forbidden)
     with open_training(directory=root/'resume',mode='resume',resume=full,**options['glimmer'])as resumed:
         assert resumed.inherited_steps==1 and equal(state,resumed.game.state_dict())
-    monkeypatch.setattr(api,'load_cache',forbidden);monkeypatch.setattr(api,'ConditionalPG095',forbidden)
+    monkeypatch.setattr(api,'load_cache',forbidden);monkeypatch.setattr(api,'ConditionalParticleGAN',forbidden)
     with open_inference(raw,interface='glimmer',lane='cpu-fixture',component_factory=component_factory,owner_admission=lambda request:True)as inferred:
         assert not hasattr(inferred,'game')and not hasattr(inferred,'critic')
         assert equal(network,inferred.network.state_dict())
@@ -132,9 +132,9 @@ def test_new_ONE_update_whole_FULL_RAW_skip_and_cross_interface_lane_refusal(sta
         assert equal(base,inferred.model.state_dict())
     # A Meta RAW from the same common implementation is independently bound;
     # no second update or old evidence is required to check its reload boundary.
-    monkeypatch.setattr(policy,'initialize',initializer);monkeypatch.setattr(api,'load_cache',cache_loader);monkeypatch.setattr(api,'ConditionalPG095',game)
+    monkeypatch.setattr(policy,'initialize',initializer);monkeypatch.setattr(api,'load_cache',cache_loader);monkeypatch.setattr(api,'ConditionalParticleGAN',game)
     with opened(staged,'meta-glimmer','meta-zero-raw')as meta:meta_raw=meta.export(root/'Meta-RAW0.pt')
-    monkeypatch.setattr(policy,'initialize',forbidden);monkeypatch.setattr(api,'load_cache',forbidden);monkeypatch.setattr(api,'ConditionalPG095',forbidden)
+    monkeypatch.setattr(policy,'initialize',forbidden);monkeypatch.setattr(api,'load_cache',forbidden);monkeypatch.setattr(api,'ConditionalParticleGAN',forbidden)
     with open_inference(meta_raw,interface='meta-glimmer',lane='cpu-fixture',component_factory=component_factory,owner_admission=lambda request:True)as meta:
         assert meta.completed_steps==0 and meta.config['conditioning']==api.META_CONDITIONING
 
