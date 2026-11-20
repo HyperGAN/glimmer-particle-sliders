@@ -127,7 +127,7 @@ def audit_loaded_model(model, assets, runtime):
     projections, quantized = {}, {}
     for name, module in model.named_modules():
         if (getattr(module, "_hf_hook", None) is not None or getattr(module, "gradient_checkpointing", False)
-                or getattr(module, "_pg09_scale_checkpoint", False)
+                or getattr(module, "_adapter_scale_checkpoint", False)
                 or "forward" in vars(module) or getattr(module, "_compiled_call_impl", None) is not None
                 or any(getattr(module, key, None) for key in ("_forward_hooks", "_forward_pre_hooks", "_backward_hooks"))):
             raise ValueError("preexisting native hook/override/offload is unsupported: " + name)

@@ -2,8 +2,8 @@
 
 **Calculated memory:** Native NF4 text-response training: **28 GiB GPU / 14 GiB host**, batch 2/128 tokens, checkpointed. Same Muse-Glimmer backbone as the other Glimmer interface. [Full memory ledger and limits](MEMORY.md). These are planning estimates, not measured peaks.
 
-Both current standalone packages use shared core **0.13.0** at
-`3dd672a7f9b8c169daef90fd63e4bb42b9ddc423` and published **ParticleGAN 0.9.5**.
+Both current standalone packages use shared core **0.15.1** at
+`c13890f8e2a1ecf1dc8eb9f2a37f9187cb9fea78` and published **ParticleGAN 0.11.0**.
 New training uses fresh protocol identities. Earlier PG0.9.4/PG801 and PG82
 checkpoints retain their original environments and are not converted.
 
@@ -41,7 +41,7 @@ to its original source and does not guide current runs.
 The default root package admits only its synthetic CPU fixture; it does not
 load pretrained Glimmer. The native package requires its exact model assets,
 BF16/NF4 numerical policy, source locks and explicit device/resource admission.
-For its continuous native response use `release-0.9.5` with `continuous`;
+For its continuous native response use `release-0.11.0` with `continuous`;
 no response projection, truncation or categorical reinterpretation is used.
 
 [Learning-rate controls](LEARNING-RATES.md) expose the exact saved tied options;
@@ -56,7 +56,7 @@ The historical [PG0.9.4 locks](compatibility/pre-pg095/README.md),
 [original extraction](docs/extraction-provenance.json),
 [core migration](docs/core-migration.json) and
 [LR migration](docs/lr-migration.json) retain their original bytes.
-[PG0.9.5 migration](docs/pg095-migration.json) records the new source cohort.
+[PG0.11.0 migration](docs/pg095-migration.json) records the new source cohort.
 The [Meta repository](https://github.com/mikkel/meta-glimmer-particle-slider)
 and its 20 published PG82 controls remain a separate reproduction path with
 original loaders and recipes. New code does not retrain or relabel those weights.
@@ -64,4 +64,4 @@ original loaders and recipes. New code does not retrain or relabel those weights
 
 ## Optional shared explicit fresh initialization
 
-See [the separate Glimmer / Meta Glimmer fresh95 API](FRESH95.md) for one owner-integrated addon with distinct interface/lane identities, authentic completed caches, strict FULL restore and RAW hidden-response inference. Four shared installed synthetic cases do not qualify native NF4 execution or change the measured LR ties.
+See [the separate Glimmer / Meta Glimmer scoped API](SCOPED.md) for one owner-integrated addon with distinct interface/lane identities, authentic completed caches, strict FULL restore and RAW hidden-response inference. Four shared installed synthetic cases do not qualify native NF4 execution or change the measured LR ties.

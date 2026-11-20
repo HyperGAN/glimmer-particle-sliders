@@ -5,8 +5,8 @@ import base64,csv,hashlib,io
 from .baseline import MODERN,NATIVE
 from .util import source_record
 
-MARKER='_explicit_shared_glimmer_fresh95_owner'
-ATTRS=('forward','_glimmer_modern','_glimmer_native','_pg09_scale_checkpoint',
+MARKER='_explicit_shared_glimmer_scoped_owner'
+ATTRS=('forward','_glimmer_modern','_glimmer_native','_adapter_scale_checkpoint',
        'gradient_checkpointing','_gradient_checkpointing_func')
 
 def distribution(name,version):
@@ -40,20 +40,20 @@ def guard(lane):
     else:raise ValueError('explicit original lane required')
     record_guard(distribution(name,version),original.__name__,Path(original.__file__).absolute().parent,pins)
     _,source=verify_sources()  # Original recursive core577; native also product14, unmodified.
-    if metadata.version('particlegan')!='0.9.5'or source_record(pg_init.__file__)['sha256']!=INIT_SHA:
-        raise RuntimeError('exact public PG095 initializer required')
+    if metadata.version('particlegan')!='0.11.0'or source_record(pg_init.__file__)['sha256']!=INIT_SHA:
+        raise RuntimeError('exact public ParticleGAN initializer required')
     own=Path(__file__).absolute().parent
-    record_guard(distribution('glimmer-explicit-fresh95','0.1.0'),'glimmer_fresh95',own,
+    record_guard(distribution('glimmer-explicit-scoped','0.1.0'),'glimmer_scoped',own,
         {p.name:source_record(p)for p in sorted(own.glob('*.py'))})
     return dict(lane=lane,original_distribution=name,original_version=version,original_source=source,
         original_core_and_native_recursive_guards=True,addon_genuine_RECORD=True)
 
 def sources(lane):
     import importlib
-    from particle_sliders import pg09,pg095,pg09_audio,pg09_backends,lifecycle,fibo_hndl
+    from particle_sliders import engine,audio,backends,lifecycle
     prefix='glimmer_modern'if lane=='cpu-fixture'else'glimmer_native'
     modules=[importlib.import_module(prefix+'.'+name)for name in('native','provenance','learning_rates')]
-    modules.extend((pg09,pg095,pg09_audio,pg09_backends,lifecycle,fibo_hndl))
+    modules.extend((engine,audio,backends,lifecycle))
     return dict(lane=lane,own={p.name:source_record(p)for p in sorted(Path(__file__).absolute().parent.glob('*.py'))},
         original={m.__name__:source_record(m.__file__)for m in modules})
 

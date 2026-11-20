@@ -1,7 +1,7 @@
 # Native Glimmer NF4 candidate
 
 This independent subproject prepares the actual pinned Muse-Glimmer-30B text
-tower for the shared response lifecycle. Its PG0.9.5 mechanical update/resume
+tower for the shared response lifecycle. Its PG0.11.0 mechanical update/resume
 and public RAW/OFF evidence remain retained. The completed finished-text RAW32
 comparison now keeps **G0.0001 and G0.001 tied best** at mean ON−OFF gain+1.0
 across two original cases, with fixed D/bank and horizon128; G0.012/G0.036 each
@@ -11,12 +11,12 @@ score0. No unique rate/default change or extra confirmation is required.
 [RAW128 response-SSE measurement](docs/pg095-native-nf4-128-measurement.json)
 remain historical diagnostics, not the finished-output selector.
 
-The root `glimmer_modern` PG0.9.5 v5 CPU fixture uses the same new shared base.
+The root `glimmer_modern` PG0.11.0 v5 CPU fixture uses the same new shared base.
 Prior root v4 and native v1 PG0.9.4/PG801 packets require their original product
 commits and environments; [archived locks](../compatibility/pre-pg095/README.md)
 retain those identities. The current package is0.2.0 with a fresh
 `glimmer-native6656-nf4-hg-hndl-pg095-continuous-v2` protocol. Existing native
-mechanical receipts retain their original source scope; current PG0.9.5 evidence
+mechanical receipts retain their original source scope; current PG0.11.0 evidence
 is recorded in the measurement linked above.
 
 ## Exact candidate route
@@ -29,9 +29,9 @@ python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.
 ```
 
 This installs the distinct `glimmer-native` response/inference backend. Its
-core is `3dd672a7f9b8c169daef90fd63e4bb42b9ddc423` (core0.13.0), with the
-published `particlegan==0.9.5` dependency. The explicit
-`release-0.9.5` / `continuous` pair is mandatory for the6656-wide native response.
+core is `c13890f8e2a1ecf1dc8eb9f2a37f9187cb9fea78` (core0.15.1), with the
+published `particlegan==0.11.0` dependency. The explicit
+`release-0.11.0` / `continuous` pair is mandatory for the6656-wide native response.
 The automatic domain setting retains its width gates. The old PG801 source
 profile is not accepted as an alias, and old checkpoints cannot resume here.
 
@@ -119,7 +119,7 @@ inference identities are refused before reconstructing the model.
 The actual `from_pretrained` constructor runs in a scoped RNG context with
 declared loader seed 41, preserving the external CPU and only owned visible
 CUDA generator states on success or failure. It never seeds other GPUs.
-Actual PG0.9.5/domain/width admission precedes model or CUDA allocation.
+Actual PG0.11.0/domain/width admission precedes model or CUDA allocation.
 
 A separate [small CPU software check](docs/small-native-loader-readout-v1.json)
 used the actual upstream class with 31,232 random parameters: all 40 tensors

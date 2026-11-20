@@ -3,13 +3,13 @@ from contextlib import contextmanager
 from copy import deepcopy
 from pathlib import Path
 import hashlib,math,torch
-from particle_sliders.pg095 import ConditionalPG095
+from particle_sliders.engine import ConditionalParticleGAN
 from . import PROFILE,ownership,policy
 from .cache import load_cache,to_device
 from .util import canonical,equal,new_directory,read_packet,save_packet,write_json
 
-FULL_SCHEMA='Glimmer-shared-explicit-cached-fresh95-FULL-v1'
-RAW_SCHEMA='Glimmer-shared-explicit-cached-fresh95-RAW-v1'
+FULL_SCHEMA='Glimmer-shared-explicit-cached-scoped-FULL-v1'
+RAW_SCHEMA='Glimmer-shared-explicit-cached-scoped-RAW-v1'
 META_CONDITIONING=dict(protocol='original-Meta-chat-role-paired-token-v1',original_Meta_chat_roles=True,
     final_neutral_roles=['user'],final_positive_roles=['system','user'],final_history=[],reasoning_strength='low',
     add_generation_prompt=True,token_limit=128,truncation=False)
@@ -27,7 +27,7 @@ def configuration(value):
         raise ValueError('distinct explicit Glimmer or Meta interface required')
     conditioning=META_CONDITIONING if value['interface']=='meta-glimmer'else GLIMMER_CONDITIONING
     if value.get('conditioning')!=conditioning:raise ValueError('original interface conditioning protocol differs')
-    if(value['ema_decay']is not None or value['pg_version']!='0.9.5'or value['pg_source_profile']!='release-0.9.5'
+    if(value['ema_decay']is not None or value['pg_version']!='0.11.0'or value['pg_source_profile']!='release-0.11.0'
             or value['width']!=(6656 if native else 12)or value['base_precision']!=('bfloat16'if native else'float32')
             or value['penalty_input_domain']!=('continuous'if native else'auto')):
         raise ValueError('exact original lane geometry/precision/PG profile and RAW/noEMA required')
@@ -133,7 +133,7 @@ class Training(NativeOwner):
                 if mode=='fresh'else deepcopy(packet['initialization']))
             self.backend=ReceiptBackend(self.native,self.initialization,self.sources,self.cache_identity,self.config)
             device='cuda:0'if self.native_lane else'cpu'
-            self.game=ConditionalPG095(self.backend,to_device(prepared,device),self.critic,conditions=conditions.to(device),
+            self.game=ConditionalParticleGAN(self.backend,to_device(prepared,device),self.critic,conditions=conditions.to(device),
                 particles=self.native.slider.particles,response_domain='continuous_vector',response_scale=1.0,
                 total_steps=self.config['steps'],batch_size=self.config['batch'],seed=self.config['seed'],
                 pg_source_profile=self.config['pg_source_profile'],penalty_input_domain=self.config['penalty_input_domain'],

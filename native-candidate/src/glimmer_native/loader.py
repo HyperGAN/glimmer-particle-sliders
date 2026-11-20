@@ -9,7 +9,7 @@ from .contract import audit_loaded_model, require_admission, runtime_sources
 
 def load_local(snapshot, *, expected_gpu_uuid):
     # Every CPU/source/asset refusal precedes CUDA/model allocation.
-    from particle_sliders.pg09_audio import require_audio_width
+    from particle_sliders.audio import require_audio_width
     from . import DOMAIN, PROFILE, WIDTH
     from .numerics import loader_initialization, numerical_policy, require_policy_identity
     require_audio_width(WIDTH, pg_source_profile=PROFILE, penalty_input_domain=DOMAIN)

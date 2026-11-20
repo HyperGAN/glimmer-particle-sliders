@@ -181,7 +181,7 @@ def test_old_inference_numerics_refused_before_assets_or_model(strict_numerics, 
 def test_actual_pg_source_refusal_precedes_loader_and_cuda(monkeypatch):
     import glimmer_native
     import glimmer_native.loader as loader
-    from particle_sliders.pg09 import PG_SOURCE_PROFILE
+    from particle_sliders.engine import PG_SOURCE_PROFILE
     monkeypatch.setattr(glimmer_native, "PROFILE", PG_SOURCE_PROFILE)
     monkeypatch.setattr(loader, "inspect_snapshot", lambda *a, **kw: pytest.fail("assets touched before PG refusal"))
     monkeypatch.setattr(loader, "require_admission", lambda *a, **kw: pytest.fail("CUDA admission reached"))

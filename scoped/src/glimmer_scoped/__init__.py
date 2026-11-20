@@ -1,5 +1,5 @@
 """Explicit additional profile; original Glimmer/Meta entrypoints are unchanged."""
-PROFILE='glimmer-shared-explicit-cached-fresh95-v1'
+PROFILE='glimmer-shared-explicit-cached-scoped-v1'
 from .api import Training as open_training,Inference as open_inference
 from .cache import save_prepared_cache
 from .util import Checkpoint,file_pin

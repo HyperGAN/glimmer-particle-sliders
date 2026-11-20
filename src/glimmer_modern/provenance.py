@@ -7,7 +7,7 @@ from pathlib import Path
 
 def verify_sources():
     import particle_sliders
-    from particle_sliders.fibo_hndl import verified_builder
+    from .fibo_hndl import verified_builder
     lock = json.loads(Path(__file__).with_name("source-lock.json").read_text())
     dependency = importlib.metadata.distribution("particle-sliders-core")
     origin = json.loads(dependency.read_text("direct_url.json") or "{}")
@@ -26,6 +26,12 @@ def verify_sources():
                 actual[package + "/" + str(path.relative_to(root))] = hashlib.sha256(path.read_bytes()).hexdigest()
     if actual != lock["core_sources"]:
         raise ValueError("installed shared-core source differs; use the original cohort")
+    local = Path(__file__).parent
+    product = {str(path.relative_to(local)): hashlib.sha256(path.read_bytes()).hexdigest()
+               for path in local.rglob('*') if path.is_file()
+               and path.name != 'source-lock.json' and '__pycache__' not in path.parts}
+    if product != lock['product_sources']:
+        raise ValueError("installed Glimmer source differs from the current product lock")
     builder, identity = verified_builder()
     return builder, dict(identity, core_commit=lock["core_commit"],
         core_lock_sha256=hashlib.sha256(Path(__file__).with_name("source-lock.json").read_bytes()).hexdigest())

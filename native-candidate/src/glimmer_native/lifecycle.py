@@ -6,8 +6,8 @@ from pathlib import Path
 
 from particle_sliders.inference import InferenceBackend, InferenceBinding, native_identity
 from particle_sliders.lifecycle import Binding, EvaluationRows, SessionConfig
-from particle_sliders.pg095 import ConditionalPG095 as ConditionalPG09, PG_VERSION
-from particle_sliders.pg09_audio import AudioRow, audio_conditions
+from particle_sliders.engine import ConditionalParticleGAN, PG_VERSION
+from particle_sliders.audio import AudioRow, audio_conditions
 from particle_sliders.response import ResponseBackend, ResponseCapabilities
 
 from . import BACKEND_NAME, DOMAIN, EXECUTION, PROFILE, PROTOCOL, WIDTH
@@ -78,7 +78,7 @@ def prepare(options):
             for row in values] for split, values in rows.items()}
         conditions = audio_conditions(prepared["train"])
         critic = ReadoutCritic(conditions.shape[1], seed=options.get("seed", 7))
-        game = ConditionalPG09(native, prepared["train"], critic, conditions=conditions,
+        game = ConditionalParticleGAN(native, prepared["train"], critic, conditions=conditions,
             particles=native.particles, response_domain="continuous_vector",
             total_steps=options.get("steps", 64), batch_size=options.get("batch", 2), seed=options.get("seed", 7),
             pg_source_profile=PROFILE, penalty_input_domain=DOMAIN, recipe_overrides=rates(options))
@@ -101,7 +101,7 @@ def validate_inference(options, spec):
     if set(spec.configuration) != {"execution_profile", "pg_source_profile", "penalty_input_domain", "base_precision", "seed"}:
         raise ValueError("native inference profile fields differ")
     configuration(spec.configuration)
-    from particle_sliders.pg09_audio import require_audio_width
+    from particle_sliders.audio import require_audio_width
     from .numerics import require_policy_identity
     require_audio_width(WIDTH, pg_source_profile=PROFILE, penalty_input_domain=DOMAIN)
     _, source = verify_sources()

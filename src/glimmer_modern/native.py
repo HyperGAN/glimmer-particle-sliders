@@ -8,9 +8,9 @@ import re
 
 import torch
 from torch import nn
-from particle_sliders.fibo_hndl import HNDLParticleProjection
+from .fibo_hndl import HNDLParticleProjection
 from particle_sliders.lifecycle import native_cleanup
-from particle_sliders.pg09_audio import ARLastHiddenResponseAdapter
+from particle_sliders.audio import ARLastHiddenResponseAdapter
 
 from . import PROTOCOL, INITIALIZATION_POLICY
 from .initialization import initialization_rng
@@ -74,7 +74,7 @@ def targets(model):
             raise ValueError("preexisting native instance override is unsupported: " + name)
         if any(getattr(module, key, None) for key in HOOKS):
             raise ValueError("preexisting native module hook is unsupported: " + name)
-        if getattr(module, "gradient_checkpointing", False) or hasattr(module, "_pg09_scale_checkpoint"):
+        if getattr(module, "gradient_checkpointing", False) or hasattr(module, "_adapter_scale_checkpoint"):
             raise ValueError("preexisting native checkpoint hook is unsupported: " + name)
     if any(getattr(p, "_backward_hooks", None) or getattr(p, "_post_accumulate_grad_hooks", None)
            for p in model.parameters()):
