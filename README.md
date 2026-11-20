@@ -25,7 +25,7 @@ python -m pip install 'git+https://github.com/HyperGAN/glimmer-particle-sliders.
 Use a fresh environment. The installed product pins the exact shared-core Git
 commit; its source guard checks the complete installed core inventory and
 actual immutable VCS origin. Its new CPU protocol is
-`glimmer-modern-final-hidden-hg-hndl-pg095-v5-cpu`. Native installation uses the
+`glimmer-modern-final-hidden-hg-hndl-engine-v5-cpu`. Native installation uses the
 separate subdirectory and its own response/inference backend.
 
 The shared lifecycle owns updates, losses, penalties, optimizers, full-state

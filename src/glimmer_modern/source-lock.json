@@ -78,6 +78,6 @@
     "readout.hndl": "b9fe063e244b23f8432872f7f0a8128993432694a753d38d5919f4c63d2d9209"
   },
   "product_sources_index_sha256": "9ecb4bc67c6f3d1ce56f78c35a2b53a990a94d9a3f514f4ddd3815e5ca964ba1",
-  "schema": "glimmer-core-recursive-source-data-lock-pg095-v3",
+  "schema": "glimmer-core-recursive-source-data-lock-engine-v3",
   "status": "Pinned core0.13/officialPG0.9.5; newCPUcohort only, native qualification is separate"
 }
