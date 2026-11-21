@@ -4,7 +4,7 @@ One separate `glimmer_scoped` addon serves the `glimmer` and `meta-glimmer` inte
 
 ## Installation and boundaries
 
-Use Python 3.12 with genuine installed original owners, exact VCS-provenance installed core0.15.1 and Source closure, published PG0.11.0 and the original HNDL/runtime guards. The CPU owner is `meta-glimmer-modern-response==0.2.0`; the native owner is the separate `glimmer-native-response-candidate==0.2.0` subproject in `native-candidate/`. From the repository root, after preparing the appropriate owner environment:
+Use Python 3.12 with genuine installed original owners, exact VCS-provenance installed core0.15.2 and Source closure, published PG0.11.1 and the original HNDL/runtime guards. The CPU owner is `meta-glimmer-modern-response==0.2.0`; the native owner is the separate `glimmer-native-response-candidate==0.2.0` subproject in `native-candidate/`. From the repository root, after preparing the appropriate owner environment:
 
 ```sh
 python -m pip install --no-deps ./scoped
@@ -59,7 +59,7 @@ Configuration requires `interface`, `lane`, `conditioning`, `model_identity`, `w
 
 ## Initialization and state
 
-Fresh is an explicit new cohort selected before components. The same original down Parameters receive public PG0.11.0 QR at the declared `kaiming_uniform_(a=sqrt(5))` variance `1/(3*fan_in)`. The same 128×4 bank receives R2Normal(0,1) low-discrepancy Gaussian quantiles, not matrix QR. Rank8/alpha8, zero-UP, router/bridge and critic constructor laws remain unchanged. A durable receipt is written before optimizer construction. No base weight or original Parameter identity is replaced.
+Fresh is an explicit new cohort selected before components. The same original down Parameters receive public PG0.11.1 QR at the declared `kaiming_uniform_(a=sqrt(5))` variance `1/(3*fan_in)`. The same 128×4 bank receives R2Normal(0,1) low-discrepancy Gaussian quantiles, not matrix QR. Rank8/alpha8, zero-UP, router/bridge and critic constructor laws remain unchanged. A durable receipt is written before optimizer construction. No base weight or original Parameter identity is replaced.
 
 Strict FULL restore binds the exact new source/configuration/interface/lane/cache/cohort and restores network, bank, critic, optimizer histories, cursors and RNG, without fresh initialization or replayed work. RAW skips cache, critic/game/optimizers and fresh initialization; the receiving caller must state the matching role and lane. Old FULL/RAW is not converted. Use `ema_decay=None`; exports and inference use raw weights, with scalar optimizer statistics unchanged.
 

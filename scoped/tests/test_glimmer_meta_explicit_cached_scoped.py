@@ -34,7 +34,7 @@ def staged(tmp_path,monkeypatch):
     for interface in('glimmer','meta-glimmer'):
         conditioning=deepcopy(api.META_CONDITIONING if interface=='meta-glimmer'else api.GLIMMER_CONDITIONING)
         config=dict(interface=interface,lane='cpu-fixture',conditioning=conditioning,model_identity=identity,width=12,
-            model_seed=41,seed=7,steps=3,batch=2,ema_decay=None,pg_version='0.11.0',pg_source_profile='release-0.11.0',
+            model_seed=41,seed=7,steps=3,batch=2,ema_decay=None,pg_version='0.11.1',pg_source_profile='release-0.11.1',
             penalty_input_domain='auto',base_precision='float32',lr=.001,d_lr_mult=18.,prior_lr_mult=30.)
         origins=[dict(scope='synthetic-software-only',complete_prepared_output=True,synthetic_row=i,
             interface=interface,lane='cpu-fixture',conditioning=conditioning,

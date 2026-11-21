@@ -82,7 +82,7 @@ def initialize(slider,critic,construction,options,sources):
     if (not isinstance(construction,Construction)or construction.mode!='fresh'or not construction.cohort
             or construction.options_sha256!=hashlib.sha256(canonical(options).encode()).hexdigest()):
         raise ValueError('explicit fresh construction before optimizers required')
-    if metadata.version('particlegan')!='0.11.0'or source_record(pg_init.__file__)['sha256']!=INIT_SHA:
+    if metadata.version('particlegan')!='0.11.1'or source_record(pg_init.__file__)['sha256']!=INIT_SHA:
         raise ValueError('exact public ParticleGAN initializer required')
     config=options['config'];rows=declarations(slider,critic,config['lane'])
     before=[tensor_sha(row['parameter'])for row in rows];ids=[id(row['parameter'])for row in rows]

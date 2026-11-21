@@ -44,13 +44,13 @@ def test_installed_identity_and_dependency_split():
     import particle_sliders.engine as game
     assert 'site-packages' in str(Path(glimmer_modern.__file__))
     assert 'site-packages' in inspect.getsourcefile(game.ConditionalParticleGAN)
-    assert importlib.metadata.version('particlegan') == '0.11.0'
+    assert importlib.metadata.version('particlegan') == '0.11.1'
     assert importlib.metadata.version('hndl') == '0.10.0'
     assert 'glimmer_slider.upstream' not in sys.modules
     assert 'glimmer_slider.training' not in sys.modules
     from glimmer_modern.provenance import verify_sources
     _, identity = verify_sources()
-    assert identity['core_commit'] == 'c13890f8e2a1ecf1dc8eb9f2a37f9187cb9fea78'
+    assert identity['core_commit'] == 'ec1161f5d74481be3540cb0dfa63d0e8f8b54e90'
     assert identity['hypergan_commit'] == '5f368a3770cf5bdae0448995c9f76e29af8049f7'
 
 

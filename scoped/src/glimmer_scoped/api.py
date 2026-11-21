@@ -27,7 +27,7 @@ def configuration(value):
         raise ValueError('distinct explicit Glimmer or Meta interface required')
     conditioning=META_CONDITIONING if value['interface']=='meta-glimmer'else GLIMMER_CONDITIONING
     if value.get('conditioning')!=conditioning:raise ValueError('original interface conditioning protocol differs')
-    if(value['ema_decay']is not None or value['pg_version']!='0.11.0'or value['pg_source_profile']!='release-0.11.0'
+    if(value['ema_decay']is not None or value['pg_version']!='0.11.1'or value['pg_source_profile']!='release-0.11.1'
             or value['width']!=(6656 if native else 12)or value['base_precision']!=('bfloat16'if native else'float32')
             or value['penalty_input_domain']!=('continuous'if native else'auto')):
         raise ValueError('exact original lane geometry/precision/PG profile and RAW/noEMA required')
