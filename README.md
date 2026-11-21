@@ -56,6 +56,7 @@ The [historical source locks](https://github.com/HyperGAN/glimmer-particle-slide
 [core migration](docs/core-migration.json) and
 [LR migration](docs/lr-migration.json) retain their original bytes.
 [Prior migration evidence](https://github.com/HyperGAN/glimmer-particle-sliders/blob/fc2fcfc98d13db0a7f313a613459f2793c89a7a9/docs/pg095-migration.json) describes the earlier source cohort.
+The pre-learning-rate cohort retains its [original requirements lock](https://github.com/HyperGAN/glimmer-particle-sliders/blob/fc2fcfc98d13db0a7f313a613459f2793c89a7a9/compatibility/pre-lr-v3/requirements.txt).
 The [Meta repository](https://github.com/mikkel/meta-glimmer-particle-slider)
 and its 20 published PG82 controls remain a separate reproduction path with
 original loaders and recipes. New code does not retrain or relabel those weights.
