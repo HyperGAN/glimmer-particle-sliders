@@ -132,5 +132,8 @@ For a strictly loaded native RAW inference session, call
 The schedule length is the output token budget. The first gain is applied
 during prompt prefill. The remaining gains follow the cached decode and stop
 at native EOS. Both the generation result and the strengths used are returned.
+Pass `use_cache=False` for the native full-prefix sampler. Each recomputed
+prefix applies the original prefill gain to the prompt and preserves the
+assigned gain of every subsequent position.
 Use a single tokenized text prompt. Effective strengths must lie in `[0,1]`.
 Pretrained scheduled text effects are pending.
