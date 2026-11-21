@@ -2,7 +2,7 @@
 
 BACKEND_NAME = "glimmer-native"
 PROTOCOL = "glimmer-native6656-nf4-hg-hndl-engine-continuous-v2"
-PROFILE = "release-0.11.0"
+PROFILE = "release-0.11.1"
 DOMAIN = "continuous"
 EXECUTION = "single-cuda-nf4-bf16-v1"
 MODEL_ID = "meta-models/Muse-Glimmer-30B"

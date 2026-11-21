@@ -18,7 +18,7 @@ def test_native_domain_is_explicit_and_fixture_does_not_migrate():
     assert CAPS.render is False
     c = config("/tmp/model", "/tmp/pairs.json", "GPU-72c1b506-891d-b8bc-b353-e020585e1c47", lr=.001, d_lr_mult=54, prior_lr_mult=90)
     configuration(c.options)
-    for key, wrong in (("execution_profile", "cpu-fixture"), ("pg_source_profile", "release-0.9.4"),
+    for key, wrong in (("execution_profile", "cpu-fixture"), ("pg_source_profile", "release-0.11.0"),
                        ("penalty_input_domain", "auto"), ("base_precision", "float32")):
         options = dict(c.options, **{key: wrong})
         with pytest.raises(ValueError):

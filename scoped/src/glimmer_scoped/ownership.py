@@ -40,7 +40,7 @@ def guard(lane):
     else:raise ValueError('explicit original lane required')
     record_guard(distribution(name,version),original.__name__,Path(original.__file__).absolute().parent,pins)
     _,source=verify_sources()  # Original recursive core577; native also product14, unmodified.
-    if metadata.version('particlegan')!='0.11.0'or source_record(pg_init.__file__)['sha256']!=INIT_SHA:
+    if metadata.version('particlegan')!='0.11.1'or source_record(pg_init.__file__)['sha256']!=INIT_SHA:
         raise RuntimeError('exact public ParticleGAN initializer required')
     own=Path(__file__).absolute().parent
     record_guard(distribution('glimmer-explicit-scoped','0.1.0'),'glimmer_scoped',own,

@@ -68,67 +68,7 @@ The root width12 FP32 CPU fixture is a separate software route; native6656
 requires its original assets, numerical profile and caller-owned admission. No
 new native proof or confirmation is requested by this documentation update.
 
-<a id="measured-native-pg095-preset"></a>
+## Earlier teacher-response SSE screen
 
-## Historical teacher-response SSE screen (RAW128)
-
-The following earlier measurement and preset retain their exact source and
-result identities. They describe numerical teacher matching and are **diagnostic
-history**, not the current intended-effect LR selector or a preferred rate over
-the completed RAW32 tie. The original preset/report files are unchanged.
-
-
-The [native preset](native-candidate/presets/pg095-native-nf4-128.json) supplies
-the exact options used in the earlier 128-update response-error screen:
-
-```json
-{
-  "lr": 0.001,
-  "d_lr_mult": 18.0,
-  "prior_lr_mult": 29.999999999999996,
-  "ema_decay": null,
-  "steps": 128,
-  "batch": 2,
-  "seed": 7,
-  "pg_source_profile": "release-0.9.5",
-  "penalty_input_domain": "continuous"
-}
-```
-
-The actual rates are G`0.001`, D`0.018000000000000002` and bank
-`0.029999999999999995`. Preserve the multiplier literals: rounding the bank
-multiplier to30 changes its actual rate. The native factory fixes the source
-profile and response domain, so its equivalent call is:
-
-```python
-from glimmer_native.lifecycle import config
-
-session = config(
-    snapshot, training_tokens, gpu_uuid,
-    steps=128, batch=2, seed=7, ema_decay=None,
-    lr=0.001, d_lr_mult=18.0, prior_lr_mult=29.999999999999996,
-)
-```
-
-Run it under the native guardian and numerical policy described in the
-[native guide](native-candidate/README.md). Exact checkpoint continuation
-requires the original complete session, cohort and source identity.
-
-All four G candidates completed matched32, the two finalists completed
-matched64, and the selected G completed128. D and bank stayed fixed. The
-selected development error was`0.7172243530127634`; the previously unused
-four-example final was **`0.5341646099807267`** versus OFF1.0. All four examples
-were valid, and the independent CPU reduction exactly reproduced every saved
-SSE, teacher energy and score. Native public RAW/OFF, frozen-base, adapter,
-checkpoint and RNG checks passed; final evaluation made zero training updates.
-
-This was the response-SSE-selected G in the pinned Muse-Glimmer-30B NF4/BF16,
-native6656 FP32 response cohort, batch2/common128. It does not establish a joint
-G/D/bank optimum or text-generation quality. The root width12 CPU fixture has
-its own scope. The [sanitized measurement](native-candidate/docs/pg095-native-nf4-128-measurement.json)
-records exact native-source fingerprints and evidence digests. The native
-package now matches the measured 20GiB guard and rejects model-weight EMA;
-omitted LR controls still retain their inherited values.
-
-The packages remain0.2.0 on sharedcore0.13.0 / publishedPG0.9.5. Historical
-source routes and migration receipts retain their original identities.
+The earlier response-error screen is diagnostic evidence.
+The [archived preset and measurements](https://github.com/HyperGAN/glimmer-particle-sliders/blob/fc2fcfc98d13db0a7f313a613459f2793c89a7a9/LEARNING-RATES.md#historical-teacher-response-sse-screen-raw128) retain their original runtime.
