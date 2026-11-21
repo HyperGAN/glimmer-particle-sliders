@@ -137,3 +137,81 @@ prefix applies the original prefill gain to the prompt and preserves the
 assigned gain of every subsequent position.
 Use a single tokenized text prompt. Effective strengths must lie in `[0,1]`.
 Pretrained scheduled text effects are pending.
+
+## Activation-dependent text generation
+
+The same `glimmer_scheduling.generate` entry point accepts a caller-calibrated
+`steering` policy with an explicit `strength` and `max_new_tokens`. It returns
+the native output and a receipt. `step_gains` still returns the fixed replay
+strength list. Choose one mode per request.
+
+The adaptive decision uses the full native decoder input before the selected
+layer's edit. The last prompt token is eligible because its logits predict the
+first output token. Earlier prompt positions stay OFF. The cached route reads
+one new token at each subsequent evaluation. With `use_cache=False`, Glimmer
+recomputes each growing prefix and reapplies previous decisions or fitted
+coefficients without advancing the controller for those positions. Both routes
+stop at the original native EOS. The receipt records native positions, effective
+strengths, gate usage, coefficients or probabilities, and the calibration
+reference. A zero strength uses unmodified native decoding.
+
+Keep the existing strict owner and build a separate wheel from the
+[pinned shared equations](https://github.com/HyperGAN/particle-sliders/pull/269).
+The loader checks the exact bytes of the two shared steering modules in the
+wheel. The installed strict core continues to own the RAW/FULL identity.
+
+```sh
+python -m pip wheel --no-deps --wheel-dir steering-wheel \
+  'particle-sliders-core @ git+https://github.com/HyperGAN/particle-sliders.git@b1f780decc516808cfd3019d5e5b674457161f86#subdirectory=packages/particle-sliders-core'
+```
+
+```python
+from glimmer_scheduling import generate
+from glimmer_scheduling.adaptive import ActivationGate
+from glimmer_scheduling.steering_core import load_steering_core
+
+core = load_steering_core(shared_steering_wheel)
+policy = ActivationGate(
+    core=core, layer=calibration["decoder_input_layer"], method="cfp",
+    parameter=calibration["threshold"], direction=calibration["direction"],
+    intervention="residual", evidence_ref=calibration["evidence_ref"],
+)
+output, receipt = generate(
+    session, input_ids=prompt_ids, steering=policy,
+    max_new_tokens=token_budget, strength=calibration["strength"],
+    seed=seed, use_cache=False, do_sample=False,
+)
+```
+
+- The direct residual gate applies the paper's additive direction at the
+  selected decoder layer with the saved adapter OFF. Fit a contrastive SAE
+  direction on this exact residual. CLABS takes its measured projection
+  statistics, declared PI settings, calibrated bias and explicit controller
+  seed. The `random` method controls allocation with a matched firing rate.
+  Optional norm and projection corrections follow the shared equations.
+  [Gate equations and calibration](https://arxiv.org/html/2611.18274v1)
+- `intervention="raw_adapter"` reads layer 0 before any native adapter targets
+  and gates the original loaded RAW edit at a strength in `[0,1]`. Use a probe
+  fitted to that layer and an independently calibrated firing threshold or
+  bias. This evaluates the gate's allocation with Glimmer's saved edit.
+- `FittedPromptSteering(core=core, layer=layer, fitted=module,
+  evidence_ref=fit_evidence)` uses a shared `core.prompt.PromptSteering` module
+  fitted on aligned neutral and attribute-prompt activations. Supply its native
+  FP32 weights and choose its signed global strength on calibration cases.
+  [PSR equations and training](https://arxiv.org/html/2605.03907v1)
+
+Use active rollouts and disjoint calibration and evaluation cases. Pass pooled
+`GateUsage` to `core.adaptive.calibrate_gate_budget` and report realized firing
+fractions on held-out cases. Use the same saved RAW, prompts, seed and sampler
+for the adapter control arms. Keep the adapter OFF for direct residual and
+S-PSR controls. Rank finished text by mean intended-effect ON minus OFF and
+apply the catastrophic-output check separately.
+
+The archived [Plain Glimmer comparisons](../LEARNING-RATES.md) retain the
+original matched outputs and last-hidden response target. Measuring pretrained
+adaptive gains requires a native decoder SAE or aligned per-position targets
+for S-PSR, disjoint active budget calibration or PSR strength selection on the
+exact Plain Glimmer sampler, and held-out comparison. CPU fixtures verify native cache and
+prefix accounting, fixed replay, EOS, and cleanup without a pretrained run.
+To run the adaptive fixtures, set `GLIMMER_STEERING_CORE_WHEEL` to the separate
+pinned wheel.

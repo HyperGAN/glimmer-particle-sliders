@@ -111,3 +111,230 @@ def test_muse_glimmer_preserves_position_strengths_on_native_full_prefix(model):
         torch.testing.assert_close(actual, torch.tensor(target))
     assert applied == [0.5, 0.0, 1.0]
     assert projection.forward is branch.forward and branch.multiplier == 0.0
+
+
+@pytest.fixture
+def steering_core():
+    import os
+
+    from glimmer_scheduling.steering_core import load_steering_core
+
+    wheel = os.getenv("GLIMMER_STEERING_CORE_WHEEL")
+    if not wheel:
+        pytest.skip("GLIMMER_STEERING_CORE_WHEEL must name the pinned #269 wheel")
+    return load_steering_core(wheel)
+
+
+@pytest.fixture
+def native_session(model):
+    from glimmer_native.fibo_hndl import HNDLParticleProjection
+    from glimmer_native.native import Native
+    from glimmer_native.provenance import verify_sources
+
+    projection = model.model.language_model.layers[0].self_attn.q_proj
+    builder, identity = verify_sources()
+    with torch.random.fork_rng(devices=[]):
+        torch.manual_seed(21)
+        branch = HNDLParticleProjection("fixture-q", projection, torch.randn(128, 4), 8, 8,
+                                        builder=builder, identity=identity, attach=False)
+        torch.nn.init.normal_(branch.lora_up.weight, std=0.1)
+    projection.forward = branch.forward
+
+    @contextmanager
+    def scaled(value):
+        previous, branch.multiplier = branch.multiplier, value
+        try:
+            yield
+        finally:
+            branch.multiplier = previous
+
+    @contextmanager
+    def observation(_seed, _inputs):
+        yield
+
+    native = object.__new__(Native)
+    native.model, native.network = model, object()
+    native.slider = SimpleNamespace(scaled=scaled, _attached=[(projection, branch)])
+    session = SimpleNamespace(selection="raw", _open=lambda: None, _observation=observation,
+                              binding=SimpleNamespace(close=native.close, network=native.network))
+    return session, projection, branch
+
+
+def _scores_match(left, right):
+    assert torch.equal(left.sequences, right.sequences)
+    assert all(torch.equal(a, b) for a, b in zip(left.scores, right.scores, strict=True))
+
+
+@pytest.mark.parametrize("use_cache", [True, False])
+def test_gated_raw_native_replay_and_exact_off(native_session, steering_core, use_cache):
+    from glimmer_scheduling import generate
+    from glimmer_scheduling.adaptive import ActivationGate
+
+    session, projection, branch = native_session
+    ids = torch.tensor([[1, 7, 8]])
+    options = dict(input_ids=ids, strength=0.5, use_cache=use_cache, do_sample=False,
+                   return_dict_in_generate=True, output_scores=True)
+
+    def policy(parameter, seed):
+        return ActivationGate(core=steering_core, layer=0, method="random", parameter=parameter,
+                              seed=seed, intervention="raw_adapter", evidence_ref="fixture")
+
+    off, _ = generate(session, step_gains=[0] * 4, **options)
+    gated_off, off_receipt = generate(session, steering=policy(0, 2), max_new_tokens=4, **options)
+    _scores_match(off, gated_off)
+    assert off_receipt["usage"] == {"eligible": 4, "fired": 0}
+    adaptive, receipt = generate(session, steering=policy(0.65, 2), max_new_tokens=4, **options)
+    assert receipt["effective_strengths"] == [0.0, 0.0, 0.5, 0.5]
+    assert [step["input_position"] for step in receipt["steps"]] == [2, 3, 4, 5]
+    assert receipt["usage"] == {"eligible": 4, "fired": 2}
+    fixed, applied = generate(session, step_gains=[0, 0, 1, 1], **options)
+    _scores_match(adaptive, fixed)
+    assert applied == receipt["effective_strengths"]
+    assert projection.forward == branch.forward and branch.multiplier == 0
+
+
+@pytest.mark.parametrize("use_cache", [True, False])
+def test_live_cfp_last_prompt_position_and_native_eos(model, native_session, steering_core, use_cache):
+    from glimmer_scheduling import generate
+    from glimmer_scheduling.adaptive import ActivationGate
+
+    session, projection, branch = native_session
+    ids = torch.tensor([[1, 7, 8]])
+    embeddings = model.get_input_embeddings()(ids)[0, -1].detach().float()
+    direction = embeddings / embeddings.norm()
+    alignment = steering_core.adaptive.activation_projection(embeddings, direction, strength=0.5).item()
+    policy = ActivationGate(core=steering_core, layer=0, method="cfp", parameter=alignment,
+                            direction=direction, intervention="raw_adapter", evidence_ref="fixture")
+    observed = []
+
+    def stop(_head, _args, out):
+        forced = torch.zeros_like(out)
+        forced[..., 13] = 10
+        return forced
+
+    def capture(_projection, args, result):
+        observed.append((result, branch.org_forward(args[0])))
+
+    with model.lm_head.register_forward_hook(stop), projection.register_forward_hook(capture):
+        generated, receipt = generate(session, input_ids=ids, steering=policy, max_new_tokens=4,
+                                      strength=0.5, use_cache=use_cache, do_sample=False, eos_token_id=13)
+    assert generated.tolist() == [[1, 7, 8, 13]]
+    assert len(observed) == 1
+    assert receipt["usage"] == {"eligible": 1, "fired": 1}
+    assert receipt["steps"][0]["alignment"] == pytest.approx(alignment)
+    edited, frozen = observed[0]
+    assert torch.equal(edited[:, :-1], frozen[:, :-1])
+    assert not torch.equal(edited[:, -1], frozen[:, -1])
+    assert projection.forward == branch.forward and branch.multiplier == 0
+
+
+@pytest.mark.parametrize("use_cache", [True, False])
+def test_shared_s_psr_and_clabs_are_request_local(native_session, steering_core, use_cache):
+    from glimmer_scheduling import generate
+    from glimmer_scheduling.adaptive import ActivationGate, FittedPromptSteering
+
+    session, projection, branch = native_session
+    options = dict(input_ids=torch.tensor([[1, 7, 8]]), use_cache=use_cache, do_sample=False,
+                   return_dict_in_generate=True, output_scores=True)
+    fitted = steering_core.prompt.PromptSteering(32)
+    with torch.no_grad():
+        fitted.probe.weight.zero_()
+        fitted.probe.bias.fill_(0.5)
+        fitted.direction.weight.fill_(0.2)
+    psr = FittedPromptSteering(core=steering_core, fitted=fitted, layer=1, evidence_ref="fixture")
+    off, _ = generate(session, step_gains=[0] * 3, **options)
+    disabled, receipt = generate(session, steering=psr, strength=0.0, max_new_tokens=3, **options)
+    _scores_match(off, disabled)
+    assert receipt["steps"] == [] and receipt["effective_strengths"] == [0.0] * 3
+    on, receipt = generate(session, steering=psr, strength=-2.0, max_new_tokens=3, **options)
+    assert receipt["effective_strengths"] == [-1.0] * 3
+    assert all(step["coefficient"] == 0.5 for step in receipt["steps"])
+    assert not torch.equal(on.scores[0], off.scores[0])
+    assert fitted.training and all(p.requires_grad for p in fitted.parameters())
+
+    clabs = steering_core.adaptive.CLABSParameters(mean=0, std=1, epsilon=1e-6, setpoint=0.1,
+        proportional_gain=0.3, integral_gain=0.3, beta=0.4)
+    policy = ActivationGate(core=steering_core, layer=1, method="clabs", parameter=0.5,
+                            direction=torch.ones(32), intervention="residual", seed=21,
+                            clabs=clabs, evidence_ref="fixture")
+    first, receipt = generate(session, steering=policy, strength=0.5, max_new_tokens=3, **options)
+    second, second_receipt = generate(session, steering=policy, strength=0.5, max_new_tokens=3, **options)
+    _scores_match(first, second)
+    assert receipt == second_receipt and receipt["usage"]["eligible"] == 3
+    assert projection.forward == branch.forward and branch.multiplier == 0
+
+
+def test_failed_native_forward_restores_adaptive_scope(model, native_session, steering_core):
+    from glimmer_scheduling import generate
+    from glimmer_scheduling.adaptive import ActivationGate
+
+    session, projection, branch = native_session
+    always = ActivationGate(core=steering_core, layer=0, intervention="raw_adapter", method="random",
+                            parameter=1, seed=2, evidence_ref="fixture")
+    layer = model.model.language_model.layers[0]
+    hooks = (len(model._forward_pre_hooks), len(model._forward_hooks), len(layer._forward_pre_hooks))
+
+    def fail(*_):
+        raise RuntimeError("failed native fixture")
+
+    with model.lm_head.register_forward_hook(fail), pytest.raises(RuntimeError, match="failed native fixture"):
+        generate(session, input_ids=torch.tensor([[1, 7, 8]]), steering=always, max_new_tokens=3,
+                 strength=0.5, use_cache=False)
+    assert projection.forward == branch.forward and branch.multiplier == 0
+    assert hooks == (len(model._forward_pre_hooks), len(model._forward_hooks), len(layer._forward_pre_hooks))
+
+
+def test_exact_core_wheel_rejects_altered_source_after_loading(steering_core, tmp_path):
+    from zipfile import ZipFile
+
+    from glimmer_scheduling.steering_core import load_steering_core
+
+    wheel = tmp_path / "changed.whl"
+    source = b"?" * 10329
+    with ZipFile(wheel, "w") as archive:
+        archive.writestr("particle_sliders/adaptive_steering.py", source)
+    with pytest.raises(ValueError, match="source checksum"):
+        load_steering_core(wheel)
+
+
+def test_independent_steering_loader_imports_stay_isolated(steering_core):
+    from concurrent.futures import ThreadPoolExecutor
+    import os
+    from runpy import run_path
+    from threading import Barrier
+
+    import glimmer_scheduling.steering_core as packaged
+
+    ready = Barrier(2)
+
+    def load_separate():
+        standalone = run_path(packaged.__file__)
+        ready.wait(timeout=5)
+        return standalone["load_steering_core"](os.environ["GLIMMER_STEERING_CORE_WHEEL"])
+
+    with ThreadPoolExecutor(2) as threads:
+        futures = [threads.submit(load_separate) for _ in range(2)]
+        loaders = [future.result(timeout=10) for future in futures]
+    assert len({core.adaptive.__name__ for core in [steering_core, *loaders]}) == 3
+    assert all(core.adaptive.ActivationGate("cfp", 0).step(-1).fired for core in loaders)
+
+
+def test_adaptive_request_refuses_an_overlapping_schedule(model, native_session, steering_core):
+    from glimmer_scheduling import generate
+    from glimmer_scheduling.adaptive import ActivationGate
+
+    session, projection, branch = native_session
+    raw = ActivationGate(core=steering_core, layer=0, method="random", parameter=1,
+                         seed=2, intervention="raw_adapter", evidence_ref="fixture")
+    ids = torch.tensor([[1, 7, 8]])
+
+    def nested(*_):
+        with pytest.raises(RuntimeError, match="already has an active scheduled generation"):
+            generate(session, input_ids=ids, step_gains=[1])
+
+    with model.lm_head.register_forward_pre_hook(nested):
+        output, receipt = generate(session, input_ids=ids, steering=raw, strength=0.5, max_new_tokens=2)
+    assert output.shape == (1, 5) and receipt["effective_strengths"] == [0.5, 0.5]
+    assert projection.forward == branch.forward and branch.multiplier == 0
+    _, applied = generate(session, input_ids=ids, step_gains=[0.5])
+    assert applied == [0.5]
