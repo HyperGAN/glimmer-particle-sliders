@@ -4,6 +4,7 @@ from contextlib import ExitStack, contextmanager
 from copy import deepcopy
 from dataclasses import asdict, dataclass
 from math import isfinite
+from typing import Literal
 
 import torch
 
@@ -36,6 +37,7 @@ class FittedPromptSteering:
     layer: int
     fitted: torch.nn.Module
     evidence_ref: str
+    coordinate: Literal["decoder_input", "decoder_output"] = "decoder_input"
 
 
 def _policy(steering, layers, width, strength):
@@ -46,6 +48,8 @@ def _policy(steering, layers, width, strength):
         raise ValueError("Provide a native decoder layer and calibration or fit evidence")
     require_steering_core(steering.core)
     if isinstance(steering, FittedPromptSteering):
+        if steering.coordinate not in ("decoder_input", "decoder_output"):
+            raise ValueError("Select the fitted Glimmer decoder input or output coordinate")
         fitted = steering.fitted
         if (not isinstance(fitted, steering.core.prompt.PromptSteering)
                 or fitted.probe.in_features != width
@@ -89,8 +93,10 @@ def _adaptive_strengths(native, steering, *, prefix, max_new_tokens, strength, u
     width = model.config.text_config.hidden_size
     gate, direction, fitted = _policy(steering, layers, width, strength)
     intervention = steering.intervention if gate is not None else "residual"
+    post_block = fitted is not None and steering.coordinate == "decoder_output"
+    layer_key = "decoder_output_layer" if post_block else "decoder_input_layer"
     trace = []
-    receipt = dict(core_revision=CORE_REVISION, decoder_input_layer=steering.layer,
+    receipt = dict(core_revision=CORE_REVISION, **{layer_key: steering.layer},
                    evidence_ref=steering.evidence_ref, nominal_strength=strength,
                    method=steering.method if gate is not None else "s_psr", intervention=intervention,
                    use_cache=use_cache, prefill_only_positions=prefix - 1, steps=trace)
@@ -121,10 +127,9 @@ def _adaptive_strengths(native, steering, *, prefix, max_new_tokens, strength, u
         if mask is not None and (mask.shape != (1, prefix + position) or mask[0, -1].item() != 1):
             raise RuntimeError("Adaptive Glimmer requires an unmasked final native input token")
 
-    def before_decoder(_layer, args, kwargs):
+    def edit_decoder(hidden):
         nonlocal expected
-        hidden = args[0] if args else kwargs.get("hidden_states")
-        if expected is None or hidden is None or hidden.shape != (1, expected, width):
+        if expected is None or not isinstance(hidden, torch.Tensor) or hidden.shape != (1, expected, width):
             raise RuntimeError("Glimmer did not expose one native decoder residual for this evaluation")
         expected = None
         index = len(trace)
@@ -167,11 +172,23 @@ def _adaptive_strengths(native, steering, *, prefix, max_new_tokens, strength, u
         if edited is not hidden and not torch.isfinite(edited).all().item():
             raise ValueError("Nonfinite Glimmer residual after steering")
         trace.append(dict(record, effective_strength=effective))
+        return edited
+
+    def before_decoder(_layer, args, kwargs):
+        hidden = args[0] if args else kwargs.get("hidden_states")
+        edited = edit_decoder(hidden)
         if edited is not hidden:
             if args:
                 return (edited, *args[1:]), kwargs
             return args, dict(kwargs, hidden_states=edited)
         return None
+
+    def after_decoder(_layer, _args, output):
+        hidden = next(iter(output), None) if isinstance(output, tuple) else output
+        edited = edit_decoder(hidden)
+        if edited is hidden:
+            return None
+        return (edited, *output[1:]) if isinstance(output, tuple) else edited
 
     def after_forward(_model, _args, output):
         evaluation.close()
@@ -182,7 +199,11 @@ def _adaptive_strengths(native, steering, *, prefix, max_new_tokens, strength, u
         if intervention == "raw_adapter":
             scaled = hooks.enter_context(_full_prefix_slider(slider, device))
         hooks.callback(model.register_forward_pre_hook(before_forward, with_kwargs=True).remove)
-        hooks.callback(layers[steering.layer].register_forward_pre_hook(before_decoder, with_kwargs=True).remove)
+        layer = layers[steering.layer]
+        if post_block:
+            hooks.callback(layer.register_forward_hook(after_decoder).remove)
+        else:
+            hooks.callback(layer.register_forward_pre_hook(before_decoder, with_kwargs=True).remove)
         hooks.callback(model.register_forward_hook(after_forward, always_call=True).remove)
         hooks.callback(evaluation.close)
         yield receipt
