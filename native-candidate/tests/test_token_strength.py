@@ -247,6 +247,7 @@ def test_shared_s_psr_and_clabs_are_request_local(native_session, steering_core,
     _scores_match(off, disabled)
     assert receipt["steps"] == [] and receipt["effective_strengths"] == [0.0] * 3
     on, receipt = generate(session, steering=psr, strength=-2.0, max_new_tokens=3, **options)
+    assert receipt["decoder_input_layer"] == 1 and "decoder_output_layer" not in receipt
     assert receipt["effective_strengths"] == [-1.0] * 3
     assert all(step["coefficient"] == 0.5 for step in receipt["steps"])
     assert not torch.equal(on.scores[0], off.scores[0])
@@ -262,6 +263,118 @@ def test_shared_s_psr_and_clabs_are_request_local(native_session, steering_core,
     _scores_match(first, second)
     assert receipt == second_receipt and receipt["usage"]["eligible"] == 3
     assert projection.forward == branch.forward and branch.multiplier == 0
+
+
+@pytest.mark.parametrize("use_cache", [True, False])
+@pytest.mark.parametrize("dtype", [torch.float32, torch.bfloat16])
+def test_s_psr_reads_final_native_block_before_norm(model, native_session, steering_core, use_cache, dtype):
+    from glimmer_scheduling import generate
+    from glimmer_scheduling.adaptive import FittedPromptSteering
+
+    session, projection, branch = native_session
+    model.to(dtype=dtype)
+    decoder = model.model.language_model
+    layer = decoder.layers[-1]
+    fitted = steering_core.prompt.PromptSteering(32)
+    with torch.no_grad():
+        fitted.probe.weight.fill_(0.02)
+        fitted.probe.bias.fill_(1.0)
+        fitted.direction.weight.copy_(torch.linspace(0.01, 0.2, 32))
+    policy = FittedPromptSteering(core=steering_core, fitted=fitted, layer=len(decoder.layers) - 1,
+                                 coordinate="decoder_output", evidence_ref="fixture-native-post-block")
+    ids = torch.tensor([[1, 7, 8]])
+    options = dict(input_ids=ids, use_cache=use_cache, do_sample=False,
+                   return_dict_in_generate=True, output_scores=True)
+    off, _ = generate(session, step_gains=[0.0] * 3, **options)
+    disabled, zero = generate(session, steering=policy, strength=0.0, max_new_tokens=3, **options)
+    _scores_match(off, disabled)
+    assert zero["decoder_output_layer"] == policy.layer and zero["effective_strengths"] == [0.0] * 3
+    assert zero["steps"] == []
+
+    before, during_norm = [], []
+
+    def capture_block(_layer, _args, output):
+        before.append(output.detach().clone())
+
+    def capture_norm(_norm, args):
+        during_norm.append(args[0].detach().clone())
+
+    with layer.register_forward_hook(capture_block), decoder.norm.register_forward_pre_hook(capture_norm):
+        edited, receipt = generate(session, steering=policy, strength=-1.5, max_new_tokens=3, **options)
+
+    assert receipt["decoder_output_layer"] == policy.layer and "decoder_input_layer" not in receipt
+    assert [step["input_position"] for step in receipt["steps"]] == [2, 3, 4]
+    assert not torch.equal(edited.scores[0], off.scores[0])
+    effective = []
+    with torch.no_grad():
+        for index, (unedited, seen, step) in enumerate(zip(before, during_norm, receipt["steps"], strict=True)):
+            leading = 2 if not use_cache or index == 0 else 0
+            assert seen.dtype == unedited.dtype == dtype and seen.shape == unedited.shape
+            assert seen.shape[1] == (3 + index if not use_cache else (3 if index == 0 else 1))
+            assert torch.equal(seen[:, :leading], unedited[:, :leading])
+            latest, coefficient = fitted(unedited[:, -1:], -1.5)
+            assert torch.equal(seen[:, -1:], latest)
+            assert step["coefficient"] == coefficient.item()
+            assert step["effective_strength"] == (coefficient * -1.5).item()
+            if not use_cache:
+                history = torch.tensor(effective, dtype=torch.float32).view(1, -1, 1)
+                older = unedited[:, leading:-1]
+                reference = (older.float() + history * fitted.direction.weight[0]).to(dtype)
+                assert torch.equal(seen[:, leading:-1], reference)
+            effective.append(step["effective_strength"])
+    assert effective == receipt["effective_strengths"]
+    assert fitted.training and all(parameter.requires_grad for parameter in fitted.parameters())
+    assert projection.forward == branch.forward and branch.multiplier == 0
+
+
+def test_post_block_hook_keeps_tuple_tail_and_restores_after_failure(steering_core):
+    from glimmer_scheduling.adaptive import FittedPromptSteering, _adaptive_strengths
+
+    metadata = object()
+
+    class Block(torch.nn.Module):
+        def forward(self, hidden):
+            return hidden, metadata, 7
+
+    class Decoder(torch.nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.layer = Block()
+            self.model = SimpleNamespace(language_model=SimpleNamespace(layers=[self.layer]))
+            self.config = SimpleNamespace(text_config=SimpleNamespace(hidden_size=4))
+
+        def forward(self, *, input_ids, fail=False):
+            result = self.layer(input_ids[..., None].expand(-1, -1, 4).to(torch.bfloat16))
+            if fail:
+                raise RuntimeError("failed after the post-block hook")
+            return result
+
+    @contextmanager
+    def scaled(value):
+        assert value == 0.0
+        yield
+
+    model = Decoder()
+    native = SimpleNamespace(model=model, slider=SimpleNamespace(scaled=scaled))
+    fitted = steering_core.prompt.PromptSteering(4)
+    with torch.no_grad():
+        fitted.probe.weight.zero_()
+        fitted.probe.bias.fill_(1.0)
+        fitted.direction.weight.fill_(0.5)
+    policy = FittedPromptSteering(core=steering_core, fitted=fitted, layer=0,
+                                 coordinate="decoder_output", evidence_ref="fixture-tuple")
+    ids = torch.tensor([[2, 3]])
+    expected = torch.tensor([[[2.0] * 4, [3.5] * 4]], dtype=torch.bfloat16)
+    options = dict(prefix=2, max_new_tokens=2, strength=1.0, use_cache=False, device=ids.device)
+    with _adaptive_strengths(native, policy, **options) as receipt:
+        hidden, cache, auxiliary = model(input_ids=ids)
+        assert torch.equal(hidden, expected) and cache is metadata and auxiliary == 7
+        assert receipt["steps"][0]["effective_strength"] == 1.0
+    with pytest.raises(RuntimeError, match="failed after the post-block hook"):
+        with _adaptive_strengths(native, policy, **options):
+            model(input_ids=ids, fail=True)
+    assert not model.layer._forward_hooks and not model._forward_hooks and not model._forward_pre_hooks
+    assert torch.equal(model(input_ids=ids)[0], ids[..., None].expand(-1, -1, 4).to(torch.bfloat16))
 
 
 def test_failed_native_forward_restores_adaptive_scope(model, native_session, steering_core):

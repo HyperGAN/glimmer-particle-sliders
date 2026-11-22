@@ -145,8 +145,8 @@ The same `glimmer_scheduling.generate` entry point accepts a caller-calibrated
 the native output and a receipt. `step_gains` still returns the fixed replay
 strength list. Choose one mode per request.
 
-The adaptive decision uses the full native decoder input before the selected
-layer's edit. The last prompt token is eligible because its logits predict the
+The adaptive decision reads the selected native decoder residual. The last
+prompt token is eligible because its logits predict the
 first output token. Earlier prompt positions stay OFF. The cached route reads
 one new token at each subsequent evaluation. With `use_cache=False`, Glimmer
 recomputes each growing prefix and reapplies previous decisions or fitted
@@ -196,8 +196,13 @@ output, receipt = generate(
   bias. This evaluates the gate's allocation with Glimmer's saved edit.
 - `FittedPromptSteering(core=core, layer=layer, fitted=module,
   evidence_ref=fit_evidence)` uses a shared `core.prompt.PromptSteering` module
-  fitted on aligned neutral and attribute-prompt activations. Supply its native
-  FP32 weights and choose its signed global strength on calibration cases.
+  fitted on aligned neutral and attribute-prompt activations. The default
+  `coordinate="decoder_input"` reads and edits the input of `layer`. For a fit
+  on the output of a native decoder block, set `coordinate="decoder_output"`
+  and use that block's index. This route includes the last block before the
+  terminal normalization and records `decoder_output_layer` in its receipt.
+  Use the coordinate recorded by the fit and choose its signed global strength
+  on separate calibration cases.
   [PSR equations and training](https://arxiv.org/html/2605.03907v1)
 
 Use active rollouts and disjoint calibration and evaluation cases. Pass pooled
