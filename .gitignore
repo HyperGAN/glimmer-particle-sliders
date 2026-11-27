@@ -10,3 +10,5 @@ outputs/
 *.safetensors
 *.bin
 .env
+.venv-text/
+/vibe/build/

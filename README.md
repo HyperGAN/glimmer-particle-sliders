@@ -1,8 +1,25 @@
 # Glimmer particle sliders
 
+## Train a text vibe with ParticleGAN 0.12.0
+
+Describe the style in one phrase to train a slider for Muse Glimmer 30B. The native CUDA worker uses Anima's rank-eight routed attention branches, 128 × 4 particle bank, and stock ParticleGAN 0.12.0 EMPF update on frozen text responses. The default run qualifies at least 16 teaching contexts, trains for 448 updates, and calibrates strength on finished replies. The exported slider includes its selected token-strength schedule.
+
+From this checkout, install the text runtime in its own environment. Set `CUDA_VISIBLE_DEVICES` to one GPU UUID, `NANOGPT_API_KEY` for the Jev reader during training, and `MODEL_SNAPSHOT` to the local snapshot directory ending in `a4e59da52a7bc87ae7251dd5545c0dd437c44b68`.
+
+```sh
+python3.12 -m venv .venv-text
+.venv-text/bin/pip install ./vibe
+.venv-text/bin/glimmer-vibe --snapshot "$MODEL_SNAPSHOT" --vibe "short, playful rhymes" --out ./rhyming
+.venv-text/bin/glimmer-vibe --snapshot "$MODEL_SNAPSHOT" --adapter ./rhyming/slider.safetensors --prompt "Welcome a friend to a library."
+```
+
+Omit `--adapter` to generate with the base model. The run directory contains the teacher verdicts, RAW checkpoints, strength comparisons, and held-out replies. [Shared training implementation](https://github.com/HyperGAN/particle-sliders/tree/e50158f3c4f14cc1245271dbe4fb1011b695688d/packages/particle-sliders-vibe#train-and-sample-a-text-vibe).
+
+## Prior studies and releases
+
 **Calculated memory:** Native NF4 text-response training: **28 GiB GPU / 14 GiB host**, batch 2/128 tokens, checkpointed. Same Muse-Glimmer backbone as the other Glimmer interface. [Full memory ledger and limits](MEMORY.md). These are planning estimates, not measured peaks.
 
-Both current standalone packages use shared core **0.15.2** at
+The earlier CPU fixture and native response study use shared core **0.15.2** at
 `ec1161f5d74481be3540cb0dfa63d0e8f8b54e90` and published **ParticleGAN 0.11.1**.
 New training uses fresh protocol identities. Earlier checkpoints retain their original environments.
 
