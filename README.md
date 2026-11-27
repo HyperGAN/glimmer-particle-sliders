@@ -13,7 +13,7 @@ python3.12 -m venv .venv-text
 .venv-text/bin/glimmer-vibe --snapshot "$MODEL_SNAPSHOT" --adapter ./rhyming/slider.safetensors --prompt "Welcome a friend to a library."
 ```
 
-Omit `--adapter` to generate with the base model. The run directory contains the teacher verdicts, RAW checkpoints, strength comparisons, and held-out replies. [Shared training implementation](https://github.com/HyperGAN/particle-sliders/tree/7e113f67879a7e9c660d0622487e4953a4b46756/packages/particle-sliders-vibe#train-and-sample-a-text-vibe).
+Omit `--adapter` to generate with the base model. The run directory contains the teacher verdicts, RAW checkpoints, strength comparisons, and held-out replies. [Shared training implementation](https://github.com/HyperGAN/particle-sliders/tree/210a63603cd450b0679198343d7777fc88fb0dc4/packages/particle-sliders-vibe#train-and-sample-a-text-vibe).
 
 ## Prior studies and releases
 
