@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Train and sample Muse Glimmer 30B text vibes with ParticleGAN 0.12.0"
 requires-python = ">=3.11"
 dependencies = [
-    "particle-sliders-vibe[text,glimmer] @ git+https://github.com/HyperGAN/particle-sliders.git@210a63603cd450b0679198343d7777fc88fb0dc4#subdirectory=packages/particle-sliders-vibe",
+    "particle-sliders-vibe[text,glimmer] @ git+https://github.com/HyperGAN/particle-sliders.git@0268a29166e228b40b353c3bd8284c9ae1e658dd#subdirectory=packages/particle-sliders-vibe",
 ]
 
 [project.scripts]

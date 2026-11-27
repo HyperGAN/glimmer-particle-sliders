@@ -2,7 +2,7 @@
 
 ## Train a text vibe with ParticleGAN 0.12.0
 
-Describe the style in one phrase to train a slider for Muse Glimmer 30B. The native CUDA worker uses Anima's rank-eight routed attention branches, 128 × 4 particle bank, and stock ParticleGAN 0.12.0 EMPF update on frozen text responses. The default run qualifies at least 16 teaching contexts, trains for 448 updates, and calibrates strength on finished replies. The exported slider includes its selected token-strength schedule.
+Describe the style in one phrase to train a slider for Muse Glimmer 30B. The native CUDA worker uses Anima's rank-eight routed attention branches, 128 × 4 particle bank, and stock ParticleGAN 0.12.0 EMPF update on frozen text responses. The default run qualifies at least 16 teaching contexts, trains for 32 updates on a 128-step optimizer schedule, and calibrates strength on finished replies. The exported slider includes its selected token-strength schedule.
 
 From this checkout, install the text runtime in its own environment. Set `CUDA_VISIBLE_DEVICES` to one GPU UUID, `NANOGPT_API_KEY` for the Jev reader during training, and `MODEL_SNAPSHOT` to the local snapshot directory ending in `a4e59da52a7bc87ae7251dd5545c0dd437c44b68`.
 
@@ -13,7 +13,9 @@ python3.12 -m venv .venv-text
 .venv-text/bin/glimmer-vibe --snapshot "$MODEL_SNAPSHOT" --adapter ./rhyming/slider.safetensors --prompt "Welcome a friend to a library."
 ```
 
-Omit `--adapter` to generate with the base model. The run directory contains the teacher verdicts, RAW checkpoints, strength comparisons, and held-out replies. [Shared training implementation](https://github.com/HyperGAN/particle-sliders/tree/210a63603cd450b0679198343d7777fc88fb0dc4/packages/particle-sliders-vibe#train-and-sample-a-text-vibe).
+Omit `--adapter` to generate with the base model. The run directory contains the teacher verdicts, RAW checkpoints, strength comparisons, and held-out replies. [Shared training implementation](https://github.com/HyperGAN/particle-sliders/tree/0268a29166e228b40b353c3bd8284c9ae1e658dd/packages/particle-sliders-vibe#train-and-sample-a-text-vibe).
+
+In a rhyme qualification on four held-out prompts, the selected constant strength of 2.0 raised mean rhyme score by 0.053 on a 0–1 scale. Most of the gain came from one prompt.
 
 ## Prior studies and releases
 
